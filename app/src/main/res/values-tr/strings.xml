@@ -210,7 +210,7 @@
     <string name="action_remove_like">Beğeniyi kaldır</string>
     <string name="action_remove_like_all">Tüm beğenileri kaldır</string>
     <string name="action_shuffle_on">Karıştırma açık</string>
-    <string name="action_shuffle_off">Karıştırma kapalı</string
+    <string name="action_shuffle_off">Karıştırma kapalı</string>
     <string name="repeat_mode_off">Tekrarlama modu kapalı</string>
     <string name="repeat_mode_one">Şu anki şarkıyı tekrarla</string>
     <string name="repeat_mode_all">Sırayı tekrarla</string>
