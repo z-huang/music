@@ -8,6 +8,7 @@
 
     <!-- Top bar -->
     <plurals name="n_selected">
+        <item quantity="one">%d seçildi</item>
         <item quantity="other">%d seçildi</item>
     </plurals>
 
