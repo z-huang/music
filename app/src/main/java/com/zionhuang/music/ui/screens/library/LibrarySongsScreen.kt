@@ -211,6 +211,8 @@ fun LibrarySongsScreen(
                         song = song,
                         isActive = song.id == mediaMetadata?.id,
                         isPlaying = isPlaying,
+                        showLikedIcon = filter != SongFilter.LIKED,
+                        showDownloadIcon = filter != SongFilter.DOWNLOADED,
                         trailingContent = {
                             if (inSelectMode) {
                                 Checkbox(

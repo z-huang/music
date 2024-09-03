@@ -4,21 +4,28 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -30,11 +37,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.util.fastAny
+import androidx.compose.ui.util.fastForEachReversed
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zionhuang.music.LocalDatabase
@@ -70,10 +84,20 @@ fun HistoryScreen(
     val isPlaying by playerConnection.isPlaying.collectAsState()
     val mediaMetadata by playerConnection.mediaMetadata.collectAsState()
 
-    val events by viewModel.events.collectAsState()
-    val eventIndex: Map<Long, EventWithSong> by remember(events) {
-        derivedStateOf {
-            events.flatMap { it.value }.associateBy { it.event.id }
+    var isSearching by rememberSaveable { mutableStateOf(false) }
+    var query by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(TextFieldValue())
+    }
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(isSearching) {
+        if (isSearching) {
+            focusRequester.requestFocus()
+        }
+    }
+    if (isSearching) {
+        BackHandler {
+            isSearching = false
+            query = TextFieldValue()
         }
     }
 
@@ -92,11 +116,43 @@ fun HistoryScreen(
         BackHandler(onBack = onExitSelectionMode)
     }
 
+    val eventsMap by viewModel.events.collectAsState()
+    val filteredEventsMap = remember(eventsMap, query) {
+        if (query.text.isEmpty()) eventsMap
+        else eventsMap
+            .mapValues { (_, songs) ->
+                songs.filter { song ->
+                    song.song.title.contains(query.text, ignoreCase = true) ||
+                            song.song.artists.fastAny { it.name.contains(query.text, ignoreCase = true) }
+                }
+            }
+            .filterValues { it.isNotEmpty() }
+    }
+    val filteredEventIndex: Map<Long, EventWithSong> by remember(filteredEventsMap) {
+        derivedStateOf {
+            filteredEventsMap.flatMap { it.value }.associateBy { it.event.id }
+        }
+    }
+
+    LaunchedEffect(filteredEventsMap) {
+        selection.fastForEachReversed { eventId ->
+            if (filteredEventIndex[eventId] == null) {
+                selection.remove(eventId)
+            }
+        }
+    }
+
     LazyColumn(
-        contentPadding = LocalPlayerAwareWindowInsets.current.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom).asPaddingValues(),
-        modifier = Modifier.windowInsetsPadding(LocalPlayerAwareWindowInsets.current.only(WindowInsetsSides.Top))
+        contentPadding = LocalPlayerAwareWindowInsets.current
+            .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom)
+            .union(WindowInsets.ime)
+            .asPaddingValues(),
+        modifier = Modifier.windowInsetsPadding(
+            LocalPlayerAwareWindowInsets.current
+                .only(WindowInsetsSides.Top)
+        )
     ) {
-        events.forEach { (dateAgo, events) ->
+        filteredEventsMap.forEach { (dateAgo, events) ->
             stickyHeader {
                 NavigationTitle(
                     title = when (dateAgo) {
@@ -187,6 +243,30 @@ fun HistoryScreen(
         title = {
             if (inSelectMode) {
                 Text(pluralStringResource(R.plurals.n_selected, selection.size, selection.size))
+            } else if (isSearching) {
+                TextField(
+                    value = query,
+                    onValueChange = { query = it },
+                    placeholder = {
+                        Text(
+                            text = stringResource(R.string.search),
+                            style = MaterialTheme.typography.titleLarge
+                        )
+                    },
+                    singleLine = true,
+                    textStyle = MaterialTheme.typography.titleLarge,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(focusRequester)
+                )
             } else {
                 Text(stringResource(R.string.history))
             }
@@ -201,8 +281,19 @@ fun HistoryScreen(
                 }
             } else {
                 IconButton(
-                    onClick = navController::navigateUp,
-                    onLongClick = navController::backToMain
+                    onClick = {
+                        if (isSearching) {
+                            isSearching = false
+                            query = TextFieldValue()
+                        } else {
+                            navController.navigateUp()
+                        }
+                    },
+                    onLongClick = {
+                        if (!isSearching) {
+                            navController.backToMain()
+                        }
+                    }
                 ) {
                     Icon(
                         painterResource(R.drawable.arrow_back),
@@ -214,13 +305,13 @@ fun HistoryScreen(
         actions = {
             if (inSelectMode) {
                 Checkbox(
-                    checked = selection.size == eventIndex.size && selection.isNotEmpty(),
+                    checked = selection.size == filteredEventIndex.size && selection.isNotEmpty(),
                     onCheckedChange = {
-                        if (selection.size == eventIndex.size) {
+                        if (selection.size == filteredEventIndex.size) {
                             selection.clear()
                         } else {
                             selection.clear()
-                            selection.addAll(events.flatMap { group ->
+                            selection.addAll(filteredEventsMap.flatMap { group ->
                                 group.value.map { it.event.id }
                             })
                         }
@@ -232,12 +323,12 @@ fun HistoryScreen(
                         menuState.show {
                             SongSelectionMenu(
                                 selection = selection.mapNotNull { eventId ->
-                                    eventIndex[eventId]?.song
+                                    filteredEventIndex[eventId]?.song
                                 },
                                 onDismiss = menuState::dismiss,
                                 onRemoveFromHistory = {
                                     val sel = selection.mapNotNull { eventId ->
-                                        eventIndex[eventId]?.event
+                                        filteredEventIndex[eventId]?.event
                                     }
                                     database.query {
                                         sel.forEach {
@@ -252,6 +343,15 @@ fun HistoryScreen(
                 ) {
                     Icon(
                         painterResource(R.drawable.more_vert),
+                        contentDescription = null
+                    )
+                }
+            } else if (!isSearching) {
+                IconButton(
+                    onClick = { isSearching = true }
+                ) {
+                    Icon(
+                        painterResource(R.drawable.search),
                         contentDescription = null
                     )
                 }

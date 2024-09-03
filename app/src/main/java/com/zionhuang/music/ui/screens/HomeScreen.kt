@@ -4,10 +4,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
@@ -20,23 +18,28 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.pullToRefresh
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -48,8 +51,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import coil.compose.AsyncImage
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.zionhuang.innertube.models.AlbumItem
 import com.zionhuang.innertube.models.ArtistItem
 import com.zionhuang.innertube.models.PlaylistItem
@@ -104,8 +105,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.min
 import kotlin.random.Random
 
-@Suppress("DEPRECATION")
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
@@ -132,6 +132,8 @@ fun HomeScreen(
 
     val isLoading by viewModel.isLoading.collectAsState()
     val isRefreshing by viewModel.isRefreshing.collectAsState()
+    val pullRefreshState = rememberPullToRefreshState()
+
     val quickPicksLazyGridState = rememberLazyGridState()
     val forgottenFavoritesLazyGridState = rememberLazyGridState()
 
@@ -141,13 +143,13 @@ fun HomeScreen(
     }
 
     val scope = rememberCoroutineScope()
-    val scrollState = rememberScrollState()
+    val lazylistState = rememberLazyListState()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val scrollToTop = backStackEntry?.savedStateHandle?.getStateFlow("scrollToTop", false)?.collectAsState()
 
     LaunchedEffect(scrollToTop?.value) {
         if (scrollToTop?.value == true) {
-            scrollState.animateScrollTo(0)
+            lazylistState.animateScrollToItem(0)
             backStackEntry?.savedStateHandle?.set("scrollToTop", false)
         }
     }
@@ -294,43 +296,46 @@ fun HomeScreen(
         forgottenFavoritesLazyGridState.scrollToItem(0)
     }
 
-    SwipeRefresh(
-        state = rememberSwipeRefreshState(isRefreshing),
-        onRefresh = viewModel::refresh,
-        indicatorPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxSize()
+            .pullToRefresh(
+                state = pullRefreshState,
+                isRefreshing = isRefreshing,
+                onRefresh = viewModel::refresh
+            ),
+        contentAlignment = Alignment.TopStart
     ) {
-        BoxWithConstraints(
-            modifier = Modifier.fillMaxSize()
+        val horizontalLazyGridItemWidthFactor = if (maxWidth * 0.475f >= 320.dp) 0.475f else 0.9f
+        val horizontalLazyGridItemWidth = maxWidth * horizontalLazyGridItemWidthFactor
+        val quickPicksSnapLayoutInfoProvider = remember(quickPicksLazyGridState) {
+            SnapLayoutInfoProvider(
+                lazyGridState = quickPicksLazyGridState,
+                positionInLayout = { layoutSize, itemSize ->
+                    (layoutSize * horizontalLazyGridItemWidthFactor / 2f - itemSize / 2f)
+                }
+            )
+        }
+        val forgottenFavoritesSnapLayoutInfoProvider = remember(forgottenFavoritesLazyGridState) {
+            SnapLayoutInfoProvider(
+                lazyGridState = forgottenFavoritesLazyGridState,
+                positionInLayout = { layoutSize, itemSize ->
+                    (layoutSize * horizontalLazyGridItemWidthFactor / 2f - itemSize / 2f)
+                }
+            )
+        }
+
+        LazyColumn(
+            state = lazylistState,
+            contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
         ) {
-            val horizontalLazyGridItemWidthFactor = if (maxWidth * 0.475f >= 320.dp) 0.475f else 0.9f
-            val horizontalLazyGridItemWidth = maxWidth * horizontalLazyGridItemWidthFactor
-            val quickPicksSnapLayoutInfoProvider = remember(quickPicksLazyGridState) {
-                SnapLayoutInfoProvider(
-                    lazyGridState = quickPicksLazyGridState,
-                    positionInLayout = { layoutSize, itemSize ->
-                        (layoutSize * horizontalLazyGridItemWidthFactor / 2f - itemSize / 2f)
-                    }
-                )
-            }
-            val forgottenFavoritesSnapLayoutInfoProvider = remember(forgottenFavoritesLazyGridState) {
-                SnapLayoutInfoProvider(
-                    lazyGridState = forgottenFavoritesLazyGridState,
-                    positionInLayout = { layoutSize, itemSize ->
-                        (layoutSize * horizontalLazyGridItemWidthFactor / 2f - itemSize / 2f)
-                    }
-                )
-            }
-
-            Column(
-                modifier = Modifier.verticalScroll(scrollState)
-            ) {
-                Spacer(Modifier.height(LocalPlayerAwareWindowInsets.current.asPaddingValues().calculateTopPadding()))
-
+            item {
                 Row(
                     modifier = Modifier
                         .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal))
                         .padding(horizontal = 12.dp, vertical = 6.dp)
                         .fillMaxWidth()
+                        .animateItem()
                 ) {
                     NavigationTile(
                         title = stringResource(R.string.history),
@@ -357,12 +362,17 @@ fun HomeScreen(
                         )
                     }
                 }
+            }
 
-                quickPicks?.takeIf { it.isNotEmpty() }?.let { quickPicks ->
+            quickPicks?.takeIf { it.isNotEmpty() }?.let { quickPicks ->
+                item {
                     NavigationTitle(
-                        title = stringResource(R.string.quick_picks)
+                        title = stringResource(R.string.quick_picks),
+                        modifier = Modifier.animateItem()
                     )
+                }
 
+                item {
                     LazyHorizontalGrid(
                         state = quickPicksLazyGridState,
                         rows = GridCells.Fixed(4),
@@ -373,6 +383,7 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(ListItemHeight * 4)
+                            .animateItem()
                     ) {
                         items(
                             items = quickPicks,
@@ -411,12 +422,17 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
 
-                forgottenFavorites?.takeIf { it.isNotEmpty() }?.let { forgottenFavorites ->
+            forgottenFavorites?.takeIf { it.isNotEmpty() }?.let { forgottenFavorites ->
+                item {
                     NavigationTitle(
-                        title = stringResource(R.string.forgotten_favorites)
+                        title = stringResource(R.string.forgotten_favorites),
+                        modifier = Modifier.animateItem()
                     )
+                }
 
+                item {
                     // take min in case list size is less than 4
                     val rows = min(4, forgottenFavorites.size)
                     LazyHorizontalGrid(
@@ -429,6 +445,7 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(ListItemHeight * rows)
+                            .animateItem()
                     ) {
                         items(
                             items = forgottenFavorites,
@@ -466,12 +483,17 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
 
-                keepListening?.takeIf { it.isNotEmpty() }?.let { keepListening ->
+            keepListening?.takeIf { it.isNotEmpty() }?.let { keepListening ->
+                item {
                     NavigationTitle(
                         title = stringResource(R.string.keep_listening),
+                        modifier = Modifier.animateItem()
                     )
+                }
 
+                item {
                     val rows = if (keepListening.size > 6) 2 else 1
                     LazyHorizontalGrid(
                         state = rememberLazyGridState(),
@@ -481,25 +503,33 @@ fun HomeScreen(
                             .height((GridThumbnailHeight + 24.dp + with(LocalDensity.current) {
                                 MaterialTheme.typography.bodyLarge.lineHeight.toDp() * 2 +
                                         MaterialTheme.typography.bodyMedium.lineHeight.toDp() * 2
-                            }) * rows),
+                            }) * rows)
+                            .animateItem()
                     ) {
                         items(keepListening) {
                             localGridItem(it)
                         }
                     }
                 }
+            }
 
-                accountPlaylists?.takeIf { it.isNotEmpty() }?.let { accountPlaylists ->
+            accountPlaylists?.takeIf { it.isNotEmpty() }?.let { accountPlaylists ->
+                item {
                     NavigationTitle(
                         title = stringResource(R.string.your_youtube_playlists),
                         onClick = {
                             navController.navigate("account")
                         },
+                        modifier = Modifier.animateItem()
                     )
+                }
+
+                item {
                     LazyRow(
                         contentPadding = WindowInsets.systemBars
                             .only(WindowInsetsSides.Horizontal)
                             .asPaddingValues(),
+                        modifier = Modifier.animateItem()
                     ) {
                         items(
                             items = accountPlaylists,
@@ -509,8 +539,10 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
 
-                similarRecommendations?.forEach {
+            similarRecommendations?.forEach {
+                item {
                     NavigationTitle(
                         label = stringResource(R.string.similar_to),
                         title = it.title.title,
@@ -533,21 +565,27 @@ fun HomeScreen(
                                 is Artist -> navController.navigate("artist/${it.title.id}")
                                 is Playlist -> {}
                             }
-                        }
+                        },
+                        modifier = Modifier.animateItem()
                     )
+                }
 
+                item {
                     LazyRow(
                         contentPadding = WindowInsets.systemBars
                             .only(WindowInsetsSides.Horizontal)
-                            .asPaddingValues()
+                            .asPaddingValues(),
+                        modifier = Modifier.animateItem()
                     ) {
                         items(it.items) { item ->
                             ytGridItem(item)
                         }
                     }
                 }
+            }
 
-                homePage?.sections?.forEach {
+            homePage?.sections?.forEach {
+                item {
                     NavigationTitle(
                         title = it.title,
                         label = it.label,
@@ -562,32 +600,42 @@ fun HomeScreen(
                                         .clip(shape)
                                 )
                             }
-                        }
+                        },
+                        modifier = Modifier.animateItem()
                     )
+                }
 
+                item {
                     LazyRow(
                         contentPadding = WindowInsets.systemBars
                             .only(WindowInsetsSides.Horizontal)
                             .asPaddingValues(),
+                        modifier = Modifier.animateItem()
                     ) {
                         items(it.items) { item ->
                             ytGridItem(item)
                         }
                     }
                 }
+            }
 
-                explorePage?.newReleaseAlbums?.let { newReleaseAlbums ->
+            explorePage?.newReleaseAlbums?.let { newReleaseAlbums ->
+                item {
                     NavigationTitle(
                         title = stringResource(R.string.new_release_albums),
                         onClick = {
                             navController.navigate("new_release")
-                        }
+                        },
+                        modifier = Modifier.animateItem()
                     )
+                }
 
+                item {
                     LazyRow(
                         contentPadding = WindowInsets.systemBars
                             .only(WindowInsetsSides.Horizontal)
-                            .asPaddingValues()
+                            .asPaddingValues(),
+                        modifier = Modifier.animateItem()
                     ) {
                         items(
                             items = newReleaseAlbums,
@@ -619,19 +667,26 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
 
-                explorePage?.moodAndGenres?.let { moodAndGenres ->
+            explorePage?.moodAndGenres?.let { moodAndGenres ->
+                item {
                     NavigationTitle(
                         title = stringResource(R.string.mood_and_genres),
                         onClick = {
                             navController.navigate("mood_and_genres")
-                        }
+                        },
+                        modifier = Modifier.animateItem()
                     )
+                }
 
+                item {
                     LazyHorizontalGrid(
                         rows = GridCells.Fixed(4),
                         contentPadding = PaddingValues(6.dp),
-                        modifier = Modifier.height((MoodAndGenresButtonHeight + 12.dp) * 4 + 12.dp)
+                        modifier = Modifier
+                            .height((MoodAndGenresButtonHeight + 12.dp) * 4 + 12.dp)
+                            .animateItem()
                     ) {
                         items(moodAndGenres) {
                             MoodAndGenresButton(
@@ -646,9 +701,13 @@ fun HomeScreen(
                         }
                     }
                 }
+            }
 
-                if (isLoading) {
-                    ShimmerHost {
+            if (isLoading) {
+                item {
+                    ShimmerHost(
+                        modifier = Modifier.animateItem()
+                    ) {
                         TextPlaceholder(
                             height = 36.dp,
                             modifier = Modifier
@@ -662,51 +721,57 @@ fun HomeScreen(
                         }
                     }
                 }
-
-                Spacer(Modifier.height(LocalPlayerAwareWindowInsets.current.asPaddingValues().calculateBottomPadding()))
             }
+        }
 
-            HideOnScrollFAB(
-                visible = allLocalItems.isNotEmpty() || allYtItems.isNotEmpty(),
-                scrollState = scrollState,
-                icon = R.drawable.casino,
-                onClick = {
-                    val local = when {
-                        allLocalItems.isNotEmpty() && allYtItems.isNotEmpty() -> Random.nextFloat() < 0.5
-                        allLocalItems.isNotEmpty() -> true
-                        else -> false
-                    }
-                    if (local) {
-                        when (val luckyItem = allLocalItems.random()) {
-                            is Song -> playerConnection.playQueue(YouTubeQueue.radio(luckyItem.toMediaMetadata()))
-                            is Album -> {
-                                scope.launch(Dispatchers.IO) {
-                                    database.albumWithSongs(luckyItem.id).first()?.let {
-                                        playerConnection.playQueue(
-                                            LocalAlbumRadio(it)
-                                        )
-                                    }
+        HideOnScrollFAB(
+            visible = allLocalItems.isNotEmpty() || allYtItems.isNotEmpty(),
+            lazyListState = lazylistState,
+            icon = R.drawable.casino,
+            onClick = {
+                val local = when {
+                    allLocalItems.isNotEmpty() && allYtItems.isNotEmpty() -> Random.nextFloat() < 0.5
+                    allLocalItems.isNotEmpty() -> true
+                    else -> false
+                }
+                if (local) {
+                    when (val luckyItem = allLocalItems.random()) {
+                        is Song -> playerConnection.playQueue(YouTubeQueue.radio(luckyItem.toMediaMetadata()))
+                        is Album -> {
+                            scope.launch(Dispatchers.IO) {
+                                database.albumWithSongs(luckyItem.id).first()?.let {
+                                    playerConnection.playQueue(
+                                        LocalAlbumRadio(it)
+                                    )
                                 }
                             }
-                            // not possible, already filtered out
-                            is Artist -> {}
-                            is Playlist -> {}
                         }
-                    } else {
-                        when (val luckyItem = allYtItems.random()) {
-                            is SongItem -> playerConnection.playQueue(YouTubeQueue.radio(luckyItem.toMediaMetadata()))
-                            is AlbumItem -> playerConnection.playQueue(YouTubeAlbumRadio(luckyItem.playlistId))
-                            is ArtistItem -> luckyItem.radioEndpoint?.let {
-                                playerConnection.playQueue(YouTubeQueue(it))
-                            }
+                        // not possible, already filtered out
+                        is Artist -> {}
+                        is Playlist -> {}
+                    }
+                } else {
+                    when (val luckyItem = allYtItems.random()) {
+                        is SongItem -> playerConnection.playQueue(YouTubeQueue.radio(luckyItem.toMediaMetadata()))
+                        is AlbumItem -> playerConnection.playQueue(YouTubeAlbumRadio(luckyItem.playlistId))
+                        is ArtistItem -> luckyItem.radioEndpoint?.let {
+                            playerConnection.playQueue(YouTubeQueue(it))
+                        }
 
-                            is PlaylistItem -> luckyItem.playEndpoint?.let {
-                                playerConnection.playQueue(YouTubeQueue(it))
-                            }
+                        is PlaylistItem -> luckyItem.playEndpoint?.let {
+                            playerConnection.playQueue(YouTubeQueue(it))
                         }
                     }
                 }
-            )
-        }
+            }
+        )
+
+        Indicator(
+            isRefreshing = isRefreshing,
+            state = pullRefreshState,
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(LocalPlayerAwareWindowInsets.current.asPaddingValues()),
+        )
     }
 }

@@ -1,0 +1,9 @@
+- Multi-select in library songs, artist songs, albums, and history
+- Search in history
+- Auto scroll up or down when reordering
+- Show other versions of an album
+- Add cancel button for download notification
+- Better audio normalization
+- Option to disable screenshot for privacy
+- Option to disable auto-loading more songs
+- Other fixes and enhancements
