@@ -149,7 +149,7 @@
     <string name="artist_name">Name des Künstlers</string>
     <string name="error_artist_name_empty">Der Name des Künstlers darf nicht leer sein.</string>
 
-       <string name="duplicates">Duplikate</string>
+    <string name="duplicates">Duplikate</string>
     <string name="skip_duplicates">Duplikate überspringen</string>
     <string name="add_anyway">Trotzdem hinzufügen</string>
     <string name="duplicates_description_single">Der Titel befindet sich bereits in Ihrer Wiedergabeliste</string>
