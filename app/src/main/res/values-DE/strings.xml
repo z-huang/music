@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Bottom navigation -->
     <string name="home">Startseite</string>
     <string name="songs">Titel</string>
@@ -209,11 +209,11 @@
     <string name="action_like_all">Alle Favorisieren</string>
     <string name="action_remove_like">Aus Favoriten entfernen</string>
     <string name="action_remove_like_all">Alle aus Favoriten entfernen</string>
-    <string name="action_shuffle_on">Shuffle on</string>
-    <string name="action_shuffle_off">Shuffle off</string>
-    <string name="repeat_mode_off">Repeat mode off</string>
-    <string name="repeat_mode_one">Repeat current song</string>
-    <string name="repeat_mode_all">Repeat queue</string>
+    <string name="action_shuffle_on">Mischen an</string>
+    <string name="action_shuffle_off">Mischen aus</string>
+    <string name="repeat_mode_off">Wiederholungsmodus aus</string>
+    <string name="repeat_mode_one">Aktuelles Lied wiederholen</string>
+    <string name="repeat_mode_all">Warteschlange wiederholen</string>
 
     <!-- Queue Title -->
     <string name="queue_all_songs">Alle Titel</string>
@@ -325,7 +325,7 @@
     <string name="about">Über</string>
     <string name="app_version">App-Version</string>
 
-    <string name="new_version_available">New version available</string>
-    <string name="translation_models">Translation Models</string>
-    <string name="clear_translation_models">Clear translation models</string>
+    <string name="new_version_available">Neue Version verfügbar</string>
+    <string name="translation_models">Übersetzungs-Modelle</string>
+    <string name="clear_translation_models">Lösche Übersetzungs-Modelle</string>
 </resources>
