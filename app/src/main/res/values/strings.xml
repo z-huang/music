@@ -328,4 +328,7 @@
     <string name="new_version_available">New version available</string>
     <string name="translation_models">Translation Models</string>
     <string name="clear_translation_models">Clear translation models</string>
+
+    <string name="turntable_widget_title">Turntable</string>
+    <string name="turntable_widget_description">Quick access to your most recently played track.</string>
 </resources>

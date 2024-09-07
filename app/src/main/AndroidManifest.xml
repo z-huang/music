@@ -150,6 +150,17 @@
         <meta-data
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
+
+        <receiver android:name=".TurntableWidgetReceiver"
+            android:label="@string/turntable_widget_title"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/turntable_info" />
+        </receiver>
     </application>
 
 </manifest>
