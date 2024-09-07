@@ -331,4 +331,7 @@
 
     <string name="turntable_widget_title">Turntable</string>
     <string name="turntable_widget_description">Quick access to your most recently played track.</string>
+
+    <string name="now_playing_widget_title">Now Playing</string>
+    <string name="now_playing_widget_description">Quick access to your media controls.</string>
 </resources>
