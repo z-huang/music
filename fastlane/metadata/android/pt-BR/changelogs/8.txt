@@ -1,0 +1,10 @@
+<br><b>Correções</b>
+
+* Corrigir a animação de redimensionamento do conteúdo principal
+* Corrigir mau funcionamento do tema escuro #69
+* Corrigir que renomear um artista pode levar à perda de músicas #75
+
+<br><b>Atualizações de tradução</b>
+
+* Finlandês (por @teemue) #67
+* Italiano (por @airon90) #71

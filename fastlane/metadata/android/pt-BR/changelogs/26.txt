@@ -1,0 +1,9 @@
+- Seleção múltipla em músicas da biblioteca, músicas de artistas, álbuns e histórico
+- Buscar no histórico
+- Rolagem automática para cima ou para baixo ao reordenar
+- Mostrar outras versões de um álbum
+- Adicionar botão de cancelar na notificação de download
+- Melhor normalização de áudio
+- Opção para desativar captura de tela por privacidade
+- Opção para desativar o carregamento automático de mais músicas
+- Outras correções e melhorias

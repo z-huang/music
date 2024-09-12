@@ -1,0 +1,4 @@
+<br><b>Correções</b>
+
+* Corrigir o YouTube não reproduzindo nenhum stream #27, TeamNewPipe/NewPipe#8202
+* Corrigir a limitação de vídeos com restrição de idade no YouTube TeamNewPipe/NewPipeExtractor#832

@@ -1,0 +1,7 @@
+<br><b>Melhorado</b>
+
+* Suporte ao ícone temático do Android 13 (#157)
+
+<br><b>Corrigido</b>
+
+* Corrigir problema de stream que não pode ser reproduzido (#161)

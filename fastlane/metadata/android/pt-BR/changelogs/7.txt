@@ -1,0 +1,8 @@
+- Material You #25
+- Configurações de modo escuro
+- Mostrar um ícone indicando se uma música está na sua biblioteca no fragmento de busca
+- Fixar a barra de filtro de busca
+- Mover o ícone de música baixada para a segunda linha
+- Animação de transição mais suave
+- Unir artistas com o mesmo nome (#50)
+- Correções menores

@@ -1,0 +1,11 @@
+- Tela inicial renovada
+- Seleção múltipla na fila e nas playlists
+- Adicionar menu de item na fila
+- Buscar em playlists
+- Opção para alterar o tamanho das células da grade
+- Opção para parar a música quando o aplicativo for encerrado
+- Opção para pular automaticamente para a próxima música em caso de erro
+- Clicar novamente no item da navegação inferior para rolar para o topo
+- Botão de atualizar música
+- Corrigir repetições no histórico
+- Outras correções e melhorias

@@ -1,0 +1,11 @@
+<br><b>Correções</b>
+
+* Corrigir o stream que não pode ser reproduzido (#148)
+* Corrigir item da navegação inferior não sendo marcado quando clicado (#12)
+
+<br><b>Atualizações de tradução</b>
+
+* Coreano (por @dongsu8142) #107
+* Espanhol (por @DD21S) #120
+* Japonês (por @HiSubway) #138
+* Sueco (por @Itroublve) #143

@@ -1,0 +1,4 @@
+- Corrigir falha aleatória frequente
+- Corrigir falha ao buscar letras
+- Atualizar para Material 3
+- Rolar automaticamente para a música que está tocando atualmente na fila

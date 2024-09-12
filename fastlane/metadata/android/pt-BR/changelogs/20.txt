@@ -1,0 +1,5 @@
+- Corrigir alterações na API do YouTube
+- Mostrar primeiro os álbuns dos artistas da biblioteca nos novos lançamentos
+- Mais ações no Android Auto
+- Clique longo na seta de voltar para ir para a tela inicial
+- Mais melhorias e correções

@@ -1,0 +1,5 @@
+- Suporte para login
+- Humor & Gêneros
+- Tela de estatísticas aprimorada
+- Favoritar artistas
+- Pequenas melhorias e correções de bugs

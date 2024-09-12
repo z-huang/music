@@ -1,0 +1,8 @@
+- Novo ícone do aplicativo
+- Reescrever a interface usando Jetpack Compose
+- Melhor UI/UX
+- Tema dinâmico
+- Tela inicial redesenhada
+- Experiência de download aprimorada
+- Nova fonte de letras: legenda do YouTube
+- Mostrar botão de replay quando a reprodução terminar

@@ -1,0 +1,6 @@
+- Animação de navegação mais suave
+- Opção para ocultar conteúdo explícito
+- Adicionar controle deslizante ondulado
+- Corrigir erro de artista do álbum e adicionar botão de atualizar álbum
+- Corrigir incompatibilidade de cores
+- Outras correções e melhorias

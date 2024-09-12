@@ -1,0 +1,11 @@
+A música agora foi renomeada para InnerTune!
+
+- Redesign do reprodutor
+- Redesign da fila de reprodução
+- Armazenar músicas em cache
+- Estatísticas detalhadas
+- Fila de reprodução persistente
+- Adicionar playlists integradas (curtidas, baixadas)
+- Definir limites de cache
+- Ordenar músicas por tempo de reprodução
+- Personalizar abas de navegação

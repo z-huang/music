@@ -1,0 +1,6 @@
+- Corrigir rádio não funcionando
+- Aviso de duplicação de playlist
+- Adicionar provedor de letras LrcLib
+- Adicionar marquee
+- Adicionar feedback tátil
+- Reprodutor preto no modo totalmente preto

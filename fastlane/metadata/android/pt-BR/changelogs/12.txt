@@ -1,0 +1,6 @@
+* Iniciar rádio a partir das músicas da biblioteca
+* Configuração da aba padrão ao abrir
+* Configuração de qualidade de áudio
+* Pausar ou limpar o histórico de pesquisa
+* Backup e restauração
+* Suporte para proxy SOCKS

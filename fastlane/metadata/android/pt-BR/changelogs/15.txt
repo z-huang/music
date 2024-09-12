@@ -1,0 +1,16 @@
+Melhoria
+
+- Adicionar botão de aleatório no Android Auto
+
+Correções
+
+- Corrigir apóstrofo exibido como entidade HTML nas letras #401
+- Atualizar chave de filtro de pesquisa do YouTube #436
+- Corrigir #432
+
+Traduções
+
+- Atualizar tradução para o húngaro #407 #425
+- Adicionar tradução para o indonésio #415
+- Atualizar tradução para o chinês simplificado #416
+- Atualizar tradução para o japonês #419

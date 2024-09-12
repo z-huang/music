@@ -1,0 +1,11 @@
+- Letras
+- Suporte para Android Auto
+- Pular silêncio
+- Normalização de áudio
+- Exportar músicas baixadas via SAF
+- Melhorar o layout da visualização do reprodutor
+- Adicionar bloqueio de despertar para o reprodutor
+- Opção para ocultar botões na notificação do reprodutor
+- Excluir fila persistente ao restaurar o banco de dados
+- Mostrar itag nas estatísticas detalhadas
+- Pequenas mudanças e correçõ
