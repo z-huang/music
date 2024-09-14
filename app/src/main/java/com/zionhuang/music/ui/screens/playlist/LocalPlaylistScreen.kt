@@ -765,35 +765,67 @@ fun LocalPlaylistHeader(
                         )
                     }
 
-                    if (playlist.playlist.browseId != null) {
-                        IconButton(
-                            onClick = {
-                                scope.launch(Dispatchers.IO) {
-                                    val playlistPage = YouTube.playlist(playlist.playlist.browseId).completed().getOrNull() ?: return@launch
-                                    database.transaction {
-                                        clearPlaylist(playlist.id)
-                                        playlistPage.songs
-                                            .map(SongItem::toMediaMetadata)
-                                            .onEach(::insert)
-                                            .mapIndexed { position, song ->
-                                                PlaylistSongMap(
-                                                    songId = song.id,
-                                                    playlistId = playlist.id,
-                                                    position = position
-                                                )
-                                            }
-                                            .forEach(::insert)
+                  // State to control dialog visibility
+                    var showDialog by remember { mutableStateOf(false) }
+
+                    // State for context
+                    val context = LocalContext.current
+                    
+                    // Dialog for confirmation
+                    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("Confirm Sync") },
+            text = { Text("Are you sure you want to sync this playlist?") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        scope.launch(Dispatchers.IO) {
+                            // Perform the sync operation
+                            val playlistPage = YouTube.playlist(playlist.playlist.browseId).completed().getOrNull() ?: return@launch
+                            database.transaction {
+                                clearPlaylist(playlist.id)
+                                playlistPage.songs
+                                    .map(SongItem::toMediaMetadata)
+                                    .onEach(::insert)
+                                    .mapIndexed { position, song ->
+                                        PlaylistSongMap(
+                                            songId = song.id,
+                                            playlistId = playlist.id,
+                                            position = position
+                                        )
                                     }
-                                    snackbarHostState.showSnackbar(context.getString(R.string.playlist_synced))
-                                }
+                                    .forEach(::insert)
                             }
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.sync),
-                                contentDescription = null
-                            )
+                            snackbarHostState.showSnackbar(context.getString(R.string.playlist_synced))
                         }
+                        showDialog = false // Close dialog after confirmation
                     }
+                ) {
+                    Text("Confirm")
+                }
+            },
+            dismissButton = {
+                Button(
+                    onClick = { showDialog = false } // Close dialog without syncing
+                ) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+                    // IconButton to trigger the dialog
+                    if (playlist.playlist.browseId != null) {
+        IconButton(
+            onClick = { showDialog = true } // Show confirmation dialog
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.sync),
+                contentDescription = null
+            )
+        }
+    }
+// }
 
                     when (downloadState) {
                         Download.STATE_COMPLETED -> {
@@ -912,4 +944,4 @@ fun LocalPlaylistHeader(
             }
         }
     }
-}
+// }
