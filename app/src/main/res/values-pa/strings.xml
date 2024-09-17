@@ -18,7 +18,7 @@
     <string name="mood_and_genres">ਮੂਡ ਅਤੇ ਸ਼ੈਲੀ</string>
     <string name="account">ਖਾਤਾ</string>
     <string name="quick_picks">ਉਂਗਲਾਂ ਤੇ ਚੁਣੇ ਗੀਤ</string>
-    <string name="quick_picks_empty">ਉਂਗਲਾਂ ਤੇ ਚੁਣੇ ਗੀਤਾਂ ਲਈ ਗੀਤ ਸੁਣਨੇ ਆਰੰਭ ਕਰੋ</string>
+    <string name="quick_picks_empty">ਉਂਗਲਾਂ ਤੇ ਚੁਣੇ ਗੀਤ ਪਾਉਣ ਲਈ ਗੀਤ ਸੁਣਨੇ ਆਰੰਭ ਕਰੋ</string>
     <string name="new_release_albums">ਨਵੀਆਂ ਜਾਰੀ ਐਲਬਮਾਂ</string>
 
     <!-- History -->
@@ -92,8 +92,7 @@
     <string name="sort_by_song_count">ਗਿਣਤੀ</string>
     <string name="sort_by_length">ਲੰਬਾਈ</string>
     <string name="sort_by_play_time">ਚਲਾਉਣ ਦਾ ਸਮਾਂ</string>
-    <string name="sort_by_custom">Custom order</string>
-
+    <string name="sort_by_custom">ਅਨੁਕੂਲਿਤ ਕ੍ਰਮ</string>
     <!-- Dialog -->
     <string name="media_id">ਮੀਡੀਆ ਆਈਡੀ</string>
     <string name="mime_type">ਮਾਈਮ ਪ੍ਰਕਾਰ</string>
