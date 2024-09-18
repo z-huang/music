@@ -768,7 +768,7 @@ fun LocalPlaylistHeader(
                     if (playlist.playlist.browseId != null) {
                         IconButton(
                             onClick = {
-                                snackbarHostState.showSnackbar(context.getString(R.string.playlist_synced))
+                                snackbarHostState.showSnackbar(context.getString(R.string.playlist_try))
                                 scope.launch(Dispatchers.IO) {
                                     val playlistPage = YouTube.playlist(playlist.playlist.browseId).completed().getOrNull() ?: return@launch
                                     database.transaction {
