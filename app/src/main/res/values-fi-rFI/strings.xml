@@ -3,7 +3,7 @@
     <string name="home">Home</string>
     <string name="songs">Kappaleet</string>
     <string name="artists">Artistit</string>
-    <string name="albums">Albums</string>
+    <string name="albums">Albumit</string>
     <string name="playlists">Soittolistat</string>
 
     <!-- Top bar -->
@@ -13,11 +13,11 @@
     </plurals>
 
     <!-- Home -->
-    <string name="history">History</string>
-    <string name="stats">Stats</string>
-    <string name="mood_and_genres">Mood and Genres</string>
-    <string name="account">Account</string>
-    <string name="quick_picks">Quick picks</string>
+    <string name="history">Historia</string>
+    <string name="stats">Tilastot</string>
+    <string name="mood_and_genres">Mielialat ja genret</string>
+    <string name="account">Tili</string>
+    <string name="quick_picks">Pikalista</string>
     <string name="quick_picks_empty">Listen to songs to generate your quick picks</string>
     <string name="new_release_albums">New release albums</string>
 
@@ -267,4 +267,60 @@
     <string name="new_version_available">New version available</string>
     <string name="translation_models">Translation Models</string>
     <string name="clear_translation_models">Clear translation models</string>
+    <string name="add_all_to_library">Lisää kaikki kirjastoon</string>
+    <string name="remove_all_from_library">Poista kaikki kirjastosta</string>
+    <string name="remove_from_queue">Poista jonosta</string>
+    <string name="remove_from_playlist">Poista soittolistasta</string>
+    <string name="queue">Jono</string>
+    <string name="small">Pieni</string>
+    <string name="not_logged_in">Ei kirjautunut sisään</string>
+    <string name="similar_to">Samanlaisia kuin</string>
+    <string name="tempo_and_pitch">Tempo ja sävelkorkeus</string>
+    <string name="action_like_all">Tykkää kaikista</string>
+    <string name="action_remove_like_all">Poista kaikki tykkäykset</string>
+    <string name="theme">Teema</string>
+    <string name="player">Soitin</string>
+    <string name="sided">Sivulla</string>
+    <string name="auto_load_more">Automaattisesti lataa lisää kappaleita</string>
+    <string name="auto_load_more_desc">Automaattisesti lisää enemmän kappaleita, kun jonon loppu saavutetaan, jos mahdollista</string>
+    <string name="auto_skip_next_on_error">Automaattisesti ohita seuraavaan kappaleeseen, kun tapahtuu virhe</string>
+    <string name="listen_history">Kuunteluhistoria</string>
+    <string name="skip_duplicates">Ohita kaksoiskappaleet</string>
+    <string name="disable_screenshot">Poista kuvakaappaukset käytöstä</string>
+    <string name="discord_integration">Discord-integraatio</string>
+    <string name="big">Suuri</string>
+    <string name="library_artist_empty">Kirjaston artistit näkyvät täällä</string>
+    <string name="keep_listening">Jatka kuuntelemista</string>
+    <string name="your_youtube_playlists">YouTube-soittolistasi</string>
+    <string name="library_song_empty">Kirjaston kappaleet näkyvät täällä</string>
+    <string name="library_album_empty">Kirjaston albumit näkyvät täällä</string>
+    <string name="library_playlist_empty">Soittolistasi näkyvät täällä</string>
+    <string name="other_versions">Muita versioita</string>
+    <string name="remove_download_playlist_confirm">Haluatko varmasti poistaa kaikki \"%s\" soittolistan kappaleet Ladattujen kappaleiden tallennustilasta?</string>
+    <string name="delete_playlist_confirm">Haluatko varmasti poistaa soittolistan \"%s\"?</string>
+    <string name="duplicates">Kaksoiskappaleet</string>
+    <string name="add_anyway">Lisää silti</string>
+    <string name="duplicates_description_single">Laulu on jo soittolistassasi</string>
+    <string name="duplicates_description_multiple">%d kappaleet ovat jo soittolistassasi</string>
+    <string name="player_text_alignment">Soittimen tekstin tasaus</string>
+    <string name="player_slider_style">Soittimen liukusäätimen tyyli</string>
+    <string name="default_">Oletus</string>
+    <string name="squiggly">Koukeroinen</string>
+    <string name="grid_cell_size">Ruudukon solun koko</string>
+    <string name="persistent_queue_desc">Palauta viimeinen jonosi, kun sovellus käynnistyy</string>
+    <string name="auto_skip_next_on_error_desc">Varmista jatkuva toistokokemus</string>
+    <string name="stop_music_on_task_clear">Pysäytä musiikki, kun sovellus suljetaan</string>
+    <string name="search_history">Hakuhistoria</string>
+    <string name="disable_screenshot_desc">Kun tämä asetus on päällä, kuvakaappaukset ja sovelluksen näkyminen äskeisissä sovelluksissa poistetaan käytöstä.</string>
+    <string name="enable_lrclib">Ota LrcLib-lyriikantarjoaja käyttöön</string>
+    <string name="hide_explicit">Piilota sopimaton sisältö</string>
+    <string name="dismiss">Hylkää</string>
+    <string name="discord_information">InnerTune käyttää KizzyRPC-kirjastoa asettaaksesi Discord-tilisi tilan. Tämä edellyttää Discord Gateway-yhteyttä, jota voidaan katsoa Discordin käyttöehtojen rikkomuksena. Ei kuitenkaan ole tiedossa tapauksia, joissa käyttäjätilit olisi jäädytetty tästä syystä. Käytä omalla vastuullasi.
+\n
+\nInnerTune poimii ainoastaan tunnuksesi, ja kaikki muu säilytetään paikallisesti.</string>
+    <string name="options">Asetukset</string>
+    <string name="preview">Esikatselu</string>
+    <string name="login_failed">Kirjautuminen epäonnistui</string>
+    <string name="logout">Kirjaudu ulos</string>
+    <string name="enable_discord_rpc">Tämä on Discord-integraatio-ominaisuus, se tarkoittaa InnerTune-toiminnan näyttämistä Discord-tililläsi</string>
 </resources>
