@@ -4,8 +4,7 @@
     <string name="songs">Τραγούδια</string>
     <string name="artists">Καλλιτέχνες</string>
     <string name="albums">Άλμπουμ</string>
-    <string name="playlists">Λίστες Αναπαρ.</string>
-
+    <string name="playlists">Λίστες</string>
     <!-- Top bar -->
     <plurals name="n_selected">
         <item quantity="one">%d επιλεγμένο</item>
@@ -47,9 +46,9 @@
     <string name="filter_videos">Βίντεο</string>
     <string name="filter_albums">Άλμπουμ</string>
     <string name="filter_artists">Καλλιτέχνες</string>
-    <string name="filter_playlists">Λίστες Αναπαρ.</string>
+    <string name="filter_playlists">Λίστες</string>
     <string name="filter_community_playlists">Λίστες αναπαρ. κοινότητας</string>
-    <string name="filter_featured_playlists">Προτεινόμενες λίστες αναπαρ.</string>
+    <string name="filter_featured_playlists">Προτεινόμενες λίστες αναπαραγωγής</string>
     <string name="filter_bookmarked">Σελιδοδείκτες</string>
     <string name="no_results_found">Δεν βρέθηκαν αποτελέσματα</string>
 
@@ -85,15 +84,15 @@
     <string name="download">Λήψη</string>
     <string name="downloading">Γίνεται λήψη</string>
     <string name="remove_download">Αφαίρεση λήψης</string>
-    <string name="import_playlist">Εισαγωγή λίστας αναπαρ.</string>
-    <string name="add_to_playlist">Προσθήκη σε λίστα αναπαρ.</string>
+    <string name="import_playlist">Εισαγωγή λίστας</string>
+    <string name="add_to_playlist">Προσθήκη σε λίστα</string>
     <string name="view_artist">Προβολή καλλιτέχνη</string>
     <string name="view_album">Προβολή άλμπουμ</string>
     <string name="refetch">Ανάκτηση</string>
     <string name="share">Κοινή χρήση</string>
     <string name="delete">Διαγραφή</string>
     <string name="remove_from_history">Αφαίρεση από το ιστορικό</string>
-    <string name="remove_from_playlist">Αφαίρεση από λίστα αναπαρ.</string>
+    <string name="remove_from_playlist">Αφαίρεση από λίστα</string>
     <string name="remove_from_queue">Αφαίρεση από την ουρά</string>
     <string name="search_online">Διαδίκτυο</string>
     <string name="sync">Συγχρονισμός</string>
@@ -131,11 +130,10 @@
     <string name="error_song_title_empty">Ο τίτλος τραγουδιού δεν μπορεί να είναι άδειος.</string>
     <string name="error_song_artist_empty">Ο καλλιτέχνης του τραγουδιού δεν μπορεί να είναι άδειος.</string>
     <string name="save">Αποθήκευση</string>
-
-    <string name="choose_playlist">Επιλογή λίστας αναπαρ.</string>
-    <string name="edit_playlist">Επεξεργασία λίστας αναπαρ.</string>
-    <string name="create_playlist">Δημιουργία λίστας αναπαρ.</string>
-    <string name="playlist_name">Όνομα λίστας αναπαρ.</string>
+    <string name="choose_playlist">Επιλογή λίστας</string>
+    <string name="edit_playlist">Επεξεργασία λίστας</string>
+    <string name="create_playlist">Δημιουργία λίστας</string>
+    <string name="playlist_name">Όνομα λίστας</string>
     <string name="error_playlist_name_empty">Το όνομα της λίστας αναπαραγωγής δεν μπορεί να είναι κενό.</string>
 
     <string name="edit_artist">Επεξεργασία καλλιτέχνη</string>
@@ -159,11 +157,11 @@
     </plurals>
     <plurals name="n_album">
         <item quantity="one">%d άλμπουμ</item>
-        <item quantity="other">%d άλμπουμ</item>
+        <item quantity="other">%d άλμπουμς</item>
     </plurals>
     <plurals name="n_playlist">
-        <item quantity="one">%d λίστα αναπαρ.</item>
-        <item quantity="other">%d λίστες αναπαρ.</item>
+        <item quantity="one">%d λίστα</item>
+        <item quantity="other">%d λίστες</item>
     </plurals>
     <plurals name="n_week">
         <item quantity="one">%d εβδομάδα</item>
@@ -180,7 +178,7 @@
 
     <!-- Snackbar -->
     <string name="playlist_imported">Λίστα αναπαραγωγής εισήχθη</string>
-    <string name="removed_song_from_playlist">Αφαίρεση του \"%s\" από τη λίστα αναπαρ.</string>
+    <string name="removed_song_from_playlist">Αφαίρεση του \"%s\" από τη λίστα</string>
     <string name="playlist_synced">Λίστα αναπαραγωγής συγχρονισμένη</string>
     <string name="undo">Αναίρεση</string>
 
@@ -295,7 +293,7 @@
     <string name="backup_restore">Αντίγραφα ασφ. και επαναφορά</string>
     <string name="backup">Αντίγραφο ασφαλείας</string>
     <string name="restore">Επαναφορά</string>
-    <string name="imported_playlist">Εισαγώμενη λίστα αναπαρ.</string>
+    <string name="imported_playlist">Έγινε εισαγωγή της λίστας</string>
     <string name="backup_create_success">Δημιουργία αντιγράφου ασφ. με επιτυχία</string>
     <string name="backup_create_failed">Αδυναμία δημιουργίας αντιγράφων ασφαλείας</string>
     <string name="restore_failed">Αποτυχία επαναφοράς αντιγράφου ασφαλείας</string>
@@ -315,4 +313,14 @@
     <string name="new_version_available">Νέα διαθέσιμη έκδοση</string>
     <string name="translation_models">Μοντέλα Μετάφρασης</string>
     <string name="clear_translation_models">Εκκάθαριση μοντέλων μετάφρασης</string>
+    <string name="auto_load_more_desc">Αυτόματη προσθήκη περισσότερων τραγουδιών όταν το τέλος της ουράς επιτυγχάνεται, αν είναι δυνατόν</string>
+    <string name="listen_history">Ιστορικό ακρόασης</string>
+    <string name="disable_screenshot_desc">Όταν αυτή η επιλογή είναι ενεργή, τα στιγμιότυπα και η Πρόσφατη προβολή εφαρμογών θα είναι ανενεργή.</string>
+    <string name="your_youtube_playlists">Οι λίστες YouTube</string>
+    <string name="other_versions">Άλλες εκδόσεις</string>
+    <string name="remove_all_from_library">Αφαίρεση όλων από την βιβλιοθήκη</string>
+    <string name="add_all_to_library">Προσθήκη όλων στη βιβλιοθήκη</string>
+    <string name="auto_load_more">Αυτόματη φόρτωση περισσότερων τραγουδιών</string>
+    <string name="search_history">Ιστορικό αναζήτησης</string>
+    <string name="disable_screenshot">Απενεργοποίηση στιγμιότυπων οθόνης</string>
 </resources>
