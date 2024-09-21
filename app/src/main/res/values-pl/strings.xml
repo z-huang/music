@@ -226,7 +226,7 @@
     <string name="audio_normalization">Normalizacja audio</string>
     <string name="equalizer">Korektor graficzny</string>
     <string name="storage">Pamięć</string>
-    <string name="cache">Cache</string>
+    <string name="cache">Pamięć podręczna</string>
     <string name="image_cache">Cache obrazów</string>
     <string name="song_cache">Cache utworów</string>
     <string name="max_cache_size">Maksymalny rozmiar cache</string>
