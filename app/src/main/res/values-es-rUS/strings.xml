@@ -8,7 +8,7 @@
     <plurals name="n_selected">
         <item quantity="one">%d seleccionada</item>
         <item quantity="many">%d seleccionadas</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="history">Historial</string>
     <string name="stats">Estadísticas</string>
@@ -44,4 +44,7 @@
     <string name="filter_featured_playlists">Listas de reproducción destacadas</string>
     <string name="filter_bookmarked">Marcado como favorito</string>
     <string name="no_results_found">No se encontraron resultados</string>
+    <string name="library_song_empty">Las canciones de la biblioteca aparecerán aquí</string>
+    <string name="library_artist_empty">La biblioteca de artistas aparecerán aquí</string>
+    <string name="library_album_empty">Los álbumes de la biblioteca aparecerán aquí</string>
 </resources>
