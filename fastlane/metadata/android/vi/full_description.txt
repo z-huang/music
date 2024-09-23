@@ -1,0 +1,17 @@
+Ứng dụng YouTube Music Material 3 dành cho Android
+
+<br><b>Tính năng:</b>
+
+- Phát bài hát từ YT/YT Music không có quảng cáo
+- Phát lại trong nền
+- Tìm kiếm bài hát, video, album và danh sách phát từ YouTube Music
+- Quản lý thư viện
+- Bộ đệm và tải xuống bài hát để phát lại ngoại tuyến
+- Đồng bộ lời bài hát
+- Bỏ qua khoảng lặng
+- Chuẩn hóa âm lượng
+- Chủ đề động
+- Bản địa hóa
+- Hỗ trợ Android Auto
+- Chọn nhanh được cá nhân hóa
+- Material 3
