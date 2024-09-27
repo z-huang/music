@@ -121,44 +121,44 @@
     <plurals name="n_song">
         <item quantity="one">%d utwór</item>
         <item quantity="few">%d utworów</item>
-        <item quantity="many"/>
-        <item quantity="other"/>
+        <item quantity="many">%d utworów</item>
+        <item quantity="other">%d utworów</item>
     </plurals>
     <plurals name="n_artist">
         <item quantity="one">%d wykonawca</item>
         <item quantity="few">%d wykonawców</item>
-        <item quantity="many"/>
-        <item quantity="other"/>
+        <item quantity="many">%d wykonawców</item>
+        <item quantity="other">%d wykonawców</item>
     </plurals>
     <plurals name="n_album">
         <item quantity="one">%d album</item>
         <item quantity="few">%d albumów</item>
-        <item quantity="many"/>
-        <item quantity="other"/>
+        <item quantity="many">%d albumów</item>
+        <item quantity="other">%d albumów</item>
     </plurals>
     <plurals name="n_playlist">
         <item quantity="one">%d playlista</item>
         <item quantity="few">%d playlist</item>
-        <item quantity="many"/>
-        <item quantity="other"/>
+        <item quantity="many">%d playlist</item>
+        <item quantity="other">%d playlist</item>
     </plurals>
     <plurals name="n_week">
         <item quantity="one">%d tydzień</item>
         <item quantity="few">%d tygodni</item>
-        <item quantity="many"/>
-        <item quantity="other"/>
+        <item quantity="many">%d tygodni</item>
+        <item quantity="other">%d tygodni</item>
     </plurals>
     <plurals name="n_month">
         <item quantity="one">%d miesiąc</item>
         <item quantity="few">%d miesięcy</item>
-        <item quantity="many"/>
-        <item quantity="other"/>
+        <item quantity="many">%d miesięcy</item>
+        <item quantity="other">%d miesięcy</item>
     </plurals>
     <plurals name="n_year">
         <item quantity="one">%d rok</item>
         <item quantity="few">%d lat</item>
-        <item quantity="many"/>
-        <item quantity="other"/>
+        <item quantity="many">%d lat</item>
+        <item quantity="other">%d lat</item>
     </plurals>
     <!-- Snackbar -->
     <string name="playlist_imported">Playlista zaimportowana</string>
@@ -172,8 +172,8 @@
     <plurals name="minute">
         <item quantity="one">1 minuta</item>
         <item quantity="few">%d minut</item>
-        <item quantity="many"/>
-        <item quantity="other"/>
+        <item quantity="many">%d minut</item>
+        <item quantity="other">%d minut</item>
     </plurals>
     <string name="error_no_stream">Brak dostępnego źródła</string>
     <string name="error_no_internet">Brak połączenia z internetem</string>
@@ -267,7 +267,7 @@
     <string name="auto_load_more_desc">Automatycznie dodaje więcej utworów, kiedy kolejka się skończy, jeśli to możliwe</string>
     <string name="auto_skip_next_on_error">Automatycznie pomiń do następnego utworu, gdy wystąpi błąd</string>
     <string name="stop_music_on_task_clear">Zatrzymywanie muzyki po wykonaniu zadania</string>
-    <string name="disable_screenshot_desc">Kiedy opcja jest aktywna, zrzuty ekranu i widok aplikacji na ekranie Ostatnie są wyłączone</string>
+    <string name="disable_screenshot_desc">Kiedy ta opcja jest aktywna, zrzuty ekranu i widok aplikacji na najbliższych przechwytywaniach ekranu są wyłączone.</string>
     <string name="enable_lrclib">Pobieraj teksty utworów z LrcLib</string>
     <string name="small">Mały</string>
     <string name="action_like_all">Polub wszystkie</string>
