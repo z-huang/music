@@ -49,12 +49,12 @@
     <!-- Playlist -->
     <string name="liked_songs">Lagu yang disukai</string>
     <string name="downloaded_songs">Lagu yang diunduh</string>
-    <string name="playlist_is_empty">The playlist is empty</string>
+    <string name="playlist_is_empty">Daftar putarnya kosong</string>
     <!-- Button -->
     <string name="retry">Mencoba kembali</string>
     <string name="radio">Radio</string>
     <string name="shuffle">Acak</string>
-    <string name="reset">Reset</string>
+    <string name="reset">Atur Ulang</string>
     <!-- Menu -->
     <string name="details">Rincian</string>
     <string name="edit">Sunting</string>
@@ -65,7 +65,7 @@
     <string name="add_to_library">Tambahkan ke perpustakaan</string>
     <string name="remove_from_library">Hapus dari perpustakaan</string>
     <string name="download">Unduh</string>
-    <string name="downloading">Downloading</string>
+    <string name="downloading">Mengunduh</string>
     <string name="remove_download">Hapus unduhan</string>
     <string name="import_playlist">Pindahkan ke daftar putar</string>
     <string name="add_to_playlist">Tambahkan ke daftar putar</string>
@@ -74,9 +74,9 @@
     <string name="refetch">Ambil kembali</string>
     <string name="share">Bagikan</string>
     <string name="delete">Hapus</string>
-    <string name="remove_from_history">Remove from history</string>
+    <string name="remove_from_history">Hapus dari riwayat</string>
     <string name="search_online">Cari secara online</string>
-    <string name="sync">Sync</string>
+    <string name="sync">Sinkronkan</string>
     <string name="advanced">Advanced</string>
     <!-- Sort menu -->
     <string name="sort_by_create_date">Tanggal ditambahkan</string>
@@ -234,4 +234,15 @@
     <string name="keep_listening">Tetap mendengarkan</string>
     <string name="your_youtube_playlists">Playlist Youtube kamu</string>
     <string name="similar_to">Mirip dengan</string>
+    <string name="other_versions">Versi lainnya</string>
+    <string name="add_all_to_library">Tambahkan semua ke arsip</string>
+    <string name="delete_playlist_confirm">Apakah Anda benar-benar ingin menghapus daftar putar \"%s\"?</string>
+    <string name="library_song_empty">Lagu arsip akan muncul di sini</string>
+    <string name="library_artist_empty">Arsip Seniman akan muncul di sini</string>
+    <string name="library_album_empty">Album arsip akan muncul di sini</string>
+    <string name="library_playlist_empty">Daftar putar Anda akan muncul di sini</string>
+    <string name="remove_download_playlist_confirm">Apakah Anda benar-benar ingin menghapus semua lagu playlist \"%s\" dari penyimpanan Lagu yang Diunduh?</string>
+    <string name="remove_all_from_library">Hapus semua dari arsip</string>
+    <string name="remove_from_playlist">Hapus dari daftar putar</string>
+    <string name="remove_from_queue">Hapus dari antrian</string>
 </resources>
