@@ -105,4 +105,75 @@
     <string name="sort_by_play_time">Време за изпълнение</string>
     <string name="bitrate">Скорост на предаване</string>
     <string name="edit_lyrics">Редактиране на текстове</string>
+    <plurals name="n_song">
+        <item quantity="one">%d песен</item>
+        <item quantity="other">%d песни</item>
+    </plurals>
+    <plurals name="n_month">
+        <item quantity="one">%d месец</item>
+        <item quantity="other">%d месеци</item>
+    </plurals>
+    <plurals name="n_year">
+        <item quantity="one">%d година</item>
+        <item quantity="other">%d години</item>
+    </plurals>
+    <plurals name="minute">
+        <item quantity="one">1 минута</item>
+        <item quantity="other">%d минути</item>
+    </plurals>
+    <string name="error_playlist_name_empty">Името на плейлиста не може да бъде празно.</string>
+    <string name="playlist_name">Име на плейлист</string>
+    <string name="song_title">Заглавие на песен</string>
+    <string name="error_timeout">Време за изчакване</string>
+    <string name="choose_playlist">Изберете плейлист</string>
+    <string name="create_playlist">Създаване на плейлист</string>
+    <string name="action_like_all">Харесай всички</string>
+    <string name="duplicates_description_single">Песента вече е във вашия плейлист</string>
+    <string name="error_no_internet">Няма мрежова връзка</string>
+    <string name="playlist_synced">Плейлистът е синхронизиран</string>
+    <string name="error_song_title_empty">Заглавието на песента не може да бъде празно.</string>
+    <string name="action_shuffle_on">Разбъркване включено</string>
+    <string name="edit_song">Редактиране на песен</string>
+    <string name="song_artists">Изпълнители на песен</string>
+    <string name="error_song_artist_empty">Изпълнителят на песента не може да бъде празен.</string>
+    <string name="save">Запази</string>
+    <string name="edit_playlist">Редактиране на плейлист</string>
+    <string name="edit_artist">Редактиране на изпълнител</string>
+    <string name="artist_name">Име на изпълнител</string>
+    <string name="error_artist_name_empty">Името на изпълнителя не може да бъде празно.</string>
+    <string name="duplicates">Дубликати</string>
+    <string name="skip_duplicates">Пропускане на дубликати</string>
+    <string name="add_anyway">Добавете все пак</string>
+    <string name="duplicates_description_multiple">%d песни вече са във вашия плейлист</string>
+    <plurals name="n_artist">
+        <item quantity="one">%d изпълнител</item>
+        <item quantity="other">%d изпълнители</item>
+    </plurals>
+    <plurals name="n_album">
+        <item quantity="one">%d албум</item>
+        <item quantity="other">%d албуми</item>
+    </plurals>
+    <plurals name="n_playlist">
+        <item quantity="one">%d плейлист</item>
+        <item quantity="other">%d плейлисти</item>
+    </plurals>
+    <plurals name="n_week">
+        <item quantity="one">%d седмица</item>
+        <item quantity="other">%d седмици</item>
+    </plurals>
+    <string name="playlist_imported">Плейлистът е внесен</string>
+    <string name="removed_song_from_playlist">Премахнат „%s“ от плейлиста</string>
+    <string name="undo">Отмяна</string>
+    <string name="lyrics_not_found">Текстът не е намерен</string>
+    <string name="sleep_timer">Таймер за заспиване</string>
+    <string name="end_of_song">Край на песента</string>
+    <string name="error_no_stream">Няма наличен поток</string>
+    <string name="error_unknown">Неизвестна грешка</string>
+    <string name="action_remove_like">Премахни харесвания</string>
+    <string name="action_like">Харесвания</string>
+    <string name="action_remove_like_all">Премахни всички харесвания</string>
+    <string name="action_shuffle_off">Разбъркване изключено</string>
+    <string name="repeat_mode_off">Режимът на повторение е изключен</string>
+    <string name="repeat_mode_one">Повтаряне на текущата песен</string>
+    <string name="repeat_mode_all">Повтаряне на опашката</string>
 </resources>
