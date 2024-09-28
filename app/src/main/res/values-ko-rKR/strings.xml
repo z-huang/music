@@ -172,7 +172,7 @@
 
     <!-- Player action -->
     <string name="action_like">좋아요</string>
-    <string name="action_remove_like">좋아요 삭제됨</string>
+    <string name="action_remove_like">좋아요 취소</string>
     <string name="action_shuffle_on">셔플 활성화</string>
     <string name="action_shuffle_off">셔플 비활성화</string>
     <string name="repeat_mode_off">반복 해제</string>
@@ -303,4 +303,6 @@
 \nInnerTune은 토큰만 추출하며 그 밖의 모든 내용은 로컬에 저장됩니다.</string>
     <string name="options">옵션</string>
     <string name="logout">로그아웃</string>
+    <string name="action_like_all">모두 좋아요</string>
+    <string name="action_remove_like_all">좋아요 모두 취소</string>
 </resources>
