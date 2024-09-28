@@ -77,7 +77,7 @@
     <string name="remove_from_history">Hapus dari riwayat</string>
     <string name="search_online">Cari secara online</string>
     <string name="sync">Sinkronkan</string>
-    <string name="advanced">Advanced</string>
+    <string name="advanced">Lebih Lanjut</string>
     <!-- Sort menu -->
     <string name="sort_by_create_date">Tanggal ditambahkan</string>
     <string name="sort_by_name">Nama</string>
@@ -86,15 +86,15 @@
     <string name="sort_by_song_count">Hitungan lagu</string>
     <string name="sort_by_length">Ukuran</string>
     <string name="sort_by_play_time">Waktu dimainkan</string>
-    <string name="sort_by_custom">Custom order</string>
+    <string name="sort_by_custom">Pesanan khusus</string>
     <!-- Dialog -->
     <string name="media_id">ID media</string>
     <string name="mime_type">Tipe MIME</string>
-    <string name="codecs">Codecs</string>
+    <string name="codecs">Codec</string>
     <string name="bitrate">Kecepatan bit</string>
     <string name="sample_rate">Tingkat sampel</string>
     <string name="loudness">Kekerasan</string>
-    <string name="volume">Volume</string>
+    <string name="volume">Takaran</string>
     <string name="file_size">Ukuran berkas</string>
     <string name="unknown">Tidak diketahui</string>
     <string name="copied">Disalin ke papan klip</string>
@@ -128,23 +128,23 @@
         <item quantity="other">%d daftar putar</item>
     </plurals>
     <plurals name="n_week">
-        <item quantity="other">%d weeks</item>
+        <item quantity="other">%d minggu</item>
     </plurals>
     <plurals name="n_month">
-        <item quantity="other">%d months</item>
+        <item quantity="other">%d bulan</item>
     </plurals>
     <plurals name="n_year">
-        <item quantity="other">%d years</item>
+        <item quantity="other">%d tahun</item>
     </plurals>
     <!-- Snackbar -->
     <string name="playlist_imported">Daftar putar dipindahkan</string>
-    <string name="removed_song_from_playlist">Removed \"%s\" from playlist</string>
-    <string name="playlist_synced">Playlist synced</string>
-    <string name="undo">Undo</string>
+    <string name="removed_song_from_playlist">Menghapus \"%s\" dari daftar putar</string>
+    <string name="playlist_synced">Daftar putar disinkronkan</string>
+    <string name="undo">Membuka</string>
     <!-- Player -->
     <string name="lyrics_not_found">Lirik tidak ditemukan</string>
-    <string name="sleep_timer">Sleep timer</string>
-    <string name="end_of_song">End of song</string>
+    <string name="sleep_timer">Pengatur waktu tidur</string>
+    <string name="end_of_song">Akhir lagu</string>
     <plurals name="minute">
         <item quantity="other">%d minutes</item>
     </plurals>
@@ -155,11 +155,11 @@
     <!-- Player action -->
     <string name="action_like">Suka</string>
     <string name="action_remove_like">Hapus suka</string>
-    <string name="action_shuffle_on">Shuffle on</string>
-    <string name="action_shuffle_off">Shuffle off</string>
-    <string name="repeat_mode_off">Repeat mode off</string>
-    <string name="repeat_mode_one">Repeat current song</string>
-    <string name="repeat_mode_all">Repeat queue</string>
+    <string name="action_shuffle_on">Acak</string>
+    <string name="action_shuffle_off">Menyingkiri</string>
+    <string name="repeat_mode_off">Mode pengulangan tidak aktif</string>
+    <string name="repeat_mode_one">Ulangi lagu saat ini</string>
+    <string name="repeat_mode_all">Ulangi antrian</string>
     <!-- Queue Title -->
     <string name="queue_all_songs">Semua lagu</string>
     <string name="queue_searched_songs">Lagu yang telah dicari</string>
@@ -168,12 +168,12 @@
     <!-- Settings -->
     <string name="settings">Pengaturan</string>
     <string name="appearance">Tampilan</string>
-    <string name="enable_dynamic_theme">Enable dynamic theme</string>
+    <string name="enable_dynamic_theme">Aktifkan tema dinamis</string>
     <string name="dark_theme">Tema gelap</string>
     <string name="dark_theme_on">Aktif</string>
     <string name="dark_theme_off">Tidak aktif</string>
     <string name="dark_theme_follow_system">Ikuti sistem</string>
-    <string name="pure_black">Pure black</string>
+    <string name="pure_black">Hitam murni</string>
     <string name="default_open_tab">Tab buka bawaan</string>
     <string name="customize_navigation_tabs">Sesuaikan tab navigasi</string>
     <string name="lyrics_text_position">Posisi teks lirik</string>
@@ -184,7 +184,7 @@
     <string name="login">Masuk</string>
     <string name="content_language">Bahasa konten bawaan</string>
     <string name="content_country">Negara konten bawaan</string>
-    <string name="system_default">System default</string>
+    <string name="system_default">Bawaan sistem</string>
     <string name="enable_proxy">Aktifkan proxy</string>
     <string name="proxy_type">Tipe proxy</string>
     <string name="proxy_url">URL proxy</string>
@@ -200,19 +200,19 @@
     <string name="equalizer">Ekualiser</string>
     <string name="storage">Penyimpanan</string>
     <string name="cache">Data sementara (cache)</string>
-    <string name="image_cache">Image Cache</string>
-    <string name="song_cache">Song Cache</string>
-    <string name="max_cache_size">Max cache size</string>
-    <string name="unlimited">Unlimited</string>
-    <string name="clear_all_downloads">Clear all downloads</string>
+    <string name="image_cache">Tembolok Gambar</string>
+    <string name="song_cache">Tembolok Lagu</string>
+    <string name="max_cache_size">Ukuran cache maksimal</string>
+    <string name="unlimited">Tak terbatas</string>
+    <string name="clear_all_downloads">Hapus semua unduhan</string>
     <string name="max_image_cache_size">Ukuran gambar data sementara (cache) maksimum</string>
     <string name="clear_image_cache">Bersihkan gambar data sementara (cache)</string>
     <string name="max_song_cache_size">Ukuran lagu data sementara (cache) maksimum</string>
-    <string name="clear_song_cache">Clear song cache</string>
+    <string name="clear_song_cache">Hapus cache lagu</string>
     <string name="size_used">%s digunakan</string>
     <string name="privacy">Privasi</string>
-    <string name="pause_listen_history">Pause listen history</string>
-    <string name="clear_listen_history">Clear listen history</string>
+    <string name="pause_listen_history">Pause mendengarkan riwayat</string>
+    <string name="clear_listen_history">Hapus riwayat mendengarkan</string>
     <string name="clear_listen_history_confirm">Are you sure to clear all listen history?</string>
     <string name="pause_search_history">Jeda riwayat pencarian</string>
     <string name="clear_search_history">Bersihkan riwayat pencarian</string>
@@ -221,15 +221,15 @@
     <string name="backup_restore">Cadangkan dan pulihkan</string>
     <string name="backup">Cadangkan</string>
     <string name="restore">Pulihkan</string>
-    <string name="imported_playlist">Imported playlist</string>
+    <string name="imported_playlist">Daftar putar yang diimpor</string>
     <string name="backup_create_success">Cadangan berhasil dibuat</string>
     <string name="backup_create_failed">Tidak dapat membuat cadangan</string>
     <string name="restore_failed">Gagal untuk memulihkan cadangan</string>
     <string name="about">Tentang</string>
     <string name="app_version">Versi aplikasi</string>
-    <string name="new_version_available">New version available</string>
-    <string name="translation_models">Translation Models</string>
-    <string name="clear_translation_models">Clear translation models</string>
+    <string name="new_version_available">Versi baru tersedia</string>
+    <string name="translation_models">Model Terjemahan</string>
+    <string name="clear_translation_models">Model terjemahan yang jelas</string>
     <string name="forgotten_favorites">Favorit yang terlupakan</string>
     <string name="keep_listening">Tetap mendengarkan</string>
     <string name="your_youtube_playlists">Playlist Youtube kamu</string>
@@ -245,4 +245,47 @@
     <string name="remove_all_from_library">Hapus semua dari arsip</string>
     <string name="remove_from_playlist">Hapus dari daftar putar</string>
     <string name="remove_from_queue">Hapus dari antrian</string>
+    <string name="persistent_queue_desc">Pulihkan antrian terakhir Anda saat aplikasi dimulai</string>
+    <string name="queue">Antre</string>
+    <string name="hide_explicit">Sembunyikan konten eksplisit</string>
+    <string name="auto_skip_next_on_error">Lompat otomatis ke lagu berikutnya ketika terjadi kesalahan</string>
+    <string name="sided">Bersisi</string>
+    <string name="options">Pilihan</string>
+    <string name="login_failed">Login gagal</string>
+    <string name="add_anyway">Tambahkan saja</string>
+    <string name="logout">Keluar</string>
+    <string name="misc">Lain-lain</string>
+    <string name="tempo_and_pitch">Tempo dan Pitch</string>
+    <string name="duplicates">Duplikat</string>
+    <string name="skip_duplicates">Lewati duplikat</string>
+    <string name="duplicates_description_single">Lagu sudah ada di playlist Anda</string>
+    <string name="duplicates_description_multiple">%d lagu sudah ada di playlist kamu</string>
+    <string name="theme">Tema</string>
+    <string name="action_like_all">Seperti semuanya</string>
+    <string name="action_remove_like_all">Hapus semua suka</string>
+    <string name="player_text_alignment">Perataan teks pemutar</string>
+    <string name="player_slider_style">Gaya penggeser pemain</string>
+    <string name="player">Pemain</string>
+    <string name="default_">Bawaan</string>
+    <string name="squiggly">Berlekuk-lekuk</string>
+    <string name="grid_cell_size">Ukuran sel kisi</string>
+    <string name="small">Kecil</string>
+    <string name="big">Gede</string>
+    <string name="auto_load_more">Memuat lebih banyak lagu secara otomatis</string>
+    <string name="not_logged_in">Tidak Memasuki Akun</string>
+    <string name="auto_load_more_desc">Secara otomatis menambahkan lebih banyak lagu ketika akhir antrian tercapai, jika memungkinkan</string>
+    <string name="auto_skip_next_on_error_desc">Pastikan pengalaman pemutaran berkelanjutan Anda</string>
+    <string name="stop_music_on_task_clear">Hentikan musik saat tugas selesai</string>
+    <string name="listen_history">mendengarkan riwayat</string>
+    <string name="search_history">mencari riwayat</string>
+    <string name="disable_screenshot">Nonaktifkan tangkapan layar</string>
+    <string name="disable_screenshot_desc">Jika opsi ini aktif, tangkapan layar dan tampilan aplikasi di Terbaru akan dinonaktifkan.</string>
+    <string name="enable_lrclib">Aktifkan penyedia lirik LrcLib</string>
+    <string name="discord_integration">Integrasi Discord</string>
+    <string name="discord_information">InnerTune adalah aplikasi yang bisa mengatur akun Discord kamu. Aplikasi ini menggunakan cara khusus (KizzyRPC) yang mungkin melanggar aturan Discord. Meski begitu, belum ada pengguna yang kena masalah karena hal ini. Tapi, tetap hati-hati ya kalau mau pakai.
+\n
+\nInnerTune cuma akan mengambil data khusus (token) dari akun Discord kamu, data lainnya disimpan di perangkat kamu sendiri.</string>
+    <string name="dismiss">Membubarkan</string>
+    <string name="preview">Pratinjau</string>
+    <string name="enable_discord_rpc">Aktifkan Fitur Discord</string>
 </resources>
