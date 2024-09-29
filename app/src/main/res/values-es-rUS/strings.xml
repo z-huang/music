@@ -47,4 +47,5 @@
     <string name="library_song_empty">Las canciones de la biblioteca aparecerán aquí</string>
     <string name="library_artist_empty">La biblioteca de artistas aparecerán aquí</string>
     <string name="library_album_empty">Los álbumes de la biblioteca aparecerán aquí</string>
+    <string name="library_playlist_empty">Las listas de reproducción aparecerán aquí</string>
 </resources>
