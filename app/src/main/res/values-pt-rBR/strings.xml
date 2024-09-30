@@ -231,10 +231,10 @@
     <string name="privacy">Privacidade</string>
     <string name="pause_listen_history">Pausar o histórico de escuta</string>
     <string name="clear_listen_history">Limpar o histórico de escuta</string>
-    <string name="clear_listen_history_confirm">Você tem certeza que deseja limpar todo o histórico de escuta?</string>
+    <string name="clear_listen_history_confirm">Tem certeza que deseja limpar todo o histórico de escuta?</string>
     <string name="pause_search_history">Pausar histórico de pesquisa</string>
     <string name="clear_search_history">Limpar histórico de pesquisa</string>
-    <string name="clear_search_history_confirm">Tem certeza que deseja limpar todo o seu histórico de pesquisa?</string>
+    <string name="clear_search_history_confirm">Tem certeza que deseja limpar todo o histórico de pesquisa?</string>
     <string name="enable_kugou">Ativar o fornecedor de letras KuGou</string>
     <string name="backup_restore">Backup e restauração</string>
     <string name="backup">Fazer backup</string>
