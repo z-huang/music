@@ -247,7 +247,7 @@
     <string name="privacy">Privacy</string>
     <string name="pause_listen_history">Pauzeer luistergeschiedenis</string>
     <string name="clear_listen_history">Luistergeschiedenis wisseny</string>
-    <string name="clear_listen_history_confirm">>Weet je zeker dat je de luistergeschiedenis wil wissen?</string>
+    <string name="clear_listen_history_confirm">Weet je zeker dat je de luistergeschiedenis wil wissen?</string>
     <string name="pause_search_history">Pauzeer zoekgeschiedenis</string>
     <string name="clear_search_history">Zoekgeschiedenis wissen</string>
     <string name="clear_search_history_confirm">Weet je zeker dat je de zoekgeschiedenis wil wissen?</string>
