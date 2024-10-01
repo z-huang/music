@@ -43,7 +43,6 @@
     <string name="filter_playlists">Wiedergabelisten</string>
     <string name="filter_community_playlists">Community-Wiedergabelisten</string>
     <string name="filter_featured_playlists">Ausgewählte Wiedergabelisten</string>
-    <string name="filter_bookmarked"></string>
     <string name="no_results_found">Keine Ergebnisse gefunden</string>
     <!-- Artist screen -->
     <string name="from_your_library">Aus der Bibliothek</string>
