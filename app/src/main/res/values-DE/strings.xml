@@ -53,7 +53,7 @@
     <!-- Button -->
     <string name="retry">Wiederholen</string>
     <string name="radio">Radio</string>
-    <string name="shuffle">Shuffle</string>
+    <string name="shuffle">Mischen</string>
     <string name="reset">Zurücksetzen</string>
     <!-- Menu -->
     <string name="details">Details</string>
@@ -245,7 +245,7 @@
     <string name="logout">Abmeldung</string>
     <string name="theme">Thema</string>
     <string name="other_versions">Andere Versionen</string>
-    <string name="stop_music_on_task_clear">Stop music on task clear</string>
+    <string name="stop_music_on_task_clear">Musik stoppen wenn die App aus dem Hintergrund gelöscht wird</string>
     <string name="library_album_empty">Alben aus der Bibliothek werden hier angezeigt</string>
     <string name="add_all_to_library">Alle zur Bibliothek hinzufügen</string>
     <string name="similar_to">Ähnlich wie</string>
@@ -294,4 +294,5 @@
     <string name="remove_all_from_library">Alle aus der Bibliothek entfernen</string>
     <string name="persistent_queue_desc">Wiederherstellung der letzten Warteschlange beim Starten der App</string>
     <string name="auto_load_more_desc">Automatisches Hinzufügen weiterer Lieder, wenn das Ende der Warteschlange erreicht ist, sofern möglich</string>
+    <string name="filter_bookmarked">Als Lesezeichen gespeichert</string>
 </resources>
