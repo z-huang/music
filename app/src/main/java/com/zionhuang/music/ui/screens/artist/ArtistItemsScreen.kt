@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Checkbox
@@ -56,6 +57,7 @@ import com.zionhuang.music.ui.component.IconButton
 import com.zionhuang.music.ui.component.LocalMenuState
 import com.zionhuang.music.ui.component.YouTubeGridItem
 import com.zionhuang.music.ui.component.YouTubeListItem
+import com.zionhuang.music.ui.component.shimmer.GridItemPlaceHolder
 import com.zionhuang.music.ui.component.shimmer.ListItemPlaceHolder
 import com.zionhuang.music.ui.component.shimmer.ShimmerHost
 import com.zionhuang.music.ui.menu.YouTubeAlbumMenu
@@ -80,6 +82,7 @@ fun ArtistItemsScreen(
     val mediaMetadata by playerConnection.mediaMetadata.collectAsState()
 
     val lazyListState = rememberLazyListState()
+    val lazyGridState = rememberLazyGridState()
     val coroutineScope = rememberCoroutineScope()
 
     val title by viewModel.title.collectAsState()
@@ -111,6 +114,15 @@ fun ArtistItemsScreen(
     LaunchedEffect(lazyListState) {
         snapshotFlow {
             lazyListState.layoutInfo.visibleItemsInfo.any { it.key == "loading" }
+        }.collect { shouldLoadMore ->
+            if (!shouldLoadMore) return@collect
+            viewModel.loadMore()
+        }
+    }
+
+    LaunchedEffect(lazyGridState) {
+        snapshotFlow {
+            lazyGridState.layoutInfo.visibleItemsInfo.any { it.key == "loading" }
         }.collect { shouldLoadMore ->
             if (!shouldLoadMore) return@collect
             viewModel.loadMore()
@@ -208,6 +220,7 @@ fun ArtistItemsScreen(
         }
     } else {
         LazyVerticalGrid(
+            state = lazyGridState,
             columns = GridCells.Adaptive(minSize = GridThumbnailHeight + 24.dp),
             contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
         ) {
@@ -267,6 +280,14 @@ fun ArtistItemsScreen(
                         )
                         .animateItem()
                 )
+            }
+
+            if (itemsPage?.continuation != null) {
+                item(key = "loading") {
+                    ShimmerHost(Modifier.animateItem()) {
+                        GridItemPlaceHolder(fillMaxWidth = true)
+                    }
+                }
             }
         }
     }
