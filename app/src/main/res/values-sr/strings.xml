@@ -6,9 +6,9 @@
     <string name="albums">Albumi</string>
     <string name="playlists">Plejliste</string>
     <plurals name="n_selected">
-        <item quantity="one">izabran</item>
-        <item quantity="few">izabrani</item>
-        <item quantity="other">izabrani</item>
+        <item quantity="one">%d izabran</item>
+        <item quantity="few">%d izabrani</item>
+        <item quantity="other">%d izabrani</item>
     </plurals>
     <string name="history">Istorija</string>
     <string name="stats">Statistika</string>
