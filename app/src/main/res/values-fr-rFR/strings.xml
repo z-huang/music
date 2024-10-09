@@ -21,7 +21,7 @@
     <string name="quick_picks_empty">Écoutez quelques musiques pour générer vos sélections rapides</string>
     <string name="new_release_albums">Nouveautés</string>
     <!-- History -->
-    <string name="today">Aujourd\’hui</string>
+    <string name="today">Aujourd\'hui</string>
     <string name="yesterday">Hier</string>
     <string name="this_week">Cette semaine</string>
     <string name="last_week">Semaine dernière</string>
@@ -63,7 +63,7 @@
     <string name="start_radio">Démarrer la radio</string>
     <string name="play">Jouer</string>
     <string name="play_next">Jouer à la suite</string>
-    <string name="add_to_queue">Ajouter à la file d\’attente</string>
+    <string name="add_to_queue">Ajouter à la file d\'attente</string>
     <string name="add_to_library">Ajouter à la bibliothèque</string>
     <string name="remove_from_library">Supprimer de la bibliothèque</string>
     <string name="download">Télécharger</string>
@@ -119,23 +119,23 @@
     <!-- Noun -->
     <plurals name="n_song">
         <item quantity="one">%d chanson</item>
-        <item quantity="other">%d chansons</item>
         <item quantity="many">%d chansons</item>
+        <item quantity="other">%d chansons</item>
     </plurals>
     <plurals name="n_artist">
         <item quantity="one">%d artist</item>
-        <item quantity="other">%d artistes</item>
         <item quantity="many">%d artistes</item>
+        <item quantity="other">%d artistes</item>
     </plurals>
     <plurals name="n_album">
         <item quantity="one">%d album</item>
-        <item quantity="other">%d albums</item>
         <item quantity="many">%d albums</item>
+        <item quantity="other">%d albums</item>
     </plurals>
     <plurals name="n_playlist">
         <item quantity="one">%d liste de lecture</item>
-        <item quantity="other">%d listes de lecture</item>
         <item quantity="many">%d listes de lecture</item>
+        <item quantity="other">%d listes de lecture</item>
     </plurals>
     <plurals name="n_week">
         <item quantity="one">%d semaine</item>
@@ -209,7 +209,7 @@
     <string name="restart_to_take_effect">Redémarrer pour prendre effet</string>
     <string name="player_and_audio">Lecteur et audio</string>
     <string name="audio_quality">Qualité audio</string>
-    <string name="audio_quality_auto">Auto</string>
+    <string name="audio_quality_auto">Automatique</string>
     <string name="audio_quality_high">Élevée</string>
     <string name="audio_quality_low">Faible</string>
     <string name="persistent_queue">File d’attente persistante</string>
@@ -244,7 +244,7 @@
     <string name="backup_create_failed">Impossible de créer la sauvegarde</string>
     <string name="restore_failed">Échec de la restauration de la sauvegarde</string>
     <string name="about">À propos</string>
-    <string name="app_version">Version de l\’application</string>
+    <string name="app_version">Version de l\'application</string>
     <string name="new_version_available">Nouvelle version disponible</string>
     <string name="translation_models">Modèles de traduction</string>
     <string name="clear_translation_models">Effacer les modèles de traduction</string>
@@ -272,4 +272,38 @@
     <string name="search_history">Historique de recherche</string>
     <string name="disable_screenshot_desc">Cette option désactive les captures d\'écran ainsi que la vu de l\'application dans le menu Récent.</string>
     <string name="stop_music_on_task_clear">Arrêter la musique en fermant la page</string>
+    <string name="forgotten_favorites">Favoris oublié</string>
+    <string name="keep_listening">Continuez d\'écouter</string>
+    <string name="similar_to">Similaire à</string>
+    <string name="library_song_empty">Les musiques de la librairie s\'afficheront au dessus</string>
+    <string name="library_artist_empty">Les artistes de la librairie s\'afficheront au dessus</string>
+    <string name="library_playlist_empty">Vos playlists s\'afficheront au dessus</string>
+    <string name="other_versions">Autres versions</string>
+    <string name="remove_download_playlist_confirm">Voulez vous retirer tout les \"%s\" musique de la playlist du stockage des musiques téléchargé ?</string>
+    <string name="add_all_to_library">Ajouter tout a la librairie</string>
+    <string name="tempo_and_pitch">Tempo et Pitch</string>
+    <string name="action_like_all">Tout marquer comme aimé</string>
+    <string name="action_remove_like_all">Retirer les j\'aime</string>
+    <string name="theme">Thème</string>
+    <string name="player">Lecteur</string>
+    <string name="default_">Par défaut</string>
+    <string name="squiggly">En vague</string>
+    <string name="misc">Autres</string>
+    <string name="grid_cell_size">Taille des icon dans le menu</string>
+    <string name="auto_load_more_desc">Ajouter automatiquement plus de musique a la fin de la queue, si possible</string>
+    <string name="auto_skip_next_on_error_desc">Permet d\'assurer une lecture continue</string>
+    <string name="library_album_empty">Les albums de la librairie s\'afficheront au dessus</string>
+    <string name="your_youtube_playlists">Vos playlists YouTube</string>
+    <string name="remove_all_from_library">Retirer tout de la librairie</string>
+    <string name="remove_from_queue">Retirer de la queue</string>
+    <string name="small">Petit</string>
+    <string name="player_slider_style">Style de la barre du lecteur</string>
+    <string name="big">Grand</string>
+    <string name="persistent_queue_desc">Restaurer la queue lorsque l\'application est relancé</string>
+    <string name="queue">Queue</string>
+    <string name="auto_load_more">Queue automatique</string>
+    <string name="auto_skip_next_on_error">Aller a la musique suivante si une erreur apparaît</string>
+    <string name="discord_information">InnerTune utilise la bibliothèque KizzyRPC pour définir le statut de votre compte Discord. Cela implique l\'utilisation de la connexion Discord Gateway, ce qui peut être considéré comme une violation des conditions d\'utilisation de Discord. Cependant, il n\'existe aucun cas connu de comptes d\'utilisateurs suspendus pour cette raison. Utilisez-le à vos propres risques.
+\n
+\nInnerTune extraira uniquement votre jeton, et tout le reste sera stocké localement.</string>
 </resources>
