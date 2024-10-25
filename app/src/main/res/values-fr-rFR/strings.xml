@@ -280,7 +280,7 @@
     <string name="library_playlist_empty">Vos playlists s\'afficheront au dessus</string>
     <string name="other_versions">Autres versions</string>
     <string name="remove_download_playlist_confirm">Voulez vous retirer tout les \"%s\" musique de la playlist du stockage des musiques téléchargé ?</string>
-    <string name="add_all_to_library">Ajouter tout a la librairie</string>
+    <string name="add_all_to_library">Tout ajouter à la bibliothèque</string>
     <string name="tempo_and_pitch">Tempo et Pitch</string>
     <string name="action_like_all">Tout marquer comme aimé</string>
     <string name="action_remove_like_all">Retirer les j\'aime</string>
@@ -290,19 +290,19 @@
     <string name="squiggly">En vague</string>
     <string name="misc">Autres</string>
     <string name="grid_cell_size">Taille des icon dans le menu</string>
-    <string name="auto_load_more_desc">Ajouter automatiquement plus de musique a la fin de la queue, si possible</string>
+    <string name="auto_load_more_desc">Ajouter automatiquement, si possible, des musiques à la fin de la file d\'attente quand elle est atteinte</string>
     <string name="auto_skip_next_on_error_desc">Permet d\'assurer une lecture continue</string>
     <string name="library_album_empty">Les albums de la librairie s\'afficheront au dessus</string>
     <string name="your_youtube_playlists">Vos playlists YouTube</string>
-    <string name="remove_all_from_library">Retirer tout de la librairie</string>
-    <string name="remove_from_queue">Retirer de la queue</string>
+    <string name="remove_all_from_library">Tout supprimer de la bibliothèque</string>
+    <string name="remove_from_queue">Retirer de la file d\'attente</string>
     <string name="small">Petit</string>
     <string name="player_slider_style">Style de la barre du lecteur</string>
     <string name="big">Grand</string>
-    <string name="persistent_queue_desc">Restaurer la queue lorsque l\'application est relancé</string>
-    <string name="queue">Queue</string>
+    <string name="persistent_queue_desc">Restaurer la file d\'attente lorsque l\'application est relancée</string>
+    <string name="queue">File d\'attente</string>
     <string name="auto_load_more">Queue automatique</string>
-    <string name="auto_skip_next_on_error">Aller a la musique suivante si une erreur apparaît</string>
+    <string name="auto_skip_next_on_error">Aller à la musique suivante si une erreur apparaît</string>
     <string name="discord_information">InnerTune utilise la bibliothèque KizzyRPC pour définir le statut de votre compte Discord. Cela implique l\'utilisation de la connexion Discord Gateway, ce qui peut être considéré comme une violation des conditions d\'utilisation de Discord. Cependant, il n\'existe aucun cas connu de comptes d\'utilisateurs suspendus pour cette raison. Utilisez-le à vos propres risques.
 \n
 \nInnerTune extraira uniquement votre jeton, et tout le reste sera stocké localement.</string>
