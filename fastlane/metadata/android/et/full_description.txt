@@ -1,0 +1,17 @@
+Material 3 põhine YouTube Musicu klient Androidile
+
+<br><b>Funktsionaalsused:</b>
+
+- Vaata YT/YT Musicu lugusid ilma reklaamideta
+- Esitus taustal
+- Otsu lugusid, videoid, albumeid ja esitusloendeid YouTube Musicust
+- Muusikakogu haldus
+- Puhverda ja laadi alla lugusid kasutamiseks vallasrežiimis
+- Sünkroniseeritud laulusõnad
+- Võimalus jätta vaikus vahele
+- Heli normaliseerimine
+- Dünaamiline kujundus
+- Asukohast sõltuv sisu ja keel
+- Android Auto tugi
+- Personaliseeritud kiirvalikud
+- Material 3 kujundus
