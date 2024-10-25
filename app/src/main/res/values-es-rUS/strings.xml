@@ -52,4 +52,15 @@
     <string name="other_versions">Otras versiones</string>
     <string name="liked_songs">Canciones favoritas</string>
     <string name="downloaded_songs">Canciones descargadas</string>
+    <string name="playlist_is_empty">La lista de reproducción está vacía</string>
+    <string name="remove_download_playlist_confirm">¿Realmente quieres eliminar todas las canciones de la lista de reproducción \"%s\" del almacenamiento de canciones descargadas?</string>
+    <string name="delete_playlist_confirm">¿Realmente quieres eliminar la lista de reproducción \"%s\"?</string>
+    <string name="retry">Volver a intentar</string>
+    <string name="radio">Radio</string>
+    <string name="shuffle">Aleatorio</string>
+    <string name="reset">Reiniciar</string>
+    <string name="details">Detalles</string>
+    <string name="edit">Editar</string>
+    <string name="start_radio">Iniciar radio</string>
+    <string name="play">Reproducir</string>
 </resources>
