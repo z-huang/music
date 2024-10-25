@@ -59,7 +59,7 @@
     <string name="details">Details</string>
     <string name="edit">Bearbeiten</string>
     <string name="start_radio">Radio starten</string>
-    <string name="play">Wiedergegeben</string>
+    <string name="play">Wiedergeben</string>
     <string name="play_next">Als nächstes wiedergeben</string>
     <string name="add_to_queue">Zur Warteschlange hinzufügen</string>
     <string name="add_to_library">Zur Bibliothek hinzufügen</string>
@@ -117,7 +117,7 @@
     <!-- Noun -->
     <plurals name="n_song">
         <item quantity="one">%d Lied</item>
-        <item quantity="other">%d Lied</item>
+        <item quantity="other">%d Lieder</item>
     </plurals>
     <plurals name="n_artist">
         <item quantity="one">%d Künstler</item>
@@ -279,7 +279,7 @@
     <string name="your_youtube_playlists">Ihre YouTube-Wiedergabelisten</string>
     <string name="library_playlist_empty">Ihre Wiedergabelisten werden hier angezeigt</string>
     <string name="disable_screenshot_desc">Wenn diese Option aktiviert ist, sind Screenshots und die App-Ansicht in „Zuletzt gesehen“ deaktiviert.</string>
-    <string name="discord_information">InnerTune verwendet die KizzyRPC-Bibliothek, um den Status Ihres Discord-Kontos zu setzen. Dazu wird die Discord-Gateway-Verbindung verwendet, was als Verstoß gegen die AGB von Discord angesehen werden kann. Es sind jedoch keine Fälle bekannt, in denen Benutzerkonten aus diesem Grund gesperrt wurden. Die Verwendung erfolgt auf eigene Gefahr. InnerTune extrahiert nur dein Token, alles andere wird lokal gespeichert.</string>
+    <string name="discord_information">InnerTune verwendet die KizzyRPC-Bibliothek, um den Status Ihres Discord-Kontos zu setzen. Dazu wird die Discord-Gateway-Verbindung verwendet, was als Verstoß gegen die AGB von Discord angesehen werden kann. Es sind jedoch keine Fälle bekannt, in denen Benutzerkonten aus diesem Grund gesperrt wurden. Die Verwendung erfolgt auf eigene Gefahr.\n\nInnerTune extrahiert nur dein Token, alles andere wird lokal gespeichert.</string>
     <string name="squiggly">Verschnörkelt</string>
     <string name="grid_cell_size">Größe der Rasterzellen</string>
     <string name="search_history">Suchverlauf</string>
