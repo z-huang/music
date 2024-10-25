@@ -1,0 +1,17 @@
+Um player de música do YouTube Music para Android
+
+<br><b>Funcionalidades:</b>
+
+- Tocar músicas do YouTube/YoutTbe Music sem anúncios
+- Reprodução em segundo plano
+- Pesquisa de músicas, vídeos, álbuns e playlists direto do YT Music
+- Gerenciamento da biblioteca
+- Download de músicas no cache para reprodução offline
+- Letras sincronizadas
+- Pular silêncio em músicas
+- Normalização de áudio
+- Tema dinâmico 
+- Localização 
+- Suporte ao Android Auto
+- Recomendações personalizadas
+- Interface Material 3

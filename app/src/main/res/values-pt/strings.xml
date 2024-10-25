@@ -155,7 +155,7 @@
     <string name="sleep_timer">Temporizador</string>
     <string name="end_of_song">Fim da música</string>
     <plurals name="minute">
-        <item quantity="one">1 minuto</item>
+        <item quantity="one">%d minuto</item>
         <item quantity="many">%d minutos</item>
         <item quantity="other">%d minutos</item>
     </plurals>
@@ -284,4 +284,5 @@
     <string name="auto_skip_next_on_error_desc">Garante um experiência contínua de reprodução</string>
     <string name="auto_skip_next_on_error">Avançar para a música seguinte se ocorrer algum erro</string>
     <string name="stop_music_on_task_clear">Parar ao limpar a tarefa</string>
+    <string name="discord_information">InnerTune utiliza a biblioteca KizzyRPC para definir o estado da sua conta Discord. Isto envolve uma ligação ao Discord Gateway, que pode ser considerada uma violação dos termos do serviço Discord. Contudo ,não há casos conhecidos de contas suspensas por este motivo. Utilize por sua conta e risco.\n\nInnerTune apenas irá extrair o seu token e tudo o resto é armazenado localmente.</string>
 </resources>
