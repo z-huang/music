@@ -137,8 +137,7 @@ class InnerTube {
                     } else it
                 },
                 videoId = videoId,
-                playlistId = playlistId,
-                contentCheckOk = true
+                playlistId = playlistId
             )
         )
     }
