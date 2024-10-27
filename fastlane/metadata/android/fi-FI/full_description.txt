@@ -1,0 +1,17 @@
+Material 3 YouTube Music -asiakasohjelma Androidille
+
+<br><b>Ominaisuudet:</b>
+
+- Toista kappaleita YT/YT Musicista ilman mainoksia
+- Taustatoisto
+- Hae kappaleita, videoita, albumeja ja soittolistoja YouTube Musicista
+- Kirjaston hallinta
+- Tallenna välimuistiin ja lataa kappaleita ei-verkkotoistoa varten
+- Synkronoidut sanoitukset
+- Ohita hiljaisuus
+- Äänen normalisointi
+- Dynaaminen teema
+- Lokalisointi
+- Android Auto -tuki
+- Henkilökohtaiset pikavalinnat
+- Materiaali 3

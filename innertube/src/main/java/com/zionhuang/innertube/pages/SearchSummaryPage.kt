@@ -83,7 +83,7 @@ data class SearchSummaryPage(
                 renderer.onTap.browseEndpoint?.isAlbumEndpoint == true -> {
                     AlbumItem(
                         browseId = renderer.onTap.browseEndpoint.browseId,
-                        playlistId = renderer.buttons.firstOrNull()?.buttonRenderer?.command?.watchPlaylistEndpoint?.playlistId ?: return null,
+                        playlistId = renderer.buttons.firstOrNull()?.buttonRenderer?.command?.anyWatchEndpoint?.playlistId ?: return null,
                         title = renderer.title.runs?.firstOrNull()?.text ?: return null,
                         artists = subtitle?.getOrNull(1)?.oddElements()?.map {
                             Artist(

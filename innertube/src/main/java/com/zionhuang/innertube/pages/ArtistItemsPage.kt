@@ -54,7 +54,7 @@ data class ArtistItemsPage(
                     browseId = renderer.navigationEndpoint.browseEndpoint?.browseId ?: return null,
                     playlistId = renderer.thumbnailOverlay?.musicItemThumbnailOverlayRenderer
                         ?.content?.musicPlayButtonRenderer?.playNavigationEndpoint
-                        ?.watchPlaylistEndpoint?.playlistId ?: return null,
+                        ?.anyWatchEndpoint?.playlistId ?: return null,
                     title = renderer.title.runs?.firstOrNull()?.text ?: return null,
                     artists = null,
                     year = renderer.subtitle?.runs?.lastOrNull()?.text?.toIntOrNull(),

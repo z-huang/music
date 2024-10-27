@@ -278,4 +278,12 @@
     <string name="skip_duplicates">Salta duplicati</string>
     <string name="library_artist_empty">Gli artisti della libreria verranno visualizzati qui</string>
     <string name="action_like_all">Mi piace a tutto</string>
+    <string name="not_logged_in">Non autenticato</string>
+    <string name="small">Piccolo</string>
+    <string name="big">Grande</string>
+    <string name="misc">Altro</string>
+    <string name="queue">Coda</string>
+    <string name="persistent_queue_desc">Ripristina l\'ultima coda all\'apertura dell\'app</string>
+    <string name="auto_load_more">Carica automaticamente più canzoni</string>
+    <string name="auto_skip_next_on_error">Salta alla prossima canzone quando si verifica un errore</string>
 </resources>

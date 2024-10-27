@@ -21,6 +21,7 @@ import com.zionhuang.music.constants.ProxyEnabledKey
 import com.zionhuang.music.constants.ProxyTypeKey
 import com.zionhuang.music.constants.ProxyUrlKey
 import com.zionhuang.music.constants.SYSTEM_DEFAULT
+import com.zionhuang.music.constants.UseLoginForBrowse
 import com.zionhuang.music.constants.VisitorDataKey
 import com.zionhuang.music.extensions.toEnum
 import com.zionhuang.music.extensions.toInetSocketAddress
@@ -69,6 +70,10 @@ class App : Application(), ImageLoaderFactory {
                 Toast.makeText(this, "Failed to parse proxy url.", LENGTH_SHORT).show()
                 reportException(e)
             }
+        }
+
+        if (dataStore[UseLoginForBrowse] == true) {
+            YouTube.useLoginForBrowse = true
         }
 
         GlobalScope.launch {

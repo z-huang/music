@@ -1,0 +1,17 @@
+A Material 3 YouTube Music client for Android
+
+<br><b>Características:</b>
+
+- Reproduce canciones de YT/YT Music sin anuncios
+- Reproducción en segundo plano
+- Busque canciones, vídeos, álbumes y listas de reproducción de YouTube Music
+- Gestión de bibliotecas
+- Almacenar en caché y descargar canciones para reproducirlas sin conexión
+- Letras sincronizadas
+- Omitir silencio
+- Normalización de audio
+- Tema dinámico
+- Localización
+- Soporte para Android Auto
+- Selecciones rápidas personalizadas
+- Material 3

@@ -15,7 +15,7 @@
     <string name="history">Hörverlauf</string>
     <string name="stats">Statistiken</string>
     <string name="mood_and_genres">Stimmungen und Genres</string>
-    <string name="account">Account</string>
+    <string name="account">Konto</string>
     <string name="quick_picks">Schnellauswahl</string>
     <string name="quick_picks_empty">Hören Sie sich einige Songs an, um Ihre Schnellauswahl zu treffen</string>
     <string name="new_release_albums">Neu veröffentlichte Alben</string>
@@ -43,7 +43,6 @@
     <string name="filter_playlists">Wiedergabelisten</string>
     <string name="filter_community_playlists">Community-Wiedergabelisten</string>
     <string name="filter_featured_playlists">Ausgewählte Wiedergabelisten</string>
-    <string name="filter_bookmarked">Bookmarked</string>
     <string name="no_results_found">Keine Ergebnisse gefunden</string>
     <!-- Artist screen -->
     <string name="from_your_library">Aus der Bibliothek</string>
@@ -54,19 +53,19 @@
     <!-- Button -->
     <string name="retry">Wiederholen</string>
     <string name="radio">Radio</string>
-    <string name="shuffle">Shuffle</string>
-    <string name="reset">Reset</string>
+    <string name="shuffle">Mischen</string>
+    <string name="reset">Zurücksetzen</string>
     <!-- Menu -->
     <string name="details">Details</string>
     <string name="edit">Bearbeiten</string>
     <string name="start_radio">Radio starten</string>
-    <string name="play">Wiedergegeben</string>
+    <string name="play">Wiedergeben</string>
     <string name="play_next">Als nächstes wiedergeben</string>
     <string name="add_to_queue">Zur Warteschlange hinzufügen</string>
     <string name="add_to_library">Zur Bibliothek hinzufügen</string>
     <string name="remove_from_library">Aus der Bibliothek entfernen</string>
     <string name="download">Herunterladen</string>
-    <string name="downloading">Downloading</string>
+    <string name="downloading">Wird heruntergeladen</string>
     <string name="remove_download">Download entfernen</string>
     <string name="import_playlist">Wiedergabeliste importieren</string>
     <string name="add_to_playlist">Zur Wiedergabeliste hinzufügen</string>
@@ -77,7 +76,7 @@
     <string name="delete">Löschen</string>
     <string name="remove_from_history">aus dem Wiedergabeverlauf entfernen</string>
     <string name="search_online">Online-Suche</string>
-    <string name="sync">Sync</string>
+    <string name="sync">Synchronisieren</string>
     <string name="advanced">Erweitert</string>
     <!-- Sort menu -->
     <string name="sort_by_create_date">Datum hinzugefügt</string>
@@ -90,12 +89,12 @@
     <string name="sort_by_custom">Individuelle Reinfolge</string>
     <!-- Dialog -->
     <string name="media_id">Medien-ID</string>
-    <string name="mime_type">MIME type</string>
+    <string name="mime_type">MIME-Typ</string>
     <string name="codecs">Codecs</string>
     <string name="bitrate">Bitrate</string>
     <string name="sample_rate">Abtastfrequenz</string>
     <string name="loudness">Lautstärke</string>
-    <string name="volume">Volume</string>
+    <string name="volume">Lautstärke</string>
     <string name="file_size">Dateigröße</string>
     <string name="unknown">Unbekannt</string>
     <string name="copied">In die Zwischenablage kopiert</string>
@@ -118,7 +117,7 @@
     <!-- Noun -->
     <plurals name="n_song">
         <item quantity="one">%d Lied</item>
-        <item quantity="other">%d Lied</item>
+        <item quantity="other">%d Lieder</item>
     </plurals>
     <plurals name="n_artist">
         <item quantity="one">%d Künstler</item>
@@ -244,9 +243,9 @@
     <string name="default_">Standard</string>
     <string name="auto_load_more">Automatisch mehr Lieder laden</string>
     <string name="logout">Abmeldung</string>
-    <string name="theme">Theme</string>
+    <string name="theme">Thema</string>
     <string name="other_versions">Andere Versionen</string>
-    <string name="stop_music_on_task_clear">Stop music on task clear</string>
+    <string name="stop_music_on_task_clear">Musik stoppen wenn die App aus dem Hintergrund gelöscht wird</string>
     <string name="library_album_empty">Alben aus der Bibliothek werden hier angezeigt</string>
     <string name="add_all_to_library">Alle zur Bibliothek hinzufügen</string>
     <string name="similar_to">Ähnlich wie</string>
@@ -257,7 +256,7 @@
     <string name="auto_skip_next_on_error">Automatisch zum nächsten Lied springen, wenn ein Fehler auftritt</string>
     <string name="sided">Seite</string>
     <string name="library_artist_empty">Künstler aus der Bibliothek werden hier angezeigt</string>
-    <string name="player">Player</string>
+    <string name="player">Abspieler</string>
     <string name="preview">Vorschau</string>
     <string name="misc">Sonstiges</string>
     <string name="add_anyway">Trotzdem hinzufügen</string>
@@ -280,7 +279,7 @@
     <string name="your_youtube_playlists">Ihre YouTube-Wiedergabelisten</string>
     <string name="library_playlist_empty">Ihre Wiedergabelisten werden hier angezeigt</string>
     <string name="disable_screenshot_desc">Wenn diese Option aktiviert ist, sind Screenshots und die App-Ansicht in „Zuletzt gesehen“ deaktiviert.</string>
-    <string name="discord_information">InnerTune verwendet die KizzyRPC-Bibliothek, um den Status Ihres Discord-Kontos zu setzen. Dazu wird die Discord-Gateway-Verbindung verwendet, was als Verstoß gegen die AGB von Discord angesehen werden kann. Es sind jedoch keine Fälle bekannt, in denen Benutzerkonten aus diesem Grund gesperrt wurden. Die Verwendung erfolgt auf eigene Gefahr. InnerTune extrahiert nur dein Token, alles andere wird lokal gespeichert.</string>
+    <string name="discord_information">InnerTune verwendet die KizzyRPC-Bibliothek, um den Status Ihres Discord-Kontos zu setzen. Dazu wird die Discord-Gateway-Verbindung verwendet, was als Verstoß gegen die AGB von Discord angesehen werden kann. Es sind jedoch keine Fälle bekannt, in denen Benutzerkonten aus diesem Grund gesperrt wurden. Die Verwendung erfolgt auf eigene Gefahr.\n\nInnerTune extrahiert nur dein Token, alles andere wird lokal gespeichert.</string>
     <string name="squiggly">Verschnörkelt</string>
     <string name="grid_cell_size">Größe der Rasterzellen</string>
     <string name="search_history">Suchverlauf</string>
@@ -295,4 +294,5 @@
     <string name="remove_all_from_library">Alle aus der Bibliothek entfernen</string>
     <string name="persistent_queue_desc">Wiederherstellung der letzten Warteschlange beim Starten der App</string>
     <string name="auto_load_more_desc">Automatisches Hinzufügen weiterer Lieder, wenn das Ende der Warteschlange erreicht ist, sofern möglich</string>
+    <string name="filter_bookmarked">Als Lesezeichen gespeichert</string>
 </resources>

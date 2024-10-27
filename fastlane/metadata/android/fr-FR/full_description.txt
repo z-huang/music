@@ -1,0 +1,17 @@
+Un client Youtube Music pour Android utilisant Material 3
+
+<br><b>Fonctionnalités :</b>
+
+- Jouer des chansons de YT/YT Music sans pub
+- Lecture en arrière-plan
+- Recherche de chansons, de vidéos, d'albums et des playlists depuis Youtube Music
+- Gestion de la bibliothèque
+- Mise en cache et téléchargement des chansons pour une lecture hors ligne
+- Affichage des paroles en temps réel
+- Saute les silences
+- Normalisation audio
+- Thème dynamique
+- Localisation
+- Prise en charge d'Android Auto
+- Sélections rapides personnalisées
+- Material 3

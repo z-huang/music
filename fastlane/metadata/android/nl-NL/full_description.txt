@@ -1,0 +1,17 @@
+Een Material 3 YouTube Muziek-client voor Android
+
+<br><b>Functies:</b>
+
+- Nummers van YT/YT Music afspelen zonder advertenties
+- Afspelen op achtergrond
+- Zoek nummers, video's, albums en afspeellijsten van YouTube Muziek
+- Bibliotheekbeheer
+- Nummers opslaan en downloaden voor offline afspelen
+- Gesynchroniseerde songteksten
+- Stilte overslaan
+- Audionormalisatie
+- Dynamisch thema
+- Lokalisatie
+- Android Auto ondersteuning
+- Gepersonaliseerde snelkeuzes
+- Materiaal 3

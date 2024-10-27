@@ -55,7 +55,7 @@
     <string name="retry">Tekrar dene</string>
     <string name="radio">Radyo</string>
     <string name="shuffle">Karıştır</string>
-    <string name="reset">Reset</string>
+    <string name="reset">Sıfırla</string>
     <!-- Menu -->
     <string name="details">Detaylar</string>
     <string name="edit">Düzenle</string>
@@ -183,7 +183,7 @@
     <string name="dark_theme_off">Kapalı</string>
     <string name="dark_theme_follow_system">Sistemi izle</string>
     <string name="pure_black">Simsiyah</string>
-    <string name="default_open_tab">Default open tab</string>
+    <string name="default_open_tab">Varsayılan giriş sekmesi</string>
     <string name="customize_navigation_tabs">Gezinti sekmelerini özelleştir</string>
     <string name="lyrics_text_position">Şarkı sözleri konumu</string>
     <string name="left">Sol</string>
@@ -191,8 +191,8 @@
     <string name="right">Sağ</string>
     <string name="content">İçerik</string>
     <string name="login">Oturum aç</string>
-    <string name="content_language">Varsayılan dil</string>
-    <string name="content_country">Varsayılan ülke</string>
+    <string name="content_language">Varsayılan içerik dili</string>
+    <string name="content_country">Varsayılan ülke içeriği</string>
     <string name="system_default">Sistem varsayılanı</string>
     <string name="enable_proxy">Proxy\'yi etkinleştir</string>
     <string name="proxy_type">Proxy türü</string>
