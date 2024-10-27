@@ -417,7 +417,14 @@ object YouTube {
     }
 
     suspend fun player(videoId: String, playlistId: String? = null): Result<PlayerResponse> = runCatching {
-        val playerResponse = innerTube.player(IOS, videoId, playlistId).body<PlayerResponse>()
+        var playerResponse: PlayerResponse
+        if (this.cookie != null) { // if logged in: try ANDROID_MUSIC client first because IOS client does not play age restricted songs
+            playerResponse = innerTube.player(ANDROID_MUSIC, videoId, playlistId).body<PlayerResponse>()
+            if (playerResponse.playabilityStatus.status == "OK") {
+                return@runCatching playerResponse
+            }
+        }
+        playerResponse = innerTube.player(IOS, videoId, playlistId).body<PlayerResponse>()
         if (playerResponse.playabilityStatus.status == "OK") {
             return@runCatching playerResponse
         }
