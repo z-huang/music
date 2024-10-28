@@ -425,8 +425,9 @@ object YouTube {
                 return@runCatching playerResponse
             }
         }
-        playerResponse = innerTube.player(IOS, videoId, playlistId).body<PlayerResponse>()
-        if (playerResponse.playabilityStatus.status == "OK") {
+        playerResponse = innerTube.player(WEB_REMIX, videoId, playlistId).body<PlayerResponse>()
+        if (playerResponse.playabilityStatus.status == "OK" && playerResponse.streamingData?.adaptiveFormats?.any
+            { it.url != null || it.signatureCipher != null } == true) {
             return@runCatching playerResponse
         }
         val safePlayerResponse = innerTube.player(TVHTML5, videoId, playlistId).body<PlayerResponse>()

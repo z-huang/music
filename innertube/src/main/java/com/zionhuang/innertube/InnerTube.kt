@@ -5,8 +5,10 @@ import com.zionhuang.innertube.models.Context
 import com.zionhuang.innertube.models.YouTubeClient
 import com.zionhuang.innertube.models.YouTubeLocale
 import com.zionhuang.innertube.models.body.*
+import com.zionhuang.innertube.utils.nSigDecode
 import com.zionhuang.innertube.utils.parseCookieString
 import com.zionhuang.innertube.utils.sha1
+import com.zionhuang.innertube.utils.sigDecode
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.*
@@ -243,5 +245,17 @@ class InnerTube {
     suspend fun accountMenu(client: YouTubeClient) = httpClient.post("account/account_menu") {
         ytClient(client, setLogin = true)
         setBody(AccountMenuBody(client.toContext(locale, visitorData)))
+    }
+
+    fun decodeCipher(cipher: String): String? {
+        val params = parseQueryString(cipher)
+        val signature = params["s"] ?: return null
+        val signatureParam = params["sp"] ?: return null
+        val url = params["url"]?.let { URLBuilder(it) } ?: return null
+        val n = url.parameters["n"]
+        url.parameters["n"] = nSigDecode(n.toString())
+        url.parameters[signatureParam] = sigDecode(signature)
+        url.parameters["c"] = "ANDROID_MUSIC"
+        return url.toString()
     }
 }
