@@ -2,6 +2,7 @@ package com.zionhuang.innertube.models.response
 
 import com.zionhuang.innertube.models.Button
 import com.zionhuang.innertube.models.Continuation
+import com.zionhuang.innertube.models.GridRenderer
 import com.zionhuang.innertube.models.Menu
 import com.zionhuang.innertube.models.MusicShelfRenderer
 import com.zionhuang.innertube.models.ResponseContext
@@ -49,6 +50,7 @@ data class BrowseResponse(
     data class ContinuationContents(
         val sectionListContinuation: SectionListContinuation?,
         val musicPlaylistShelfContinuation: MusicPlaylistShelfContinuation?,
+        val gridContinuation: GridContinuation?,
     ) {
         @Serializable
         data class SectionListContinuation(
@@ -59,6 +61,12 @@ data class BrowseResponse(
         @Serializable
         data class MusicPlaylistShelfContinuation(
             val contents: List<MusicShelfRenderer.Content>,
+            val continuations: List<Continuation>?,
+        )
+
+        @Serializable
+        data class GridContinuation(
+            val items: List<GridRenderer.Item>,
             val continuations: List<Continuation>?,
         )
     }
