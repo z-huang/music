@@ -273,7 +273,7 @@ object YouTube {
         } else {
             ArtistItemsContinuationPage(
                 items = response.continuationContents?.musicPlaylistShelfContinuation?.contents?.mapNotNull {
-                    ArtistItemsContinuationPage.fromMusicResponsiveListItemRenderer(it.musicResponsiveListItemRenderer)
+                    ArtistItemsPage.fromMusicResponsiveListItemRenderer(it.musicResponsiveListItemRenderer)
                 }!!,
                 continuation = response.continuationContents.musicPlaylistShelfContinuation.continuations?.getContinuation()
             )
