@@ -1,3 +1,0 @@
-- Mejor interfaz de usuario
-- Diseño de cuadrícula para álbumes y listas de reproducción
-- Mejoras menores y corrección de errores

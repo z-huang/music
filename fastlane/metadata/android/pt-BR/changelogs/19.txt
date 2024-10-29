@@ -1,3 +1,0 @@
-- IU melhorada
-- Layout de grade para álbuns e playlists
-- Pequenas melhoras e correção de bugs
