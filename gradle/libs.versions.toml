@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.6.0"
+androidGradlePlugin = "8.5.1" # TODO 8.6.0
 annotation = "1.8.2"
 json = "20240303"
 kotlin = "2.0.10"
@@ -88,6 +88,8 @@ firebase-perf-plugin = { module = "com.google.firebase:perf-plugin", version = "
 
 mlkit-language-id = { group = "com.google.mlkit", name = "language-id", version = "17.0.6" }
 mlkit-translate = { group = "com.google.mlkit", name = "translate", version = "17.0.3" }
+
+glance = { group = "androidx.glance", name = "glance-appwidget", version = "1.1.0"}
 
 [plugins]
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

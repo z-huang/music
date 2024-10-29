@@ -108,6 +108,8 @@ ksp {
 }
 
 dependencies {
+    implementation(libs.glance)
+
     implementation(libs.guava)
     implementation(libs.coroutines.guava)
     implementation(libs.concurrent.futures)
