@@ -40,9 +40,8 @@ fun YouTubePlaylistMenu(
     val database = LocalDatabase.current
     val playerConnection = LocalPlayerConnection.current ?: return
 
-    var showChoosePlaylistDialog by rememberSaveable {
-        mutableStateOf(false)
-    }
+    var showChoosePlaylistDialog by rememberSaveable { mutableStateOf(false) }
+    var showImportPlaylistDialog by rememberSaveable { mutableStateOf(false) }
 
     AddToPlaylistDialog(
         isVisible = showChoosePlaylistDialog,
@@ -59,6 +58,24 @@ fun YouTubePlaylistMenu(
             allSongs.map { it.id }
         },
         onDismiss = { showChoosePlaylistDialog = false }
+    )
+
+    ImportPlaylistDialog(
+        isVisible = showImportPlaylistDialog,
+        onGetSong = {
+            val allSongs = songs
+                .ifEmpty {
+                    YouTube.playlist(playlist.id).completed().getOrNull()?.songs.orEmpty()
+                }.map {
+                    it.toMediaMetadata()
+                }
+            database.transaction {
+                allSongs.forEach(::insert)
+            }
+            allSongs.map { it.id }
+        },
+        playlistTitle = playlist.title,
+        onDismiss = { showImportPlaylistDialog = false }
     )
 
     GridMenu(
@@ -123,6 +140,12 @@ fun YouTubePlaylistMenu(
                 }
             }
             onDismiss()
+        }
+        GridMenuItem(
+            icon = R.drawable.playlist_import,
+            title = R.string.import_playlist
+        ) {
+            showImportPlaylistDialog = true
         }
         GridMenuItem(
             icon = R.drawable.playlist_add,
