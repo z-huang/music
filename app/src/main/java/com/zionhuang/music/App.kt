@@ -10,6 +10,7 @@ import coil.ImageLoaderFactory
 import coil.disk.DiskCache
 import com.zionhuang.innertube.YouTube
 import com.zionhuang.innertube.models.YouTubeLocale
+import com.zionhuang.innertube.utils.parseCookieString
 import com.zionhuang.kugou.KuGou
 import com.zionhuang.music.constants.ContentCountryKey
 import com.zionhuang.music.constants.ContentLanguageKey
@@ -37,6 +38,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.net.Proxy
 import java.util.Locale
+import kotlin.collections.contains
 
 @HiltAndroidApp
 class App : Application(), ImageLoaderFactory {
@@ -95,7 +97,7 @@ class App : Application(), ImageLoaderFactory {
                 .map { it[InnerTubeCookieKey] }
                 .distinctUntilChanged()
                 .collect { cookie ->
-                    YouTube.cookie = cookie
+                    YouTube.cookie = if ("SAPISID" in parseCookieString(cookie?: "")) cookie else null
                 }
         }
     }
