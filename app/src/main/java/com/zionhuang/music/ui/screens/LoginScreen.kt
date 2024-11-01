@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.zionhuang.innertube.YouTube
+import com.zionhuang.innertube.utils.parseCookieString
 import com.zionhuang.music.LocalPlayerAwareWindowInsets
 import com.zionhuang.music.R
 import com.zionhuang.music.constants.AccountChannelHandleKey
@@ -35,6 +36,7 @@ import com.zionhuang.music.utils.reportException
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlin.collections.contains
 
 @SuppressLint("SetJavaScriptEnabled")
 @OptIn(ExperimentalMaterial3Api::class, DelicateCoroutinesApi::class)
@@ -59,7 +61,8 @@ fun LoginScreen(
                 webViewClient = object : WebViewClient() {
                     override fun doUpdateVisitedHistory(view: WebView, url: String, isReload: Boolean) {
                         if (url.startsWith("https://music.youtube.com")) {
-                            innerTubeCookie = CookieManager.getInstance().getCookie(url)
+                            var youTubeCookieString = CookieManager.getInstance().getCookie(url)
+                            innerTubeCookie = if ("SAPISID" in parseCookieString(youTubeCookieString)) youTubeCookieString else ""
                             GlobalScope.launch {
                                 YouTube.accountInfo().onSuccess {
                                     accountName = it.name
@@ -84,6 +87,11 @@ fun LoginScreen(
                 addJavascriptInterface(object {
                     @JavascriptInterface
                     fun onRetrieveVisitorData(newVisitorData: String?) {
+                        if (innerTubeCookie == "") {
+                            visitorData = ""
+                            return
+                        }
+
                         if (newVisitorData != null) {
                             visitorData = newVisitorData
                         }
