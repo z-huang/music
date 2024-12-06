@@ -229,9 +229,9 @@
     <string name="clear_song_cache">Limpar o cache de músicas</string>
     <string name="size_used">%s usados</string>
     <string name="privacy">Privacidade</string>
-    <string name="pause_listen_history">Pausar o histórico de escuta</string>
-    <string name="clear_listen_history">Limpar o histórico de escuta</string>
-    <string name="clear_listen_history_confirm">Tem certeza que deseja limpar todo o histórico de escuta?</string>
+    <string name="pause_listen_history">Pausar o histórico de reprodução</string>
+    <string name="clear_listen_history">Limpar o histórico de reprodução</string>
+    <string name="clear_listen_history_confirm">Tem certeza que deseja limpar todo o histórico de reprodução?</string>
     <string name="pause_search_history">Pausar histórico de pesquisa</string>
     <string name="clear_search_history">Limpar histórico de pesquisa</string>
     <string name="clear_search_history_confirm">Tem certeza que deseja limpar todo o histórico de pesquisa?</string>
@@ -279,7 +279,7 @@
     <string name="action_remove_like_all">Remover todos os likes</string>
     <string name="grid_cell_size">Tamanho da célula da grade</string>
     <string name="auto_load_more_desc">Adicionar mais músicas automaticamente quando o fim da fila é atingido, se possível</string>
-    <string name="listen_history">Histórico de escuta</string>
+    <string name="listen_history">Histórico de reprodução</string>
     <string name="disable_screenshot">Desativar capturas de tela</string>
     <string name="similar_to">Parecido com</string>
     <string name="library_song_empty">Músicas da biblioteca aparecerão aqui</string>
@@ -306,4 +306,6 @@
     <string name="library_playlist_empty">Suas playlists aparecerão aqui</string>
     <string name="theme">Tema</string>
     <string name="remove_all_from_library">Remover tudo da biblioteca</string>
+    <string name="use_login_for_browse">Usar login para navegar conteúdo</string>
+    <string name="use_login_for_browse_desc">Isto pode influenciar em que conteúdo você vê, e se você tiver Premium por exemplo, verá álbuns que só estão disponíveis com Premium</string>
 </resources>
