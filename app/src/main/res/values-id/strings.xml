@@ -288,4 +288,6 @@
     <string name="dismiss">Membubarkan</string>
     <string name="preview">Pratinjau</string>
     <string name="enable_discord_rpc">Aktifkan Fitur Discord</string>
+    <string name="use_login_for_browse">Login untuk menjelajah konten</string>
+    <string name="use_login_for_browse_desc">Ini dapat memengaruhi konten yang Anda lihat dan misalnya hanya menampilkan album khusus premium jika Anda login ke akun Premium</string>
 </resources>
