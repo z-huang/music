@@ -65,7 +65,7 @@ fun LoginScreen(
                         if (url.startsWith("https://music.youtube.com")) {
                             val youtubeCookieString = CookieManager.getInstance().getCookie(url)
                             GlobalScope.launch {
-                                if ("SAPISID" in parseCookieString(youtubeCookieString)) { // if logged in
+                                if ("SAPISID" in youtubeCookieString) { // if logged in
                                     innerTubeCookie = youtubeCookieString
                                 } else { // if logged out
                                     context.dataStore.edit { settings ->
