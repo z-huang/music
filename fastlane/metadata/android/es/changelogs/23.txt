@@ -1,6 +1,0 @@
-- Compatibilidad con Discord RPC
-- Comprobador de actualizaciones en la aplicación
-- Personalización de la alineación del texto del reproductor
-- Excluir archivos descargados en la copia de seguridad automática
-- Corrección de fallos aleatorios
-- Otras correcciones y mejoras

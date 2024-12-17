@@ -1,5 +1,0 @@
-- Soporte de inicio de sesión
-- Estado de ánimo y géneros
-- Mejor pantalla de estadísticas
-- Artistas favoritos
-- Pequeñas mejoras y correcciones de errores
