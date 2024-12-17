@@ -4,22 +4,36 @@ import com.zionhuang.innertube.encoder.brotli
 import com.zionhuang.innertube.models.Context
 import com.zionhuang.innertube.models.YouTubeClient
 import com.zionhuang.innertube.models.YouTubeLocale
-import com.zionhuang.innertube.models.body.*
+import com.zionhuang.innertube.models.body.AccountMenuBody
+import com.zionhuang.innertube.models.body.BrowseBody
+import com.zionhuang.innertube.models.body.GetQueueBody
+import com.zionhuang.innertube.models.body.GetSearchSuggestionsBody
+import com.zionhuang.innertube.models.body.GetTranscriptBody
+import com.zionhuang.innertube.models.body.NextBody
+import com.zionhuang.innertube.models.body.PlayerBody
+import com.zionhuang.innertube.models.body.SearchBody
 import com.zionhuang.innertube.utils.parseCookieString
 import com.zionhuang.innertube.utils.sha1
-import io.ktor.client.*
-import io.ktor.client.engine.okhttp.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.compression.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.compression.ContentEncoding
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.get
+import io.ktor.client.request.headers
+import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import io.ktor.http.userAgent
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.encodeBase64
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import java.net.Proxy
-import java.util.*
+import java.util.Locale
 
 /**
  * Provide access to InnerTube endpoints.
