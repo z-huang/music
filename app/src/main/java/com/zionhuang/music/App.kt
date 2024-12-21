@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.disk.DiskCache
+import com.yausername.youtubedl_android.YoutubeDLException
 import com.zionhuang.innertube.YouTube
 import com.zionhuang.innertube.models.YouTubeLocale
 import com.zionhuang.kugou.KuGou
@@ -25,6 +26,7 @@ import com.zionhuang.music.constants.UseLoginForBrowse
 import com.zionhuang.music.constants.VisitorDataKey
 import com.zionhuang.music.extensions.toEnum
 import com.zionhuang.music.extensions.toInetSocketAddress
+import com.zionhuang.music.utils.YoutubeDL
 import com.zionhuang.music.utils.dataStore
 import com.zionhuang.music.utils.get
 import com.zionhuang.music.utils.reportException
@@ -37,6 +39,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.net.Proxy
 import java.util.Locale
+import kotlin.concurrent.thread
+
 
 @HiltAndroidApp
 class App : Application(), ImageLoaderFactory {
@@ -44,6 +48,16 @@ class App : Application(), ImageLoaderFactory {
     override fun onCreate() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
+
+        try {
+            YoutubeDL.init(this)
+        } catch (e: YoutubeDLException) {
+            Toast.makeText(this, "failed to initialize youtubedl-android", LENGTH_SHORT).show()
+        }
+
+        thread {
+            YoutubeDL.update()
+        }
 
         val locale = Locale.getDefault()
         val languageTag = locale.toLanguageTag().replace("-Hant", "") // replace zh-Hant-* to zh-*
@@ -94,8 +108,13 @@ class App : Application(), ImageLoaderFactory {
             dataStore.data
                 .map { it[InnerTubeCookieKey] }
                 .distinctUntilChanged()
-                .collect { cookie ->
+                .collect { rawCookie ->
+                    // quick hack until https://github.com/z-huang/InnerTune/pull/1694 is done
+                    val isLoggedIn: Boolean = rawCookie?.contains("SAPISID") ?: false
+                    val cookie = if (isLoggedIn) rawCookie else null
+
                     YouTube.cookie = cookie
+                    YoutubeDL.saveCookies(cookie)
                 }
         }
     }

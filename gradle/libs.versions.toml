@@ -89,6 +89,8 @@ firebase-perf-plugin = { module = "com.google.firebase:perf-plugin", version = "
 mlkit-language-id = { group = "com.google.mlkit", name = "language-id", version = "17.0.6" }
 mlkit-translate = { group = "com.google.mlkit", name = "translate", version = "17.0.3" }
 
+youtubedl-android = { group = "io.github.junkfood02.youtubedl-android", name = "library", version = "0.17.2" }
+
 [plugins]
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

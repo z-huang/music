@@ -431,8 +431,8 @@ object YouTube {
 
     suspend fun player(videoId: String, playlistId: String? = null): Result<PlayerResponse> = runCatching {
         var playerResponse: PlayerResponse
-        if (this.cookie != null) { // if logged in: try ANDROID_MUSIC client first because IOS client does not play age restricted songs
-            playerResponse = innerTube.player(ANDROID_MUSIC, videoId, playlistId).body<PlayerResponse>()
+        if (this.cookie != null) { // if logged in: try WEB_REMIX client first because IOS client does not play age restricted songs
+            playerResponse = innerTube.player(WEB_REMIX, videoId, playlistId).body<PlayerResponse>()
             if (playerResponse.playabilityStatus.status == "OK") {
                 return@runCatching playerResponse
             }
@@ -441,9 +441,11 @@ object YouTube {
         if (playerResponse.playabilityStatus.status == "OK") {
             return@runCatching playerResponse
         }
+
+        // TODO: check if this still works -> update or remove it
         val safePlayerResponse = innerTube.player(TVHTML5, videoId, playlistId).body<PlayerResponse>()
         if (safePlayerResponse.playabilityStatus.status != "OK") {
-            return@runCatching playerResponse
+            return@runCatching safePlayerResponse
         }
         val audioStreams = innerTube.pipedStreams(videoId).body<PipedResponse>().audioStreams
         safePlayerResponse.copy(
