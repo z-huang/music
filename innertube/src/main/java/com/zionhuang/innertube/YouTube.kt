@@ -130,7 +130,7 @@ object YouTube {
                             ?.distinctBy { it.id }
                             ?.ifEmpty { null } ?: return@mapNotNull null
                     )
-            }!!
+            } ?: emptyList()
         )
     }
 

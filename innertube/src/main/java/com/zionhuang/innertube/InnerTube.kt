@@ -10,7 +10,7 @@ import com.zionhuang.innertube.utils.sha1
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
 import io.ktor.client.plugins.*
-import io.ktor.client.plugins.compression.*
+import io.ktor.client.features.compression.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -61,7 +61,7 @@ class InnerTube {
             })
         }
 
-        install(ContentEncoding) {
+        install(ContentEncoding.Feature) {
             brotli(1.0F)
             gzip(0.9F)
             deflate(0.8F)
@@ -110,7 +110,7 @@ class InnerTube {
         continuation: String? = null,
     ) = httpClient.post("search") {
         ytClient(client, setLogin = useLoginForBrowse)
-        setBody(
+        body = 
             SearchBody(
                 context = client.toContext(locale, visitorData),
                 query = query,
