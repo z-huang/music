@@ -48,12 +48,17 @@ import com.zionhuang.innertube.pages.SearchResult
 import com.zionhuang.innertube.pages.SearchSuggestionPage
 import com.zionhuang.innertube.pages.SearchSummary
 import com.zionhuang.innertube.pages.SearchSummaryPage
+import com.zionhuang.innertube.utils.mapToPlayerResponse
 import io.ktor.client.call.body
 import io.ktor.client.statement.bodyAsText
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonPrimitive
+import org.schabi.newpipe.extractor.NewPipe
+import org.schabi.newpipe.extractor.ServiceList
+import org.schabi.newpipe.extractor.localization.Localization
+import org.schabi.newpipe.extractor.stream.StreamInfo
 import java.net.Proxy
 
 /**
@@ -63,10 +68,15 @@ import java.net.Proxy
 object YouTube {
     private val innerTube = InnerTube()
 
+    init {
+        NewPipe.init(NewPipeDownloaderImpl)
+    }
+
     var locale: YouTubeLocale
         get() = innerTube.locale
         set(value) {
             innerTube.locale = value
+            NewPipe.setupLocalization(Localization(value.hl, value.gl))
         }
     var visitorData: String
         get() = innerTube.visitorData
@@ -430,6 +440,14 @@ object YouTube {
     }
 
     suspend fun player(videoId: String, playlistId: String? = null): Result<PlayerResponse> = runCatching {
+        runCatching {
+            StreamInfo.getInfo(ServiceList.YouTube, "https://www.youtube.com/watch?v=${videoId}")
+        }.getOrElse { exception ->
+            exception.printStackTrace()
+            null
+        }?.let {
+            return@runCatching it.mapToPlayerResponse()
+        }
         var playerResponse: PlayerResponse
         if (this.cookie != null) { // if logged in: try ANDROID_MUSIC client first because IOS client does not play age restricted songs
             playerResponse = innerTube.player(ANDROID_MUSIC, videoId, playlistId).body<PlayerResponse>()
