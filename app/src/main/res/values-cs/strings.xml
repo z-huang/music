@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Bottom navigation -->
     <string name="home">Domů</string>
@@ -5,7 +6,6 @@
     <string name="artists">Umělci</string>
     <string name="albums">Alba</string>
     <string name="playlists">Playlisty</string>
-
     <!-- Top bar -->
     <plurals name="n_selected">
         <item quantity="one">Vybrána %d</item>
@@ -13,7 +13,6 @@
         <item quantity="many">Vybráno %d</item>
         <item quantity="other">Vybráno %d</item>
     </plurals>
-
     <!-- Home -->
     <string name="history">Historie</string>
     <string name="stats">Statistiky</string>
@@ -22,18 +21,15 @@
     <string name="quick_picks">Rychlý výběr</string>
     <string name="quick_picks_empty">Pro vytvoření rychlého výběru si nejprve poslechněte pár skladeb</string>
     <string name="new_release_albums">Nově vydaná alba</string>
-
     <!-- History -->
     <string name="today">Dnes</string>
     <string name="yesterday">Včera</string>
     <string name="this_week">Tento týden</string>
     <string name="last_week">Minulý týden</string>
-
     <!-- Stats -->
     <string name="most_played_songs">Nejčastěji přehrávané skladby</string>
     <string name="most_played_artists">Nejčastěji přehrávaní umělci</string>
     <string name="most_played_albums">Nejčastěji přehrávaná alba</string>
-
     <!-- Search -->
     <string name="search">Vyhledávání</string>
     <string name="search_yt_music">Hledat v YouTube Music…</string>
@@ -51,15 +47,12 @@
     <string name="filter_featured_playlists">Doporučené playlisty</string>
     <string name="filter_bookmarked">Záložky</string>
     <string name="no_results_found">Nenalezeny žádné výsledky</string>
-
     <!-- Artist screen -->
     <string name="from_your_library">Z vaší knihovny</string>
-
     <!-- Playlist -->
     <string name="liked_songs">Oblíbené skladby</string>
     <string name="downloaded_songs">Stažené skladby</string>
     <string name="playlist_is_empty">Playlist je prázdný</string>
-
     <!-- Button -->
     <string name="retry">Zkusit znovu</string>
     <string name="radio">Rádio</string>
@@ -88,7 +81,6 @@
     <string name="search_online">Hledat online</string>
     <string name="sync">Synchronizace</string>
     <string name="advanced">Pokročilé</string>
-
     <!-- Sort menu -->
     <string name="sort_by_create_date">Datum přidání</string>
     <string name="sort_by_name">Název</string>
@@ -98,7 +90,6 @@
     <string name="sort_by_length">Délka</string>
     <string name="sort_by_play_time">Doba přehrávání</string>
     <string name="sort_by_custom">Vlastní pořadí</string>
-
     <!-- Dialog -->
     <string name="media_id">ID média</string>
     <string name="mime_type">Typ MIME</string>
@@ -110,27 +101,22 @@
     <string name="file_size">Velikost souboru</string>
     <string name="unknown">Neznámé</string>
     <string name="copied">Zkopírováno do schránky</string>
-
     <string name="edit_lyrics">Upravit texty</string>
     <string name="search_lyrics">Hledat texty</string>
-
     <string name="edit_song">Upravit skladbu</string>
     <string name="song_title">Název skladby</string>
     <string name="song_artists">Umělci skladby</string>
     <string name="error_song_title_empty">Název skladby nemůže být prázdný.</string>
     <string name="error_song_artist_empty">Umělec skladby nemůže být prázdný.</string>
     <string name="save">Uložit</string>
-
     <string name="choose_playlist">Vybrat playlist</string>
     <string name="edit_playlist">Upravit playlist</string>
     <string name="create_playlist">Vytvořit playlist</string>
     <string name="playlist_name">Název playlistu</string>
     <string name="error_playlist_name_empty">Název playlistu nemůže být prázdný.</string>
-
     <string name="edit_artist">Upravit umělce</string>
     <string name="artist_name">Jméno umělce</string>
     <string name="error_artist_name_empty">Jméno umělce nemůže být prázdné.</string>
-
     <!-- Noun -->
     <plurals name="n_song">
         <item quantity="one">%d skladba</item>
@@ -174,13 +160,11 @@
         <item quantity="many">%d let</item>
         <item quantity="other">%d let</item>
     </plurals>
-
     <!-- Snackbar -->
     <string name="playlist_imported">Playlist importován</string>
     <string name="removed_song_from_playlist">Skladba „%s“ odebrána z playlistu</string>
     <string name="playlist_synced">Playlist synchronizován</string>
     <string name="undo">Zrušit</string>
-
     <!-- Player -->
     <string name="lyrics_not_found">Texty nenalezeny</string>
     <string name="sleep_timer">Časovač spánku</string>
@@ -195,7 +179,6 @@
     <string name="error_no_internet">Není dostupné připojení k internetu</string>
     <string name="error_timeout">Vypršel čas</string>
     <string name="error_unknown">Neznámá chyba</string>
-
     <!-- Player action -->
     <string name="action_like">Oblíbené</string>
     <string name="action_remove_like">Odebrat z oblíbených</string>
@@ -207,10 +190,8 @@
     <!-- Queue Title -->
     <string name="queue_all_songs">Všechny skladby</string>
     <string name="queue_searched_songs">Hledané skladby</string>
-
     <!-- Notification name -->
     <string name="music_player">Hudební přehrávač</string>
-
     <!-- Settings -->
     <string name="settings">Nastavení</string>
     <string name="appearance">Vzhled</string>
@@ -221,12 +202,11 @@
     <string name="dark_theme_follow_system">Podle systému</string>
     <string name="pure_black">Čistě černá</string>
     <string name="default_open_tab">Výchozí karta</string>
-    <string name="customize_navigation_tabs">Přizpůsobit navigační karty</string>
+    <string name="customize_navigation_tabs">Přizpůsobit karty navigace</string>
     <string name="lyrics_text_position">Pozice textů</string>
     <string name="left">Vlevo</string>
     <string name="center">Uprostřed</string>
     <string name="right">Vpravo</string>
-
     <string name="content">Obsah</string>
     <string name="login">Přihlásit se</string>
     <string name="content_language">Výchozí jazyk obsahu</string>
@@ -236,7 +216,6 @@
     <string name="proxy_type">Typ proxy</string>
     <string name="proxy_url">Adresa URL proxy</string>
     <string name="restart_to_take_effect">Restartujte pro uplatnění změn</string>
-
     <string name="player_and_audio">Přehrávač a zvuk</string>
     <string name="audio_quality">Kvalita zvuku</string>
     <string name="audio_quality_auto">Automaticky</string>
@@ -246,7 +225,6 @@
     <string name="skip_silence">Přeskakovat ticho</string>
     <string name="audio_normalization">Normalizace zvuku</string>
     <string name="equalizer">Ekvalizér</string>
-
     <string name="storage">Úložiště</string>
     <string name="cache">Mezipaměť</string>
     <string name="image_cache">Mezipaměť obrázků</string>
@@ -259,7 +237,6 @@
     <string name="max_song_cache_size">Maximální velikost mezipaměti skladeb</string>
     <string name="clear_song_cache">Vymazat mezipaměť skladeb</string>
     <string name="size_used">Využito %s</string>
-
     <string name="privacy">Soukromí</string>
     <string name="pause_listen_history">Pozastavit historii poslechu</string>
     <string name="clear_listen_history">Vymazat historii poslechu</string>
@@ -268,7 +245,6 @@
     <string name="clear_search_history">Vymazat historii vyhledávání</string>
     <string name="clear_search_history_confirm">Opravdu chcete vymazat celou historii vyhledávání?</string>
     <string name="enable_kugou">Povolit poskytovatele textů KuGou</string>
-
     <string name="backup_restore">Záloha a obnovení</string>
     <string name="backup">Zálohovat</string>
     <string name="restore">Obnovit</string>
@@ -276,10 +252,8 @@
     <string name="backup_create_success">Záloha úspěšně vytvořena</string>
     <string name="backup_create_failed">Nepodařilo se vytvořit zálohu</string>
     <string name="restore_failed">Nepodařilo se obnovit zálohu</string>
-
     <string name="about">O aplikaci</string>
     <string name="app_version">Verze aplikace</string>
-
     <string name="new_version_available">Je dostupná nová verze</string>
     <string name="translation_models">Modely překladů</string>
     <string name="clear_translation_models">Vymazat modely překladů</string>
@@ -319,10 +293,10 @@
     <string name="duplicates_description_multiple">%d skladeb se již nachází ve vašem playlistu</string>
     <string name="action_like_all">Oblíbit vše</string>
     <string name="action_remove_like_all">Odstranit všechny oblíbené</string>
-    <string name="not_logged_in">Nepřihlášeni</string>
-    <string name="persistent_queue_desc">Obnovit vaši poslední frontu po spuštění aplikace</string>
+    <string name="not_logged_in">Nejste přihlášeni</string>
+    <string name="persistent_queue_desc">Obnovit poslední frontu po spuštění aplikace</string>
     <string name="auto_load_more_desc">Automaticky přidat více skladeb po dosažení konce fronty, pokud je to možné</string>
-    <string name="auto_skip_next_on_error">Automaticky přeskočit na další sklabdu, pokud se objeví chyba</string>
+    <string name="auto_skip_next_on_error">Automaticky přejít na další sklabdu při výskytu chyby</string>
     <string name="auto_skip_next_on_error_desc">Zajistěte si nepřetržité přehrávání</string>
     <string name="stop_music_on_task_clear">Zastavit hudbu po vymazání úlohy</string>
     <string name="listen_history">Historie poslechu</string>
@@ -341,4 +315,6 @@
 \nInnerTune pouze extrahuje váš token, vše ostatní je uloženo lokálně.</string>
     <string name="enable_discord_rpc">Povolit stav na Discordu</string>
     <string name="logout">Odhlásit se</string>
+    <string name="use_login_for_browse">Použít účet pro procházení obsahu</string>
+    <string name="use_login_for_browse_desc">Může ovlivnit obsah, který se vám zobrazí – při přihlášení například mohou být zobrazena například alba, která jsou dostupná pouze s Premium účtem</string>
 </resources>
