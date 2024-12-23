@@ -167,8 +167,8 @@ data class SearchSummaryPage(
                         shuffleEndpoint = renderer.menu?.menuRenderer?.items
                             ?.find { it.menuNavigationItemRenderer?.icon?.iconType == "MUSIC_SHUFFLE" }
                             ?.menuNavigationItemRenderer?.navigationEndpoint?.watchPlaylistEndpoint ?: return null,
-                        radioEndpoint = renderer.menu.menuRenderer.items
-                            .find { it.menuNavigationItemRenderer?.icon?.iconType == "MIX" }
+                        radioEndpoint = renderer.menu?.menuRenderer?.items
+                            ?.find { it.menuNavigationItemRenderer?.icon?.iconType == "MIX" }
                             ?.menuNavigationItemRenderer?.navigationEndpoint?.watchPlaylistEndpoint ?: return null
                     )
                 }

@@ -19,12 +19,12 @@ if (isFullBuild && System.getenv("PULL_REQUEST") == null) {
 
 android {
     namespace = "com.zionhuang.music"
-    compileSdk = 35
-    buildToolsVersion = "35.0.0"
+    compileSdk = 34
+    buildToolsVersion = "34.0.0"
     defaultConfig {
         applicationId = "com.zionhuang.music"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 26
         versionName = "0.5.10"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

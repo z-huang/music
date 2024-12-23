@@ -20,7 +20,8 @@ object TranslationHelper {
 
     suspend fun translate(lyrics: LyricsEntity): LyricsEntity {
         cache[lyrics.id]?.let { return it }
-        val isSynced = lyrics.lyrics.startsWith("[")
+        return try {
+            val isSynced = lyrics.lyrics.startsWith("[")
         val sourceLanguage = TranslateLanguage.fromLanguageTag(
             LanguageIdentification.getClient().identifyLanguage(
                 lyrics.lyrics.lines().joinToString(separator = "\n") { it.replace("\\[\\d{2}:\\d{2}.\\d{2,3}\\] *".toRegex(), "") }
@@ -63,9 +64,12 @@ object TranslationHelper {
                         .joinToString(separator = "\n")
                 }
             )
-        }.also {
             cache.put(it.id, it)
         }
+        } catch (e: Exception) {
+            lyrics // Return original lyrics if translation fails
+        }
+    }
     }
 
     suspend fun clearModels() {

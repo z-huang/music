@@ -110,7 +110,7 @@ class InnerTube {
         continuation: String? = null,
     ) = httpClient.post("search") {
         ytClient(client, setLogin = useLoginForBrowse)
-        body = 
+        setBody(
             SearchBody(
                 context = client.toContext(locale, visitorData),
                 query = query,

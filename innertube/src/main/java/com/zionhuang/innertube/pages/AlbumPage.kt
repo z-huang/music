@@ -27,10 +27,12 @@ data class AlbumPage(
                     )
                 } ?: return null,
                 album = renderer.flexColumns.getOrNull(2)?.musicResponsiveListItemFlexColumnRenderer?.text?.runs?.firstOrNull()?.let {
-                    Album(
-                        name = it.text,
-                        id = it.navigationEndpoint?.browseEndpoint?.browseId!!
-                    )
+                    it.navigationEndpoint?.browseEndpoint?.browseId?.let { browseId ->
+                        Album(
+                            name = it.text,
+                            id = browseId
+                        )
+                    }
                 } ?: return null,
                 duration = renderer.fixedColumns?.firstOrNull()
                     ?.musicResponsiveListItemFlexColumnRenderer?.text?.runs?.firstOrNull()
