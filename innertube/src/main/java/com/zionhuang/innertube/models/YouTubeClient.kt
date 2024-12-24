@@ -10,6 +10,7 @@ data class YouTubeClient(
     val userAgent: String,
     val osVersion: String? = null,
     val referer: String? = null,
+    val supportsLogin: Boolean = false,
 ) {
     fun toContext(locale: YouTubeLocale, visitorData: String?) = Context(
         client = Context.Client(
@@ -25,15 +26,14 @@ data class YouTubeClient(
     companion object {
         private const val REFERER_YOUTUBE_MUSIC = "https://music.youtube.com/"
 
-        private const val USER_AGENT_WEB = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36"
+        private const val USER_AGENT_WEB = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36"
         private const val USER_AGENT_ANDROID = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Mobile Safari/537.36"
-        private const val USER_AGENT_IOS = "com.google.ios.youtube/19.29.1 (iPhone16,2; U; CPU iOS 17_5_1 like Mac OS X;)"
 
         val ANDROID_MUSIC = YouTubeClient(
             clientName = "ANDROID_MUSIC",
             clientVersion = "5.01",
             api_key = "AIzaSyAOghZGza2MQSZkY_zfZ370N-PUdXEo8AI",
-            userAgent = USER_AGENT_ANDROID
+            userAgent = USER_AGENT_ANDROID,
         )
 
         val ANDROID = YouTubeClient(
@@ -47,30 +47,31 @@ data class YouTubeClient(
             clientName = "WEB",
             clientVersion = "2.2021111",
             api_key = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX3",
-            userAgent = USER_AGENT_WEB
+            userAgent = USER_AGENT_WEB,
         )
 
         val WEB_REMIX = YouTubeClient(
             clientName = "WEB_REMIX",
-            clientVersion = "1.20220606.03.00",
-            api_key = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30",
+            clientVersion = "1.20241127.01.00",
+            api_key = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX30", // TODO: remove
             userAgent = USER_AGENT_WEB,
-            referer = REFERER_YOUTUBE_MUSIC
+            referer = REFERER_YOUTUBE_MUSIC,
+            supportsLogin = true,
         )
 
         val TVHTML5 = YouTubeClient(
             clientName = "TVHTML5_SIMPLY_EMBEDDED_PLAYER",
             clientVersion = "2.0",
             api_key = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8",
-            userAgent = "Mozilla/5.0 (PlayStation 4 5.55) AppleWebKit/601.2 (KHTML, like Gecko)"
+            userAgent = "Mozilla/5.0 (PlayStation 4 5.55) AppleWebKit/601.2 (KHTML, like Gecko)",
         )
 
         val IOS = YouTubeClient(
             clientName = "IOS",
-            clientVersion = "19.29.1",
-            api_key = "AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc",
-            userAgent = USER_AGENT_IOS,
-            osVersion = "17.5.1.21F90",
+            clientVersion = "19.45.4",
+            api_key = "AIzaSyB-63vPrdThhKuerbB2N_l7Kwwcxj6yUAc", // TODO: remove
+            userAgent = "com.google.ios.youtube/19.45.4 (iPhone16,2; U; CPU iOS 18_1_0 like Mac OS X;)",
+            osVersion = "18.1.0.22B83",
         )
     }
 }
