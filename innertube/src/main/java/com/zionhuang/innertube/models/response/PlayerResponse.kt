@@ -81,11 +81,11 @@ data class PlayerResponse(
 
     fun findUrl(itag: Int): String? {
         this.streamingData?.adaptiveFormats?.find { it.itag == itag }?.let { format ->
-            if (format.url != null) {
-                return format.url
+            format.url?.let {
+                return it
             }
-            if (format.signatureCipher != null) {
-                val params = parseQueryString(format.signatureCipher)
+            format.signatureCipher?.let { signatureCipher ->
+                val params = parseQueryString(signatureCipher)
                 val obfuscatedSignature = params["s"] ?: return null
                 val signatureParam = params["sp"] ?: return null
                 val url = params["url"]?.let { URLBuilder(it) } ?: return null
