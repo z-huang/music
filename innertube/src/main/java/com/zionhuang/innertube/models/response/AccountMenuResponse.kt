@@ -35,9 +35,9 @@ data class AccountMenuResponse(
                             val channelHandle: Runs?,
                         ) {
                             fun toAccountInfo() = AccountInfo(
-                                name = accountName.runs!!.first().text,
-                                email = email?.runs?.first()?.text,
-                                channelHandle = channelHandle?.runs?.first()?.text
+                                name = accountName.runs?.firstOrNull()?.text ?: "",
+                                email = email?.runs?.firstOrNull()?.text,
+                                channelHandle = channelHandle?.runs?.firstOrNull()?.text
                             )
                         }
                     }

@@ -15,6 +15,11 @@ data class PlaylistPage(
     val continuation: String?,
 ) {
     companion object {
+        /**
+         * Converts a MusicResponsiveListItemRenderer to a SongItem.
+         * @param renderer The renderer to convert
+         * @return A SongItem if conversion is successful, null otherwise
+         */
         fun fromMusicResponsiveListItemRenderer(renderer: MusicResponsiveListItemRenderer): SongItem? {
             return SongItem(
                 id = renderer.playlistItemData?.videoId ?: return null,
@@ -27,11 +32,13 @@ data class PlaylistPage(
                         id = it.navigationEndpoint?.browseEndpoint?.browseId,
                     )
                 }.orEmpty().ifEmpty { return null },
-                album = renderer.flexColumns.getOrNull(2)?.musicResponsiveListItemFlexColumnRenderer?.text?.runs?.firstOrNull()?.let {
-                    Album(
-                        name = it.text,
-                        id = it.navigationEndpoint?.browseEndpoint?.browseId ?: return@let null
-                    )
+                album = renderer.flexColumns.getOrNull(2)?.musicResponsiveListItemFlexColumnRenderer?.text?.runs?.firstOrNull()?.let { run ->
+                    run.navigationEndpoint?.browseEndpoint?.browseId?.let { id ->
+                        Album(
+                            name = run.text,
+                            id = id
+                        )
+                    }
                 },
                 duration = renderer.fixedColumns?.firstOrNull()?.musicResponsiveListItemFlexColumnRenderer?.text?.runs?.firstOrNull()?.text?.parseTime(),
                 thumbnail = renderer.thumbnail?.musicThumbnailRenderer?.getThumbnailUrl() ?: return null,

@@ -19,9 +19,9 @@ data class MoodAndGenres(
         fun fromSectionListRendererContent(content: SectionListRenderer.Content): MoodAndGenres? {
             return MoodAndGenres(
                 title = content.gridRenderer?.header?.gridHeaderRenderer?.title?.runs?.firstOrNull()?.text ?: return null,
-                items = content.gridRenderer.items
-                    .mapNotNull(GridRenderer.Item::musicNavigationButtonRenderer)
-                    .mapNotNull(::fromMusicNavigationButtonRenderer)
+                items = content.gridRenderer?.items
+                    ?.mapNotNull(GridRenderer.Item::musicNavigationButtonRenderer)
+                    ?.mapNotNull(::fromMusicNavigationButtonRenderer) ?: return null
             )
         }
 

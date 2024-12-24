@@ -24,11 +24,12 @@ data class HomePage(
     ) {
         companion object {
             fun fromMusicCarouselShelfRenderer(renderer: MusicCarouselShelfRenderer): Section? {
+                val header = renderer.header?.musicCarouselShelfBasicHeaderRenderer ?: return null
                 return Section(
-                    title = renderer.header?.musicCarouselShelfBasicHeaderRenderer?.title?.runs?.firstOrNull()?.text ?: return null,
-                    label = renderer.header.musicCarouselShelfBasicHeaderRenderer.strapline?.runs?.firstOrNull()?.text,
-                    thumbnail = renderer.header.musicCarouselShelfBasicHeaderRenderer.thumbnail?.musicThumbnailRenderer?.getThumbnailUrl(),
-                    endpoint = renderer.header.musicCarouselShelfBasicHeaderRenderer.moreContentButton?.buttonRenderer?.navigationEndpoint?.browseEndpoint,
+                    title = header.title?.runs?.firstOrNull()?.text ?: return null,
+                    label = header.strapline?.runs?.firstOrNull()?.text,
+                    thumbnail = header.thumbnail?.musicThumbnailRenderer?.getThumbnailUrl(),
+                    endpoint = header.moreContentButton?.buttonRenderer?.navigationEndpoint?.browseEndpoint,
                     items = renderer.contents.mapNotNull {
                         it.musicTwoRowItemRenderer
                     }.mapNotNull {

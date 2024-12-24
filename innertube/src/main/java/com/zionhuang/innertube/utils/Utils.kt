@@ -29,8 +29,8 @@ fun parseCookieString(cookie: String): Map<String, String> =
     cookie.split("; ")
         .filter { it.isNotEmpty() }
         .associate {
-            val (key, value) = it.split("=")
-            key to value
+            val parts = it.split("=", limit = 2)
+            if (parts.size == 2) parts[0] to parts[1] else parts[0] to ""
         }
 
 fun String.parseTime(): Int? {
