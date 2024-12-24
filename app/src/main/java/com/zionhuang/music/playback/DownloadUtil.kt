@@ -108,7 +108,7 @@ class DownloadUtil @Inject constructor(
             )
         }
 
-        val streamUrl = playerResponse.findUrl(format.itag)
+        val streamUrl = format.findUrl()
 
         songUrlCache[mediaId] = streamUrl!! to playerResponse.streamingData!!.expiresInSeconds * 1000L
         dataSpec.withUri(streamUrl.toUri())

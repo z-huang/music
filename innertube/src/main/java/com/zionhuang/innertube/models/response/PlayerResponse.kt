@@ -64,6 +64,22 @@ data class PlayerResponse(
         ) {
             val isAudio: Boolean
                 get() = width == null
+
+            fun findUrl(): String? {
+                this.url?.let {
+                    return it
+                }
+                this.signatureCipher?.let { signatureCipher ->
+                    val params = parseQueryString(signatureCipher)
+                    val obfuscatedSignature = params["s"] ?: return null
+                    val signatureParam = params["sp"] ?: return null
+                    val url = params["url"]?.let { URLBuilder(it) } ?: return null
+                    url.parameters[signatureParam] = YoutubeJavaScriptPlayerManager.deobfuscateSignature("", obfuscatedSignature)
+                    val streamUrl = YoutubeJavaScriptPlayerManager.getUrlWithThrottlingParameterDeobfuscated("", url.toString())
+                    return streamUrl
+                }
+                return null
+            }
         }
     }
 
@@ -78,22 +94,4 @@ data class PlayerResponse(
         val viewCount: String,
         val thumbnail: Thumbnails,
     )
-
-    fun findUrl(itag: Int): String? {
-        this.streamingData?.adaptiveFormats?.find { it.itag == itag }?.let { format ->
-            format.url?.let {
-                return it
-            }
-            format.signatureCipher?.let { signatureCipher ->
-                val params = parseQueryString(signatureCipher)
-                val obfuscatedSignature = params["s"] ?: return null
-                val signatureParam = params["sp"] ?: return null
-                val url = params["url"]?.let { URLBuilder(it) } ?: return null
-                url.parameters[signatureParam] = YoutubeJavaScriptPlayerManager.deobfuscateSignature("", obfuscatedSignature)
-                val streamUrl = YoutubeJavaScriptPlayerManager.getUrlWithThrottlingParameterDeobfuscated("", url.toString())
-                return streamUrl
-            }
-        }
-        return null
-    }
 }
