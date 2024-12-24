@@ -84,7 +84,7 @@ data class PlayerResponse(
             if (format.url != null) {
                 return format.url
             }
-            if (this.videoDetails?.videoId != null && format.signatureCipher != null) {
+            if (format.signatureCipher != null) {
                 val params = parseQueryString(format.signatureCipher)
                 val obfuscatedSignature = params["s"] ?: return null
                 val signatureParam = params["sp"] ?: return null
