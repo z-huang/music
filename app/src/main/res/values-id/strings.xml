@@ -28,10 +28,10 @@
     <string name="most_played_artists">Artis yang paling sering diputar</string>
     <string name="most_played_albums">Album yang paling sering diputar</string>
     <!-- Search -->
-    <string name="search">Cari</string>
+    <string name="search">Mencari</string>
     <string name="search_yt_music">Cari di YouTube Music…</string>
     <string name="search_library">Cari di perpustakaan…</string>
-    <string name="filter_library">Perpustakaan</string>
+    <string name="filter_library">Arsip</string>
     <string name="filter_liked">Disukai</string>
     <string name="filter_downloaded">Diunduh</string>
     <string name="filter_all">Semua</string>
@@ -77,7 +77,7 @@
     <string name="remove_from_history">Hapus dari histori</string>
     <string name="search_online">Cari online</string>
     <string name="sync">Sinkronkan</string>
-    <string name="advanced">Lanjutkan</string>
+    <string name="advanced">Lanjutan</string>
     <!-- Sort menu -->
     <string name="sort_by_create_date">Tanggal ditambahkan</string>
     <string name="sort_by_name">Nama</string>
@@ -140,7 +140,7 @@
     <string name="playlist_imported">Daftar putar yang diimpor</string>
     <string name="removed_song_from_playlist">Menghapus \"%s\" dari daftar putar</string>
     <string name="playlist_synced">Daftar putar disinkronkan</string>
-    <string name="undo">Urungkan</string>
+    <string name="undo">Batal</string>
     <!-- Player -->
     <string name="lyrics_not_found">Lirik tidak ditemukan</string>
     <string name="sleep_timer">Timer tidur</string>
