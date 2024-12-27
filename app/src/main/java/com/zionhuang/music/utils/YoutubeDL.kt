@@ -34,7 +34,7 @@ class YoutubeDL {
             runCatching {
                 val request = YoutubeDLRequest("https://music.youtube.com/watch?v=$videoId")
 
-                val client: String = if (withLogin) "web_music" else "ios"
+                val client: String = if (withLogin) "web_creator" else "ios"
                 request.addOption("--extractor-args", "youtube:player_client=$client")
 
                 if (withLogin) {
@@ -43,7 +43,7 @@ class YoutubeDL {
 
                 request.addOption("--skip-download")
                 request.addOption("--no-warnings")
-                request.addOption("--format", "$itag")
+                request.addOption("--format", itag)
                 request.addOption("--print", "url")
 
                 // this options should never be added during normal usage of the app - enable this only while debugging !!!
