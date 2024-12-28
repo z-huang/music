@@ -15,6 +15,7 @@ import com.zionhuang.innertube.models.WatchEndpoint.WatchEndpointMusicSupportedC
 import com.zionhuang.innertube.models.YouTubeClient.Companion.IOS
 import com.zionhuang.innertube.models.YouTubeClient.Companion.TVHTML5
 import com.zionhuang.innertube.models.YouTubeClient.Companion.WEB
+import com.zionhuang.innertube.models.YouTubeClient.Companion.WEB_CREATOR
 import com.zionhuang.innertube.models.YouTubeClient.Companion.WEB_REMIX
 import com.zionhuang.innertube.models.YouTubeLocale
 import com.zionhuang.innertube.models.getContinuation
@@ -435,8 +436,8 @@ object YouTube {
 
     suspend fun player(videoId: String, playlistId: String? = null): Result<PlayerResponse> = runCatching {
         var playerResponse: PlayerResponse
-        if (this.cookie != null) { // if logged in: try WEB_REMIX client first because IOS client does not support login
-            playerResponse = innerTube.player(WEB_REMIX, videoId, playlistId).body<PlayerResponse>()
+        if (this.cookie != null) { // if logged in: try WEB_CREATOR client first because IOS client does not support login
+            playerResponse = innerTube.player(WEB_CREATOR, videoId, playlistId).body<PlayerResponse>()
             if (playerResponse.playabilityStatus.status == "OK") {
                 return@runCatching playerResponse
             }

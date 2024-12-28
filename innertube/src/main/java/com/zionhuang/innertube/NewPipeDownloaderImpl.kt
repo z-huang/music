@@ -1,5 +1,6 @@
 package com.zionhuang.innertube
 
+import com.zionhuang.innertube.models.YouTubeClient
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.schabi.newpipe.extractor.downloader.Downloader
@@ -9,11 +10,6 @@ import org.schabi.newpipe.extractor.exceptions.ReCaptchaException
 import java.io.IOException
 
 object NewPipeDownloaderImpl : Downloader() {
-
-    /**
-     * Should be the latest Firefox ESR version.
-     */
-    private const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0"
 
     private val client = OkHttpClient.Builder().build()
 
@@ -27,7 +23,7 @@ object NewPipeDownloaderImpl : Downloader() {
         val requestBuilder = okhttp3.Request.Builder()
             .method(httpMethod, dataToSend?.toRequestBody())
             .url(url)
-            .addHeader("User-Agent", USER_AGENT)
+            .addHeader("User-Agent", YouTubeClient.USER_AGENT_WEB)
 
         headers.forEach { (headerName, headerValueList) ->
             if (headerValueList.size > 1) {
