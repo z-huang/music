@@ -7,7 +7,6 @@ data class YouTubeClient(
     val clientName: String,
     val clientVersion: String,
     val clientId: String,
-    val api_key: String? = null,
     val userAgent: String,
     val osVersion: String? = null,
     val supportsLogin: Boolean = false,
@@ -54,7 +53,6 @@ data class YouTubeClient(
             clientName = "WEB",
             clientVersion = "2.20241126.01.00",
             clientId = "1",
-            api_key = "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX3",
             userAgent = USER_AGENT_WEB,
         )
 
