@@ -64,6 +64,7 @@ data class YouTubeClient(
             clientId = "67",
             userAgent = USER_AGENT_WEB,
             supportsLogin = true,
+            useSignatureTimestamp = true,
         )
 
         val WEB_CREATOR = YouTubeClient(
