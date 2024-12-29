@@ -80,8 +80,9 @@ data class YouTubeClient(
             clientName = "TVHTML5_SIMPLY_EMBEDDED_PLAYER",
             clientVersion = "2.0",
             clientId = "85",
-            api_key = "AIzaSyDCU8hByM-4DrUqRUYnGn-3llEO78bcxq8",
-            userAgent = "Mozilla/5.0 (PlayStation 4 5.55) AppleWebKit/601.2 (KHTML, like Gecko)",
+            userAgent = "Mozilla/5.0 (PlayStation; PlayStation 4/12.00) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15",
+            supportsLogin = true,
+            useSignatureTimestamp = true,
         )
 
         val IOS = YouTubeClient(
