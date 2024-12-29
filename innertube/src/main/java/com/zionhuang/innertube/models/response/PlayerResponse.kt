@@ -75,8 +75,7 @@ data class PlayerResponse(
                     val signatureParam = params["sp"] ?: return null
                     val url = params["url"]?.let { URLBuilder(it) } ?: return null
                     url.parameters[signatureParam] = YoutubeJavaScriptPlayerManager.deobfuscateSignature("", obfuscatedSignature)
-                    val streamUrl = YoutubeJavaScriptPlayerManager.getUrlWithThrottlingParameterDeobfuscated("", url.toString())
-                    return streamUrl
+                    return YoutubeJavaScriptPlayerManager.getUrlWithThrottlingParameterDeobfuscated("", url.toString())
                 }
                 return null
             }
