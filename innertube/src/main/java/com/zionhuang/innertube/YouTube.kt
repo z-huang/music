@@ -448,7 +448,7 @@ object YouTube {
         }
         val safePlayerResponse = innerTube.player(TVHTML5, videoId, playlistId).body<PlayerResponse>()
         if (safePlayerResponse.playabilityStatus.status != "OK") {
-            return@runCatching safePlayerResponse
+            return@runCatching playerResponse
         }
         val audioStreams = innerTube.pipedStreams(videoId).body<PipedResponse>().audioStreams
         safePlayerResponse.copy(
