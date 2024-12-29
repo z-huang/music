@@ -144,7 +144,7 @@ class InnerTube {
                 playbackContext =
                     if (client.useSignatureTimestamp) {
                         PlayerBody.PlaybackContext(PlayerBody.PlaybackContext.ContentPlaybackContext(
-                            signatureTimestamp = YoutubeJavaScriptPlayerManager.getSignatureTimestamp("")
+                            signatureTimestamp = YoutubeJavaScriptPlayerManager.getSignatureTimestamp(videoId)
                         ))
                     } else null
             )
