@@ -35,20 +35,6 @@ data class YouTubeClient(
         const val REFERER_YOUTUBE_MUSIC = "$ORIGIN_YOUTUBE_MUSIC/"
         const val API_URL_YOUTUBE_MUSIC = "$ORIGIN_YOUTUBE_MUSIC/youtubei/v1/"
 
-//        private const val USER_AGENT_ANDROID = "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Mobile Safari/537.36"
-//        val ANDROID_MUSIC = YouTubeClient(
-//            clientName = "ANDROID_MUSIC",
-//            clientVersion = "5.01",
-//            api_key = "AIzaSyAOghZGza2MQSZkY_zfZ370N-PUdXEo8AI",
-//            userAgent = USER_AGENT_ANDROID,
-//        )
-//        val ANDROID = YouTubeClient(
-//            clientName = "ANDROID",
-//            clientVersion = "17.13.3",
-//            api_key = "AIzaSyA8eiZmM1FaDVjRy-df2KTyQ_vz_yYM39w",
-//            userAgent = USER_AGENT_ANDROID,
-//        )
-
         val WEB = YouTubeClient(
             clientName = "WEB",
             clientVersion = "2.20241126.01.00",
