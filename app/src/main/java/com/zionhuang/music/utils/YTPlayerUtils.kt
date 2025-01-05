@@ -172,10 +172,15 @@ object YTPlayerUtils {
         }
 
     private fun validateStatus(url: String): Boolean {
-        val requestBuilder = okhttp3.Request.Builder()
-            .head()
-            .url(url)
-        val response = httpClient.newCall(requestBuilder.build()).execute()
-        return response.isSuccessful
+        try {
+            val requestBuilder = okhttp3.Request.Builder()
+                .head()
+                .url(url)
+            val response = httpClient.newCall(requestBuilder.build()).execute()
+            return response.isSuccessful
+        } catch (e: Exception) {
+            reportException(e)
+        }
+        return false
     }
 }
