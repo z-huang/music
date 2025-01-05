@@ -91,7 +91,7 @@ mlkit-translate = { group = "com.google.mlkit", name = "translate", version = "1
 
 #newpipe-extractor = { group = "com.github.TeamNewPipe", name = "NewPipeExtractor", version = "v0.24.3" }
 # Use fork of NewPipeExtractor until https://github.com/TeamNewPipe/NewPipeExtractor/pull/1253 is merged
-newpipe-extractor = { group = "com.github.gechoto", name = "NewPipeExtractor", version = "0a5158d9052d57a9dbf184814de1988a8cb7824d" }
+newpipe-extractor = { group = "com.github.gechoto", name = "NewPipeExtractor", version = "a4b0ee902e9717144aa9504df2d85cdd16476b90" }
 
 [plugins]
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
