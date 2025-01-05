@@ -148,11 +148,6 @@ class InnerTube {
         )
     }
 
-    suspend fun pipedStreams(videoId: String) =
-        httpClient.get("https://pipedapi.kavin.rocks/streams/${videoId}") {
-            contentType(ContentType.Application.Json)
-        }
-
     suspend fun browse(
         client: YouTubeClient,
         browseId: String? = null,

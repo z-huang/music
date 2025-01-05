@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 import org.schabi.newpipe.extractor.services.youtube.YoutubeJavaScriptPlayerManager
 
 /**
- * PlayerResponse with [com.zionhuang.innertube.models.YouTubeClient.ANDROID_MUSIC] client
+ * PlayerResponse with [com.zionhuang.innertube.models.YouTubeClient.WEB_REMIX] client
  */
 @Serializable
 data class PlayerResponse(
