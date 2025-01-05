@@ -5,6 +5,7 @@ import com.zionhuang.innertube.models.Thumbnails
 import io.ktor.http.URLBuilder
 import io.ktor.http.parseQueryString
 import kotlinx.serialization.Serializable
+import org.schabi.newpipe.extractor.exceptions.ParsingException
 import org.schabi.newpipe.extractor.services.youtube.YoutubeJavaScriptPlayerManager
 
 /**
@@ -65,19 +66,19 @@ data class PlayerResponse(
             val isAudio: Boolean
                 get() = width == null
 
-            fun findUrl(): String? {
+            fun findUrl(videoId: String): Result<String> = runCatching {
                 this.url?.let {
-                    return it
+                    return@runCatching it
                 }
                 this.signatureCipher?.let { signatureCipher ->
                     val params = parseQueryString(signatureCipher)
-                    val obfuscatedSignature = params["s"] ?: return null
-                    val signatureParam = params["sp"] ?: return null
-                    val url = params["url"]?.let { URLBuilder(it) } ?: return null
-                    url.parameters[signatureParam] = YoutubeJavaScriptPlayerManager.deobfuscateSignature("", obfuscatedSignature)
-                    return YoutubeJavaScriptPlayerManager.getUrlWithThrottlingParameterDeobfuscated("", url.toString())
+                    val obfuscatedSignature = params["s"] ?: throw ParsingException("Could not parse cipher signature")
+                    val signatureParam = params["sp"] ?: throw ParsingException("Could not parse cipher signature parameter")
+                    val url = params["url"]?.let { URLBuilder(it) } ?: throw ParsingException("Could not parse cipher url")
+                    url.parameters[signatureParam] = YoutubeJavaScriptPlayerManager.deobfuscateSignature(videoId, obfuscatedSignature)
+                    return@runCatching YoutubeJavaScriptPlayerManager.getUrlWithThrottlingParameterDeobfuscated(videoId, url.toString())
                 }
-                return null
+                throw ParsingException("Could not find format url")
             }
         }
     }

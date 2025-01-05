@@ -70,7 +70,7 @@ object YTPlayerUtils {
                 connectivityManager,
             )
             if (format != null) {
-                streamUrl = format.findUrl()
+                streamUrl = findUrlOrNull(format, videoId)
                 streamExpiresInSeconds = mainPlayerResponse.streamingData?.expiresInSeconds
                 if (streamUrl != null && streamExpiresInSeconds != null && validateStatus(streamUrl)) {
                     return@runCatching PlaybackData(
@@ -102,7 +102,7 @@ object YTPlayerUtils {
                         audioQuality,
                         connectivityManager,
                     ) ?: continue
-                streamUrl = format.findUrl() ?: continue
+                streamUrl = findUrlOrNull(format, videoId) ?: continue
                 streamExpiresInSeconds = fallbackPlayerResponse.streamingData?.expiresInSeconds ?: continue
 
                 if (validateStatus(streamUrl)) {
@@ -171,6 +171,11 @@ object YTPlayerUtils {
                 }
         }
 
+    /**
+     * Checks if the stream url returns a successful status.
+     * If this returns true the url is likely to work.
+     * If this returns false the url might cause an error during playback.
+     */
     private fun validateStatus(url: String): Boolean {
         try {
             val requestBuilder = okhttp3.Request.Builder()
@@ -182,5 +187,19 @@ object YTPlayerUtils {
             reportException(e)
         }
         return false
+    }
+
+    /**
+     * Wrapper around the [PlayerResponse.StreamingData.Format.findUrl] function which reports exceptions
+     */
+    private fun findUrlOrNull(
+        format: PlayerResponse.StreamingData.Format,
+        videoId: String
+    ): String? {
+        return format.findUrl(videoId)
+            .onFailure {
+                reportException(it)
+            }
+            .getOrNull()
     }
 }
