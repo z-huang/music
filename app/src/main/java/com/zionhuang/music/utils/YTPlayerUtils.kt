@@ -62,49 +62,40 @@ object YTPlayerUtils {
         var streamUrl: String? = null
         var streamExpiresInSeconds: Int? = null
 
-        if (mainPlayerResponse.playabilityStatus.status == "OK") {
-            format = findFormat(
-                mainPlayerResponse,
-                playedFormat,
-                audioQuality,
-                connectivityManager,
-            )
-            if (format != null) {
-                streamUrl = findUrlOrNull(format, videoId)
-                streamExpiresInSeconds = mainPlayerResponse.streamingData?.expiresInSeconds
-                if (streamUrl != null && streamExpiresInSeconds != null && validateStatus(streamUrl)) {
-                    return@runCatching PlaybackData(
-                        audioConfig,
-                        videoDetails,
-                        format,
-                        streamUrl,
-                        streamExpiresInSeconds,
-                    )
-                }
-            }
-        }
-
-        var fallbackPlayerResponse: PlayerResponse? = null
-        for (client in STREAM_FALLBACK_CLIENTS) {
+        var streamPlayerResponse: PlayerResponse? = null
+        for (clientIndex in (-1 until STREAM_FALLBACK_CLIENTS.size)) {
             // reset for each client
             format = null
             streamUrl = null
             streamExpiresInSeconds = null
 
+            // decide which client to use
+            if (clientIndex == -1) {
+                // try with streams from main client first
+                streamPlayerResponse = mainPlayerResponse
+            } else {
+                // after main client use fallback clients
+                val client = STREAM_FALLBACK_CLIENTS[clientIndex]
+                streamPlayerResponse =
+                    YouTube.player(videoId, playlistId, client).getOrNull()
+            }
+
             // process current client response
-            fallbackPlayerResponse =
-                YouTube.player(videoId, playlistId, client).getOrNull()
-            if (fallbackPlayerResponse?.playabilityStatus?.status == "OK") {
+            if (streamPlayerResponse?.playabilityStatus?.status == "OK") {
                 format =
                     findFormat(
-                        fallbackPlayerResponse,
+                        streamPlayerResponse,
                         playedFormat,
                         audioQuality,
                         connectivityManager,
                     ) ?: continue
                 streamUrl = findUrlOrNull(format, videoId) ?: continue
-                streamExpiresInSeconds = fallbackPlayerResponse.streamingData?.expiresInSeconds ?: continue
+                streamExpiresInSeconds = streamPlayerResponse.streamingData?.expiresInSeconds ?: continue
 
+                if (clientIndex == STREAM_FALLBACK_CLIENTS.size - 1) {
+                    /** skip [validateStatus] for last client */
+                    break
+                }
                 if (validateStatus(streamUrl)) {
                     // working stream found
                     break
@@ -112,12 +103,12 @@ object YTPlayerUtils {
             }
         }
 
-        if (fallbackPlayerResponse == null) {
-            throw Exception("Bad fallback player response")
+        if (streamPlayerResponse == null) {
+            throw Exception("Bad stream player response")
         }
-        if (fallbackPlayerResponse.playabilityStatus.status != "OK") {
+        if (streamPlayerResponse.playabilityStatus.status != "OK") {
             throw PlaybackException(
-                fallbackPlayerResponse.playabilityStatus.reason,
+                streamPlayerResponse.playabilityStatus.reason,
                 null,
                 PlaybackException.ERROR_CODE_REMOTE_ERROR
             )
