@@ -122,6 +122,7 @@ class InnerTube {
         client: YouTubeClient,
         videoId: String,
         playlistId: String?,
+        signatureTimestamp: Int?,
     ) = httpClient.post("player") {
         ytClient(client, setLogin = true)
         setBody(
@@ -138,9 +139,9 @@ class InnerTube {
                 videoId = videoId,
                 playlistId = playlistId,
                 playbackContext =
-                    if (client.useSignatureTimestamp) {
+                    if (client.useSignatureTimestamp && signatureTimestamp != null) {
                         PlayerBody.PlaybackContext(PlayerBody.PlaybackContext.ContentPlaybackContext(
-                            signatureTimestamp = NewPipeUtils.getSignatureTimestamp(videoId).getOrThrow()
+                            signatureTimestamp
                         ))
                     } else null
             )

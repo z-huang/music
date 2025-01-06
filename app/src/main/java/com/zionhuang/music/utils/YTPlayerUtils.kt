@@ -53,8 +53,16 @@ object YTPlayerUtils {
         audioQuality: AudioQuality,
         connectivityManager: ConnectivityManager,
     ): Result<PlaybackData> = runCatching {
+        /**
+         * This is required for some clients to get working streams however
+         * it should not be forced for the [MAIN_CLIENT] because the response of the [MAIN_CLIENT]
+         * is required even if the streams won't work from this client.
+         * This is why it is allowed to be null.
+         */
+        val signatureTimestamp = getSignatureTimestampOrNull(videoId)
+
         val mainPlayerResponse =
-            YouTube.player(videoId, playlistId, client = MAIN_CLIENT).getOrThrow()
+            YouTube.player(videoId, playlistId, MAIN_CLIENT, signatureTimestamp).getOrThrow()
 
         val audioConfig = mainPlayerResponse.playerConfig?.audioConfig
         val videoDetails = mainPlayerResponse.videoDetails
@@ -78,7 +86,7 @@ object YTPlayerUtils {
                 // after main client use fallback clients
                 val client = STREAM_FALLBACK_CLIENTS[clientIndex]
                 streamPlayerResponse =
-                    YouTube.player(videoId, playlistId, client).getOrNull()
+                    YouTube.player(videoId, playlistId, client, signatureTimestamp).getOrNull()
             }
 
             // process current client response
@@ -179,6 +187,19 @@ object YTPlayerUtils {
             reportException(e)
         }
         return false
+    }
+
+    /**
+     * Wrapper around the [NewPipeUtils.getSignatureTimestamp] function which reports exceptions
+     */
+    private fun getSignatureTimestampOrNull(
+        videoId: String
+    ): Int? {
+        return NewPipeUtils.getSignatureTimestamp(videoId)
+            .onFailure {
+                reportException(it)
+            }
+            .getOrNull()
     }
 
     /**
