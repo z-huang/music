@@ -65,21 +65,6 @@ data class PlayerResponse(
         ) {
             val isAudio: Boolean
                 get() = width == null
-
-            fun findUrl(videoId: String): Result<String> = runCatching {
-                this.url?.let {
-                    return@runCatching it
-                }
-                this.signatureCipher?.let { signatureCipher ->
-                    val params = parseQueryString(signatureCipher)
-                    val obfuscatedSignature = params["s"] ?: throw ParsingException("Could not parse cipher signature")
-                    val signatureParam = params["sp"] ?: throw ParsingException("Could not parse cipher signature parameter")
-                    val url = params["url"]?.let { URLBuilder(it) } ?: throw ParsingException("Could not parse cipher url")
-                    url.parameters[signatureParam] = YoutubeJavaScriptPlayerManager.deobfuscateSignature(videoId, obfuscatedSignature)
-                    return@runCatching YoutubeJavaScriptPlayerManager.getUrlWithThrottlingParameterDeobfuscated(videoId, url.toString())
-                }
-                throw ParsingException("Could not find format url")
-            }
         }
     }
 

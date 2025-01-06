@@ -2,6 +2,7 @@ package com.zionhuang.music.utils
 
 import android.net.ConnectivityManager
 import androidx.media3.common.PlaybackException
+import com.zionhuang.innertube.NewPipeUtils
 import com.zionhuang.innertube.YouTube
 import com.zionhuang.innertube.models.YouTubeClient
 import com.zionhuang.innertube.models.YouTubeClient.Companion.IOS
@@ -181,13 +182,13 @@ object YTPlayerUtils {
     }
 
     /**
-     * Wrapper around the [PlayerResponse.StreamingData.Format.findUrl] function which reports exceptions
+     * Wrapper around the [NewPipeUtils.getStreamUrl] function which reports exceptions
      */
     private fun findUrlOrNull(
         format: PlayerResponse.StreamingData.Format,
         videoId: String
     ): String? {
-        return format.findUrl(videoId)
+        return NewPipeUtils.getStreamUrl(format, videoId)
             .onFailure {
                 reportException(it)
             }

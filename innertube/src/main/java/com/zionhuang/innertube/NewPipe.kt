@@ -1,12 +1,17 @@
 package com.zionhuang.innertube
 
 import com.zionhuang.innertube.models.YouTubeClient
+import com.zionhuang.innertube.models.response.PlayerResponse
+import io.ktor.http.URLBuilder
+import io.ktor.http.parseQueryString
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.schabi.newpipe.extractor.downloader.Downloader
 import org.schabi.newpipe.extractor.downloader.Request
 import org.schabi.newpipe.extractor.downloader.Response
+import org.schabi.newpipe.extractor.exceptions.ParsingException
 import org.schabi.newpipe.extractor.exceptions.ReCaptchaException
+import org.schabi.newpipe.extractor.services.youtube.YoutubeJavaScriptPlayerManager
 import java.io.IOException
 
 object NewPipeDownloaderImpl : Downloader() {
@@ -48,6 +53,29 @@ object NewPipeDownloaderImpl : Downloader() {
 
         val latestUrl = response.request.url.toString()
         return Response(response.code, response.message, response.headers.toMultimap(), responseBodyToReturn, latestUrl)
+    }
+
+}
+
+object NewPipeUtils {
+
+    fun getSignatureTimestamp(videoId: String): Result<Int> = runCatching {
+        YoutubeJavaScriptPlayerManager.getSignatureTimestamp(videoId)
+    }
+
+    fun getStreamUrl(format: PlayerResponse.StreamingData.Format, videoId: String) = runCatching {
+        format.url?.let {
+            return@runCatching it
+        }
+        format.signatureCipher?.let { signatureCipher ->
+            val params = parseQueryString(signatureCipher)
+            val obfuscatedSignature = params["s"] ?: throw ParsingException("Could not parse cipher signature")
+            val signatureParam = params["sp"] ?: throw ParsingException("Could not parse cipher signature parameter")
+            val url = params["url"]?.let { URLBuilder(it) } ?: throw ParsingException("Could not parse cipher url")
+            url.parameters[signatureParam] = YoutubeJavaScriptPlayerManager.deobfuscateSignature(videoId, obfuscatedSignature)
+            return@runCatching YoutubeJavaScriptPlayerManager.getUrlWithThrottlingParameterDeobfuscated(videoId, url.toString())
+        }
+        throw ParsingException("Could not find format url")
     }
 
 }
