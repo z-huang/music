@@ -9,7 +9,8 @@ data class YouTubeClient(
     val clientId: String,
     val userAgent: String,
     val osVersion: String? = null,
-    val supportsLogin: Boolean = false,
+    val loginSupported: Boolean = false,
+    val loginRequired: Boolean = false,
     val useSignatureTimestamp: Boolean = false,
     // val origin: String? = null,
     // val referer: String? = null,
@@ -47,7 +48,7 @@ data class YouTubeClient(
             clientVersion = "1.20241127.01.00",
             clientId = "67",
             userAgent = USER_AGENT_WEB,
-            supportsLogin = true,
+            loginSupported = true,
             useSignatureTimestamp = true,
         )
 
@@ -56,7 +57,8 @@ data class YouTubeClient(
             clientVersion = "1.20241203.01.00",
             clientId = "62",
             userAgent = USER_AGENT_WEB,
-            supportsLogin = true,
+            loginSupported = true,
+            loginRequired = true,
             useSignatureTimestamp = true,
         )
 
@@ -65,7 +67,7 @@ data class YouTubeClient(
             clientVersion = "2.0",
             clientId = "85",
             userAgent = "Mozilla/5.0 (PlayStation; PlayStation 4/12.00) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15",
-            supportsLogin = true,
+            loginSupported = true,
             useSignatureTimestamp = true,
         )
 

@@ -85,6 +85,11 @@ object YTPlayerUtils {
             } else {
                 // after main client use fallback clients
                 val client = STREAM_FALLBACK_CLIENTS[clientIndex]
+                if (client.loginRequired && YouTube.cookie == null) {
+                    // skip client if it requires login but user is not logged in
+                    continue
+                }
+
                 streamPlayerResponse =
                     YouTube.player(videoId, playlistId, client, signatureTimestamp).getOrNull()
             }
