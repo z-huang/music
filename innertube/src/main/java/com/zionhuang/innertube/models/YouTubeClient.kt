@@ -68,6 +68,7 @@ data class YouTubeClient(
             clientId = "85",
             userAgent = "Mozilla/5.0 (PlayStation; PlayStation 4/12.00) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Safari/605.1.15",
             loginSupported = true,
+            loginRequired = true,
             useSignatureTimestamp = true,
         )
 
