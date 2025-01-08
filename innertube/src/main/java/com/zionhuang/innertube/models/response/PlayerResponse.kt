@@ -2,11 +2,7 @@ package com.zionhuang.innertube.models.response
 
 import com.zionhuang.innertube.models.ResponseContext
 import com.zionhuang.innertube.models.Thumbnails
-import io.ktor.http.URLBuilder
-import io.ktor.http.parseQueryString
 import kotlinx.serialization.Serializable
-import org.schabi.newpipe.extractor.exceptions.ParsingException
-import org.schabi.newpipe.extractor.services.youtube.YoutubeJavaScriptPlayerManager
 
 /**
  * PlayerResponse with [com.zionhuang.innertube.models.YouTubeClient.WEB_REMIX] client
