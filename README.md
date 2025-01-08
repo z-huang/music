@@ -64,13 +64,18 @@ recommend [Pano Scrobbler](https://play.google.com/store/apps/details?id=com.arn
 2. In the three dots menu at the top-right of the screen, click "Developer settings"
 3. Enable "Unknown sources"
 
-## Translating
+## Translation
 
-If you'd like to help translate InnerTune, check out [our project in Weblate.](https://hosted.weblate.org/engage/innertune/) Weblate allows us to solve issues with translation inconsistency, edited strings, etc.
+If you'd like to help translate InnerTune, check out [our project in Weblate!](https://hosted.weblate.org/engage/innertune/)
 
-> Preferably do not send pull requests if you can. They can cause merging issues, which can lead to the loss of translation work from you or other people.
+> [!TIP]
+> Preferably do notuse pull requests/modify files yourself, if you can. Prefer Weblate when possible. 
+> Doing so may cause merging issues, and may end up becoming unmergeable.
+> It's also likely that other people have also gone and helped with the translation process of the language you want to update, but it hasn't been merged yet.
 
-Thank you for helping translate InnerTune!
+[![Translation status](https://hosted.weblate.org/widget/innertune/multi-auto.svg)](https://hosted.weblate.org/engage/innertune/)
+
+Thank you for helping make InnerTune more accessible to people *worldwide!*
 
 ## Donate
 
