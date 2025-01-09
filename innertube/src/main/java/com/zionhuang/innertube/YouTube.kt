@@ -51,7 +51,6 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonPrimitive
-import org.schabi.newpipe.extractor.NewPipe
 import java.net.Proxy
 
 /**
@@ -60,10 +59,6 @@ import java.net.Proxy
  */
 object YouTube {
     private val innerTube = InnerTube()
-
-    init {
-        NewPipe.init(NewPipeDownloaderImpl)
-    }
 
     var locale: YouTubeLocale
         get() = innerTube.locale

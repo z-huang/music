@@ -6,6 +6,7 @@ import io.ktor.http.URLBuilder
 import io.ktor.http.parseQueryString
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.downloader.Downloader
 import org.schabi.newpipe.extractor.downloader.Request
 import org.schabi.newpipe.extractor.downloader.Response
@@ -14,7 +15,7 @@ import org.schabi.newpipe.extractor.exceptions.ReCaptchaException
 import org.schabi.newpipe.extractor.services.youtube.YoutubeJavaScriptPlayerManager
 import java.io.IOException
 
-object NewPipeDownloaderImpl : Downloader() {
+private object NewPipeDownloaderImpl : Downloader() {
 
     private val client = OkHttpClient.Builder().build()
 
@@ -58,6 +59,10 @@ object NewPipeDownloaderImpl : Downloader() {
 }
 
 object NewPipeUtils {
+
+    init {
+        NewPipe.init(NewPipeDownloaderImpl)
+    }
 
     fun getSignatureTimestamp(videoId: String): Result<Int> = runCatching {
         YoutubeJavaScriptPlayerManager.getSignatureTimestamp(videoId)
