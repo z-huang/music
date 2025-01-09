@@ -15,7 +15,9 @@ import okhttp3.OkHttpClient
 
 object YTPlayerUtils {
 
-    private val httpClient = OkHttpClient.Builder().build()
+    private val httpClient = OkHttpClient.Builder()
+        .proxy(YouTube.proxy)
+        .build()
 
     /**
      * The main client is used for metadata and initial streams.
