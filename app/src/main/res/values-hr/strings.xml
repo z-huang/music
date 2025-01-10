@@ -285,4 +285,6 @@
     <string name="login_failed">Neuspješno upisivanje</string>
     <string name="new_version_available">Dostupna je nova verzija</string>
     <string name="translation_models">Modeli prevođenja</string>
+    <string name="use_login_for_browse">Koristi prijavu za pregledavanje sadržaja</string>
+    <string name="use_login_for_browse_desc">Ovo može utjecati na sadržaj koji vidiš i, na primjer, prikazuje samo premium albume ako si prijavljen/a s Premium računom</string>
 </resources>

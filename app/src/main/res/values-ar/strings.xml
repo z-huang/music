@@ -314,4 +314,6 @@
     <string name="logout">تسجيل الخروج</string>
     <string name="clear_translation_models">مسح نماذج الترجمة</string>
     <string name="disable_screenshot_desc">عند تفعيل هذا الخيار، يتم تعطيل اخذ لقطات للشاشة وعدم اظهار محتوى التطبيق في التطبيقات الأخيرة.</string>
+    <string name="use_login_for_browse">استخدم تسجيل الدخول لتصفح المحتوى</string>
+    <string name="use_login_for_browse_desc">يمكن أن يؤثر ذلك على المحتوى الذي تراه، فعلى سبيل المثال، يعرض الألبومات المخصصة للمشتركين المميزين فقط إذا كنت مسجلاً الدخول باستخدام حساب مميز</string>
 </resources>

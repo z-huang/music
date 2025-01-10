@@ -315,4 +315,6 @@
     <string name="options">Opcje</string>
     <string name="preview">Podgląd</string>
     <string name="logout">Wyloguj</string>
+    <string name="use_login_for_browse">Zaloguj się, aby przeglądać treści</string>
+    <string name="use_login_for_browse_desc">Może to wpływać na wyświetlaną zawartość i na przykład umożliwia dostęp do albumów wyłącznie dla użytkowników Premium, jeśli jesteś zalogowany na koncie Premium</string>
 </resources>
