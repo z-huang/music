@@ -399,14 +399,14 @@ class MusicService : MediaLibraryService(),
         )
     }
 
-    private suspend fun recoverSong(mediaId: String, videoDetails: PlayerResponse.VideoDetails? = null) {
+    private suspend fun recoverSong(mediaId: String, playbackData: YTPlayerUtils.PlaybackData? = null) {
         val song = database.song(mediaId).first()
         val mediaMetadata = withContext(Dispatchers.Main) {
             player.findNextMediaItemById(mediaId)?.metadata
         } ?: return
         val duration = song?.song?.duration?.takeIf { it != -1 }
             ?: mediaMetadata.duration.takeIf { it != -1 }
-            ?: (videoDetails ?: YTPlayerUtils.playerResponseForMetadata(mediaId).getOrNull()?.videoDetails)?.lengthSeconds?.toInt()
+            ?: (playbackData?.videoDetails ?: YTPlayerUtils.playerResponseForMetadata(mediaId).getOrNull()?.videoDetails)?.lengthSeconds?.toInt()
             ?: -1
         database.query {
             if (song == null) insert(mediaMetadata.copy(duration = duration))
@@ -677,7 +677,7 @@ class MusicService : MediaLibraryService(),
                     )
                 )
             }
-            scope.launch(Dispatchers.IO) { recoverSong(mediaId, playbackData.videoDetails) }
+            scope.launch(Dispatchers.IO) { recoverSong(mediaId, playbackData) }
 
             val streamUrl = playbackData.streamUrl
 
