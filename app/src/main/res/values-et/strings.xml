@@ -276,4 +276,6 @@
     <string name="options">Valikud</string>
     <string name="logout">Logi välja</string>
     <string name="login_failed">Sisselogimine ei õnnestunud</string>
+    <string name="use_login_for_browse">Sisu sirvimiseks logi sisse</string>
+    <string name="use_login_for_browse_desc">See võib mõjutada mis sisu sa näed, sealhulgas kui kasutad YouTube Premium-kontot, siis YouTube Premiumi jaoks mõeldud albumeid</string>
 </resources>

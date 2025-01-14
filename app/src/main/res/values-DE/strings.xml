@@ -17,7 +17,7 @@
     <string name="mood_and_genres">Stimmungen und Genres</string>
     <string name="account">Konto</string>
     <string name="quick_picks">Schnellauswahl</string>
-    <string name="quick_picks_empty">Hören Sie sich einige Songs an, um Ihre Schnellauswahl zu treffen</string>
+    <string name="quick_picks_empty">Höre dir einige Songs an, um deine Schnellauswahl zu erstellen</string>
     <string name="new_release_albums">Neu veröffentlichte Alben</string>
     <!-- History -->
     <string name="today">Heute</string>
@@ -30,7 +30,7 @@
     <string name="most_played_albums">Meist gespielte Alben</string>
     <!-- Search -->
     <string name="search">Suche</string>
-    <string name="search_yt_music">YouTube Musik durchsuchen…</string>
+    <string name="search_yt_music">YouTube Music durchsuchen…</string>
     <string name="search_library">Bibliothek durchsuchen…</string>
     <string name="filter_library">Bibliothek</string>
     <string name="filter_liked">Favoriten</string>
@@ -74,7 +74,7 @@
     <string name="refetch">Neu laden</string>
     <string name="share">Teilen</string>
     <string name="delete">Löschen</string>
-    <string name="remove_from_history">aus dem Wiedergabeverlauf entfernen</string>
+    <string name="remove_from_history">Aus dem Wiedergabeverlauf entfernen</string>
     <string name="search_online">Online-Suche</string>
     <string name="sync">Synchronisieren</string>
     <string name="advanced">Erweitert</string>
@@ -145,7 +145,7 @@
     </plurals>
     <!-- Snackbar -->
     <string name="playlist_imported">Wiedergabeliste importiert</string>
-    <string name="removed_song_from_playlist">Entfernt \"%s\" aus der Wiedergabeliste</string>
+    <string name="removed_song_from_playlist">\"%s\" aus der Wiedergabeliste entfernt</string>
     <string name="playlist_synced">Wiedergabeliste synchronisiert</string>
     <string name="undo">Rückgängig machen</string>
     <!-- Player -->
@@ -153,7 +153,7 @@
     <string name="sleep_timer">Schlaf-Timer</string>
     <string name="end_of_song">Ende des Liedes</string>
     <plurals name="minute">
-        <item quantity="one">1 minute</item>
+        <item quantity="one">1 Minute</item>
         <item quantity="other">%d Minuten</item>
     </plurals>
     <string name="error_no_stream">Kein Stream verfügbar</string>
@@ -166,7 +166,7 @@
     <string name="action_shuffle_on">Mischen an</string>
     <string name="action_shuffle_off">Mischen aus</string>
     <string name="repeat_mode_off">Wiederholungsmodus aus</string>
-    <string name="repeat_mode_one">Aktuelles Lied wiederholen</string>
+    <string name="repeat_mode_one">Dieses Lied wiederholen</string>
     <string name="repeat_mode_all">Warteschlange wiederholen</string>
     <!-- Queue Title -->
     <string name="queue_all_songs">Alle Titel</string>
@@ -177,13 +177,13 @@
     <string name="settings">Einstellungen</string>
     <string name="appearance">Erscheinungsbild</string>
     <string name="enable_dynamic_theme">Dynamisches Design aktivieren</string>
-    <string name="dark_theme">Dunkles Desing</string>
+    <string name="dark_theme">Dunkles Design</string>
     <string name="dark_theme_on">An</string>
     <string name="dark_theme_off">Aus</string>
     <string name="dark_theme_follow_system">System folgen</string>
-    <string name="pure_black">Rein schwarz</string>
+    <string name="pure_black">Reines Schwarz</string>
     <string name="default_open_tab">Standardmäßig geöffnete Registerkarte</string>
-    <string name="customize_navigation_tabs">Anpassen der Navigationsregisterkarten</string>
+    <string name="customize_navigation_tabs">Anpassen der Navigationsleiste</string>
     <string name="lyrics_text_position">Position des Liedtextes</string>
     <string name="left">Links</string>
     <string name="center">Mittig</string>
@@ -256,11 +256,11 @@
     <string name="auto_skip_next_on_error">Automatisch zum nächsten Lied springen, wenn ein Fehler auftritt</string>
     <string name="sided">Seite</string>
     <string name="library_artist_empty">Künstler aus der Bibliothek werden hier angezeigt</string>
-    <string name="player">Abspieler</string>
+    <string name="player">Music Spieler</string>
     <string name="preview">Vorschau</string>
     <string name="misc">Sonstiges</string>
     <string name="add_anyway">Trotzdem hinzufügen</string>
-    <string name="player_slider_style">Spieler-Schieberegler-Stil</string>
+    <string name="player_slider_style">Schieberegler-Stil</string>
     <string name="duplicates_description_multiple">%d Titel sind bereits in Ihrer Wiedergabeliste</string>
     <string name="enable_discord_rpc">Reichhaltige Anwesenheit aktivieren</string>
     <string name="auto_skip_next_on_error_desc">Sichern Sie Ihr kontinuierliches Wiedergabeerlebnis</string>
@@ -276,8 +276,8 @@
     <string name="options">Optionen</string>
     <string name="big">Groß</string>
     <string name="keep_listening">Weiterhören</string>
-    <string name="your_youtube_playlists">Ihre YouTube-Wiedergabelisten</string>
-    <string name="library_playlist_empty">Ihre Wiedergabelisten werden hier angezeigt</string>
+    <string name="your_youtube_playlists">Deine YouTube-Wiedergabelisten</string>
+    <string name="library_playlist_empty">Deine Wiedergabelisten werden hier angezeigt</string>
     <string name="disable_screenshot_desc">Wenn diese Option aktiviert ist, sind Screenshots und die App-Ansicht in „Zuletzt gesehen“ deaktiviert.</string>
     <string name="discord_information">InnerTune verwendet die KizzyRPC-Bibliothek, um den Status Ihres Discord-Kontos zu setzen. Dazu wird die Discord-Gateway-Verbindung verwendet, was als Verstoß gegen die AGB von Discord angesehen werden kann. Es sind jedoch keine Fälle bekannt, in denen Benutzerkonten aus diesem Grund gesperrt wurden. Die Verwendung erfolgt auf eigene Gefahr.\n\nInnerTune extrahiert nur dein Token, alles andere wird lokal gespeichert.</string>
     <string name="squiggly">Verschnörkelt</string>
@@ -287,12 +287,14 @@
     <string name="hide_explicit">Explizite Inhalte ausblenden</string>
     <string name="discord_integration">Discord-Integration</string>
     <string name="library_song_empty">Songs aus der Bibliothek werden hier angezeigt</string>
-    <string name="remove_download_playlist_confirm">Möchten Sie wirklich alle Lieder der Wiedergabeliste „%s“ aus dem Speicher für heruntergeladene Lieder entfernen?</string>
-    <string name="delete_playlist_confirm">Wollen Sie die Wiedergabeliste %s wirklich löschen?</string>
+    <string name="remove_download_playlist_confirm">Möchtest du wirklich alle Lieder der Wiedergabeliste „%s“ aus dem Speicher für heruntergeladene Lieder entfernen?</string>
+    <string name="delete_playlist_confirm">Willst du die Wiedergabeliste %s wirklich löschen?</string>
     <string name="duplicates_description_single">Der Titel befindet sich bereits in Ihrer Wiedergabeliste</string>
     <string name="action_like_all">Alle Favorisieren</string>
     <string name="remove_all_from_library">Alle aus der Bibliothek entfernen</string>
     <string name="persistent_queue_desc">Wiederherstellung der letzten Warteschlange beim Starten der App</string>
     <string name="auto_load_more_desc">Automatisches Hinzufügen weiterer Lieder, wenn das Ende der Warteschlange erreicht ist, sofern möglich</string>
-    <string name="filter_bookmarked">Als Lesezeichen gespeichert</string>
+    <string name="filter_bookmarked">Lesezeichen</string>
+    <string name="use_login_for_browse">Anmeldung zum Durchsuchen von Inhalten verwenden</string>
+    <string name="use_login_for_browse_desc">Dies kann Einfluss darauf haben, welche Inhalte Sie sehen und zeigt zum Beispiel nur Premium-Alben an, wenn Sie mit einem Premium-Konto angemeldet sind</string>
 </resources>
