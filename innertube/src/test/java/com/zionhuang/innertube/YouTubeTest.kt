@@ -7,6 +7,7 @@ import com.zionhuang.innertube.YouTube.SearchFilter.Companion.FILTER_FEATURED_PL
 import com.zionhuang.innertube.YouTube.SearchFilter.Companion.FILTER_SONG
 import com.zionhuang.innertube.YouTube.SearchFilter.Companion.FILTER_VIDEO
 import com.zionhuang.innertube.models.WatchEndpoint
+import com.zionhuang.innertube.models.YouTubeClient
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.request.get
@@ -24,7 +25,7 @@ class YouTubeTest {
     @Test
     fun `Check 'player' endpoint`() = runBlocking {
         VIDEO_IDS.forEach { videoId ->
-            val playerResponse = youTube.player(videoId).getOrThrow()
+            val playerResponse = youTube.player(videoId, client = YouTubeClient.IOS).getOrThrow()
             assertTrue(playerResponse.playabilityStatus.status == "OK")
         }
     }
@@ -32,7 +33,7 @@ class YouTubeTest {
     @Test
     fun `Check playable stream`() = runBlocking {
         VIDEO_IDS.forEach { videoId ->
-            val playerResponse = youTube.player(videoId).getOrThrow()
+            val playerResponse = youTube.player(videoId, client = YouTubeClient.IOS).getOrThrow()
             val format = playerResponse.streamingData!!.adaptiveFormats[0]
             val url = format.url!!
             println(url)
