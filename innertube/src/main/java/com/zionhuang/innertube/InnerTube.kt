@@ -128,7 +128,7 @@ class InnerTube {
         setBody(
             PlayerBody(
                 context = client.toContext(locale, visitorData).let {
-                    if (client == YouTubeClient.TVHTML5_SIMPLY_EMBEDDED_PLAYER) {
+                    if (client.isEmbedded) {
                         it.copy(
                             thirdParty = Context.ThirdParty(
                                 embedUrl = "https://www.youtube.com/watch?v=${videoId}"
