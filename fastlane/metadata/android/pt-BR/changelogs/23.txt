@@ -1,0 +1,6 @@
+- Suporte ao Discord RPC
+- Verificação de atualizações no app
+- Customização do alinhamento do texto do reprodutor
+- Downloads agora são excluídos do backup do Android
+- Corrigir um crash aleatório
+- Outras correções e melhorias

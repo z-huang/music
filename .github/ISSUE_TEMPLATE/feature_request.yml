@@ -6,6 +6,7 @@ body:
     id: checklist
     attributes:
       label: Checklist
+      description: You should ensure the completion of the task before proceeding to check it off the checklist. Neglecting to do so may impede the efficiency of the issue resolution process. The developer has the right to delete the issue directly if you check the list blindly.
       options:
         - label: I've checked that there is no other issue about this feature request.
           required: true

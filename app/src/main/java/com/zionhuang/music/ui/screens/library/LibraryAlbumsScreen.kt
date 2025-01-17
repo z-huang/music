@@ -14,31 +14,50 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.zionhuang.music.LocalPlayerAwareWindowInsets
 import com.zionhuang.music.LocalPlayerConnection
 import com.zionhuang.music.R
-import com.zionhuang.music.constants.*
+import com.zionhuang.music.constants.AlbumFilter
+import com.zionhuang.music.constants.AlbumFilterKey
+import com.zionhuang.music.constants.AlbumSortDescendingKey
+import com.zionhuang.music.constants.AlbumSortType
+import com.zionhuang.music.constants.AlbumSortTypeKey
+import com.zionhuang.music.constants.AlbumViewTypeKey
+import com.zionhuang.music.constants.CONTENT_TYPE_ALBUM
+import com.zionhuang.music.constants.CONTENT_TYPE_HEADER
+import com.zionhuang.music.constants.GridCellSize
+import com.zionhuang.music.constants.GridCellSizeKey
+import com.zionhuang.music.constants.GridThumbnailHeight
+import com.zionhuang.music.constants.LibraryViewType
+import com.zionhuang.music.constants.SmallGridThumbnailHeight
 import com.zionhuang.music.ui.component.AlbumGridItem
 import com.zionhuang.music.ui.component.AlbumListItem
 import com.zionhuang.music.ui.component.ChipsRow
+import com.zionhuang.music.ui.component.EmptyPlaceholder
 import com.zionhuang.music.ui.component.LocalMenuState
 import com.zionhuang.music.ui.component.SortHeader
 import com.zionhuang.music.ui.menu.AlbumMenu
@@ -53,10 +72,12 @@ fun LibraryAlbumsScreen(
     viewModel: LibraryAlbumsViewModel = hiltViewModel(),
 ) {
     val menuState = LocalMenuState.current
+    val haptic = LocalHapticFeedback.current
     val playerConnection = LocalPlayerConnection.current ?: return
     val isPlaying by playerConnection.isPlaying.collectAsState()
     val mediaMetadata by playerConnection.mediaMetadata.collectAsState()
 
+    val gridCellSize by rememberEnumPreference(GridCellSizeKey, GridCellSize.SMALL)
     var filter by rememberEnumPreference(AlbumFilterKey, AlbumFilter.LIBRARY)
     var viewType by rememberEnumPreference(AlbumViewTypeKey, LibraryViewType.GRID)
     val (sortType, onSortTypeChange) = rememberEnumPreference(AlbumSortTypeKey, AlbumSortType.CREATE_DATE)
@@ -65,6 +86,21 @@ fun LibraryAlbumsScreen(
     val albums by viewModel.allAlbums.collectAsState()
 
     val coroutineScope = rememberCoroutineScope()
+
+    val lazyListState = rememberLazyListState()
+    val lazyGridState = rememberLazyGridState()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val scrollToTop = backStackEntry?.savedStateHandle?.getStateFlow("scrollToTop", false)?.collectAsState()
+
+    LaunchedEffect(scrollToTop?.value) {
+        if (scrollToTop?.value == true) {
+            when (viewType) {
+                LibraryViewType.LIST -> lazyListState.animateScrollToItem(0)
+                LibraryViewType.GRID -> lazyGridState.animateScrollToItem(0)
+            }
+            backStackEntry?.savedStateHandle?.set("scrollToTop", false)
+        }
+    }
 
     val filterContent = @Composable {
         Row {
@@ -122,11 +158,13 @@ fun LibraryAlbumsScreen(
 
             Spacer(Modifier.weight(1f))
 
-            Text(
-                text = pluralStringResource(R.plurals.n_album, albums.size, albums.size),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.secondary
-            )
+            albums?.let { albums ->
+                Text(
+                    text = pluralStringResource(R.plurals.n_album, albums.size, albums.size),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
         }
     }
 
@@ -136,6 +174,7 @@ fun LibraryAlbumsScreen(
         when (viewType) {
             LibraryViewType.LIST ->
                 LazyColumn(
+                    state = lazyListState,
                     contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
                 ) {
                     item(
@@ -152,46 +191,64 @@ fun LibraryAlbumsScreen(
                         headerContent()
                     }
 
-                    items(
-                        items = albums,
-                        key = { it.id },
-                        contentType = { CONTENT_TYPE_ALBUM }
-                    ) { album ->
-                        AlbumListItem(
-                            album = album,
-                            isActive = album.id == mediaMetadata?.album?.id,
-                            isPlaying = isPlaying,
-                            trailingContent = {
-                                IconButton(
-                                    onClick = {
-                                        menuState.show {
-                                            AlbumMenu(
-                                                originalAlbum = album,
-                                                navController = navController,
-                                                onDismiss = menuState::dismiss
-                                            )
+                    albums?.let { albums ->
+                        if (albums.isEmpty()) {
+                            item {
+                                EmptyPlaceholder(
+                                    icon = R.drawable.album,
+                                    text = stringResource(R.string.library_album_empty),
+                                    modifier = Modifier.animateItem()
+                                )
+                            }
+                        }
+
+                        items(
+                            items = albums,
+                            key = { it.id },
+                            contentType = { CONTENT_TYPE_ALBUM }
+                        ) { album ->
+                            AlbumListItem(
+                                album = album,
+                                isActive = album.id == mediaMetadata?.album?.id,
+                                isPlaying = isPlaying,
+                                trailingContent = {
+                                    IconButton(
+                                        onClick = {
+                                            menuState.show {
+                                                AlbumMenu(
+                                                    originalAlbum = album,
+                                                    navController = navController,
+                                                    onDismiss = menuState::dismiss
+                                                )
+                                            }
                                         }
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.more_vert),
+                                            contentDescription = null
+                                        )
                                     }
-                                ) {
-                                    Icon(
-                                        painter = painterResource(R.drawable.more_vert),
-                                        contentDescription = null
-                                    )
-                                }
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .combinedClickable {
-                                    navController.navigate("album/${album.id}")
-                                }
-                                .animateItemPlacement()
-                        )
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .combinedClickable {
+                                        navController.navigate("album/${album.id}")
+                                    }
+                                    .animateItem()
+                            )
+                        }
                     }
                 }
 
             LibraryViewType.GRID ->
                 LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = GridThumbnailHeight + 24.dp),
+                    state = lazyGridState,
+                    columns = GridCells.Adaptive(
+                        minSize = when (gridCellSize) {
+                            GridCellSize.SMALL -> SmallGridThumbnailHeight
+                            GridCellSize.BIG -> GridThumbnailHeight
+                        } + 24.dp
+                    ),
                     contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
                 ) {
                     item(
@@ -210,35 +267,48 @@ fun LibraryAlbumsScreen(
                         headerContent()
                     }
 
-                    items(
-                        items = albums,
-                        key = { it.id },
-                        contentType = { CONTENT_TYPE_ALBUM }
-                    ) { album ->
-                        AlbumGridItem(
-                            album = album,
-                            isActive = album.id == mediaMetadata?.album?.id,
-                            isPlaying = isPlaying,
-                            coroutineScope = coroutineScope,
-                            fillMaxWidth = true,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .combinedClickable(
-                                    onClick = {
-                                        navController.navigate("album/${album.id}")
-                                    },
-                                    onLongClick = {
-                                        menuState.show {
-                                            AlbumMenu(
-                                                originalAlbum = album,
-                                                navController = navController,
-                                                onDismiss = menuState::dismiss
-                                            )
-                                        }
-                                    }
+                    albums?.let { albums ->
+                        if (albums.isEmpty()) {
+                            item(span = { GridItemSpan(maxLineSpan) }) {
+                                EmptyPlaceholder(
+                                    icon = R.drawable.album,
+                                    text = stringResource(R.string.library_album_empty),
+                                    modifier = Modifier.animateItem()
                                 )
-                                .animateItemPlacement()
-                        )
+                            }
+                        }
+
+                        items(
+                            items = albums,
+                            key = { it.id },
+                            contentType = { CONTENT_TYPE_ALBUM }
+                        ) { album ->
+                            AlbumGridItem(
+                                album = album,
+                                isActive = album.id == mediaMetadata?.album?.id,
+                                isPlaying = isPlaying,
+                                coroutineScope = coroutineScope,
+                                fillMaxWidth = true,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .combinedClickable(
+                                        onClick = {
+                                            navController.navigate("album/${album.id}")
+                                        },
+                                        onLongClick = {
+                                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                            menuState.show {
+                                                AlbumMenu(
+                                                    originalAlbum = album,
+                                                    navController = navController,
+                                                    onDismiss = menuState::dismiss
+                                                )
+                                            }
+                                        }
+                                    )
+                                    .animateItem()
+                            )
+                        }
                     }
                 }
         }

@@ -1,0 +1,9 @@
+En esta versión, estamos usando una nueva biblioteca: <b><i>Innertube</i></b>, ¡que hace posible funciones más potentes!
+* Navegar todo como en YouTube Music
+* Nueva página de inicio para buscar sugerencias y encontrar nuevos lanzamientos musicales
+* Resumen de resultados de búsqueda
+* La carga del flujo es más rápida
+
+Crédito: vfsfitvnm/ViMusic, tombulled/innertube, zerodytrash/YouTube-Internal-Clients
+
+⚠️ Nota: Para los usuarios que actualicen desde <0.3.3, seleccione todas las canciones de su biblioteca y haga "Recuperar" para que se muestren las miniaturas.

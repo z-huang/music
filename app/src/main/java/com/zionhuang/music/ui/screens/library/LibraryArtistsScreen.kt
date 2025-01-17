@@ -15,24 +15,30 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.zionhuang.music.LocalPlayerAwareWindowInsets
 import com.zionhuang.music.R
 import com.zionhuang.music.constants.ArtistFilter
@@ -43,11 +49,15 @@ import com.zionhuang.music.constants.ArtistSortTypeKey
 import com.zionhuang.music.constants.ArtistViewTypeKey
 import com.zionhuang.music.constants.CONTENT_TYPE_ARTIST
 import com.zionhuang.music.constants.CONTENT_TYPE_HEADER
+import com.zionhuang.music.constants.GridCellSize
+import com.zionhuang.music.constants.GridCellSizeKey
 import com.zionhuang.music.constants.GridThumbnailHeight
 import com.zionhuang.music.constants.LibraryViewType
+import com.zionhuang.music.constants.SmallGridThumbnailHeight
 import com.zionhuang.music.ui.component.ArtistGridItem
 import com.zionhuang.music.ui.component.ArtistListItem
 import com.zionhuang.music.ui.component.ChipsRow
+import com.zionhuang.music.ui.component.EmptyPlaceholder
 import com.zionhuang.music.ui.component.LocalMenuState
 import com.zionhuang.music.ui.component.SortHeader
 import com.zionhuang.music.ui.menu.ArtistMenu
@@ -62,6 +72,9 @@ fun LibraryArtistsScreen(
     viewModel: LibraryArtistsViewModel = hiltViewModel(),
 ) {
     val menuState = LocalMenuState.current
+    val haptic = LocalHapticFeedback.current
+
+    val gridCellSize by rememberEnumPreference(GridCellSizeKey, GridCellSize.SMALL)
     var filter by rememberEnumPreference(ArtistFilterKey, ArtistFilter.LIBRARY)
     var viewType by rememberEnumPreference(ArtistViewTypeKey, LibraryViewType.GRID)
     val (sortType, onSortTypeChange) = rememberEnumPreference(ArtistSortTypeKey, ArtistSortType.CREATE_DATE)
@@ -69,6 +82,21 @@ fun LibraryArtistsScreen(
 
     val artists by viewModel.allArtists.collectAsState()
     val coroutineScope = rememberCoroutineScope()
+
+    val lazyListState = rememberLazyListState()
+    val lazyGridState = rememberLazyGridState()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val scrollToTop = backStackEntry?.savedStateHandle?.getStateFlow("scrollToTop", false)?.collectAsState()
+
+    LaunchedEffect(scrollToTop?.value) {
+        if (scrollToTop?.value == true) {
+            when (viewType) {
+                LibraryViewType.LIST -> lazyListState.animateScrollToItem(0)
+                LibraryViewType.GRID -> lazyGridState.animateScrollToItem(0)
+            }
+            backStackEntry?.savedStateHandle?.set("scrollToTop", false)
+        }
+    }
 
     val filterContent = @Composable {
         Row {
@@ -123,11 +151,13 @@ fun LibraryArtistsScreen(
 
             Spacer(Modifier.weight(1f))
 
-            Text(
-                text = pluralStringResource(R.plurals.n_artist, artists.size, artists.size),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.secondary
-            )
+            artists?.let { artists ->
+                Text(
+                    text = pluralStringResource(R.plurals.n_artist, artists.size, artists.size),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
         }
     }
 
@@ -137,6 +167,7 @@ fun LibraryArtistsScreen(
         when (viewType) {
             LibraryViewType.LIST ->
                 LazyColumn(
+                    state = lazyListState,
                     contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
                 ) {
                     item(
@@ -153,44 +184,62 @@ fun LibraryArtistsScreen(
                         headerContent()
                     }
 
-                    items(
-                        items = artists,
-                        key = { it.id },
-                        contentType = { CONTENT_TYPE_ARTIST }
-                    ) { artist ->
-                        ArtistListItem(
-                            artist = artist,
-                            trailingContent = {
-                                IconButton(
-                                    onClick = {
-                                        menuState.show {
-                                            ArtistMenu(
-                                                originalArtist = artist,
-                                                coroutineScope = coroutineScope,
-                                                onDismiss = menuState::dismiss
-                                            )
+                    artists?.let { artists ->
+                        if (artists.isEmpty()) {
+                            item {
+                                EmptyPlaceholder(
+                                    icon = R.drawable.artist,
+                                    text = stringResource(R.string.library_artist_empty),
+                                    modifier = Modifier.animateItem()
+                                )
+                            }
+                        }
+
+                        items(
+                            items = artists,
+                            key = { it.id },
+                            contentType = { CONTENT_TYPE_ARTIST }
+                        ) { artist ->
+                            ArtistListItem(
+                                artist = artist,
+                                trailingContent = {
+                                    IconButton(
+                                        onClick = {
+                                            menuState.show {
+                                                ArtistMenu(
+                                                    originalArtist = artist,
+                                                    coroutineScope = coroutineScope,
+                                                    onDismiss = menuState::dismiss
+                                                )
+                                            }
                                         }
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.more_vert),
+                                            contentDescription = null
+                                        )
                                     }
-                                ) {
-                                    Icon(
-                                        painter = painterResource(R.drawable.more_vert),
-                                        contentDescription = null
-                                    )
-                                }
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    navController.navigate("artist/${artist.id}")
-                                }
-                                .animateItemPlacement()
-                        )
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        navController.navigate("artist/${artist.id}")
+                                    }
+                                    .animateItem()
+                            )
+                        }
                     }
                 }
 
             LibraryViewType.GRID ->
                 LazyVerticalGrid(
-                    columns = GridCells.Adaptive(minSize = GridThumbnailHeight + 24.dp),
+                    state = lazyGridState,
+                    columns = GridCells.Adaptive(
+                        minSize = when (gridCellSize) {
+                            GridCellSize.SMALL -> SmallGridThumbnailHeight
+                            GridCellSize.BIG -> GridThumbnailHeight
+                        } + 24.dp
+                    ),
                     contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
                 ) {
                     item(
@@ -209,32 +258,45 @@ fun LibraryArtistsScreen(
                         headerContent()
                     }
 
-                    items(
-                        items = artists,
-                        key = { it.id },
-                        contentType = { CONTENT_TYPE_ARTIST }
-                    ) { artist ->
-                        ArtistGridItem(
-                            artist = artist,
-                            fillMaxWidth = true,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .combinedClickable(
-                                    onClick = {
-                                        navController.navigate("artist/${artist.id}")
-                                    },
-                                    onLongClick = {
-                                        menuState.show {
-                                            ArtistMenu(
-                                                originalArtist = artist,
-                                                coroutineScope = coroutineScope,
-                                                onDismiss = menuState::dismiss
-                                            )
-                                        }
-                                    }
+                    artists?.let { artists ->
+                        if (artists.isEmpty()) {
+                            item(span = { GridItemSpan(maxLineSpan) }) {
+                                EmptyPlaceholder(
+                                    icon = R.drawable.artist,
+                                    text = stringResource(R.string.library_artist_empty),
+                                    modifier = Modifier.animateItem()
                                 )
-                                .animateItemPlacement()
-                        )
+                            }
+                        }
+
+                        items(
+                            items = artists,
+                            key = { it.id },
+                            contentType = { CONTENT_TYPE_ARTIST }
+                        ) { artist ->
+                            ArtistGridItem(
+                                artist = artist,
+                                fillMaxWidth = true,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .combinedClickable(
+                                        onClick = {
+                                            navController.navigate("artist/${artist.id}")
+                                        },
+                                        onLongClick = {
+                                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                            menuState.show {
+                                                ArtistMenu(
+                                                    originalArtist = artist,
+                                                    coroutineScope = coroutineScope,
+                                                    onDismiss = menuState::dismiss
+                                                )
+                                            }
+                                        }
+                                    )
+                                    .animateItem()
+                            )
+                        }
                     }
                 }
         }

@@ -1,15 +1,19 @@
 package com.zionhuang.music.ui.screens.search
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -17,9 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -34,7 +38,6 @@ import com.zionhuang.innertube.models.AlbumItem
 import com.zionhuang.innertube.models.ArtistItem
 import com.zionhuang.innertube.models.PlaylistItem
 import com.zionhuang.innertube.models.SongItem
-import com.zionhuang.innertube.models.WatchEndpoint
 import com.zionhuang.music.LocalDatabase
 import com.zionhuang.music.LocalPlayerConnection
 import com.zionhuang.music.R
@@ -42,12 +45,16 @@ import com.zionhuang.music.constants.SuggestionItemHeight
 import com.zionhuang.music.extensions.togglePlayPause
 import com.zionhuang.music.models.toMediaMetadata
 import com.zionhuang.music.playback.queues.YouTubeQueue
+import com.zionhuang.music.ui.component.LocalMenuState
 import com.zionhuang.music.ui.component.SearchBarIconOffsetX
 import com.zionhuang.music.ui.component.YouTubeListItem
+import com.zionhuang.music.ui.menu.YouTubeAlbumMenu
+import com.zionhuang.music.ui.menu.YouTubeArtistMenu
+import com.zionhuang.music.ui.menu.YouTubePlaylistMenu
+import com.zionhuang.music.ui.menu.YouTubeSongMenu
 import com.zionhuang.music.viewmodels.OnlineSearchSuggestionViewModel
 import kotlinx.coroutines.flow.drop
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun OnlineSearchScreen(
     query: String,
@@ -57,9 +64,13 @@ fun OnlineSearchScreen(
     onDismiss: () -> Unit,
     viewModel: OnlineSearchSuggestionViewModel = hiltViewModel(),
 ) {
+    val menuState = LocalMenuState.current
     val database = LocalDatabase.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val playerConnection = LocalPlayerConnection.current ?: return
+
+    val scope = rememberCoroutineScope()
+
     val isPlaying by playerConnection.isPlaying.collectAsState()
     val mediaMetadata by playerConnection.mediaMetadata.collectAsState()
 
@@ -80,7 +91,10 @@ fun OnlineSearchScreen(
     }
 
     LazyColumn(
-        state = lazyListState
+        state = lazyListState,
+        contentPadding = WindowInsets.systemBars
+            .only(WindowInsetsSides.Bottom)
+            .asPaddingValues()
     ) {
         items(
             items = viewState.history,
@@ -106,7 +120,7 @@ fun OnlineSearchScreen(
                         )
                     )
                 },
-                modifier = Modifier.animateItemPlacement()
+                modifier = Modifier.animateItem()
             )
         }
 
@@ -129,13 +143,13 @@ fun OnlineSearchScreen(
                         )
                     )
                 },
-                modifier = Modifier.animateItemPlacement()
+                modifier = Modifier.animateItem()
             )
         }
 
         if (viewState.items.isNotEmpty() && viewState.history.size + viewState.suggestions.size > 0) {
             item {
-                Divider()
+                HorizontalDivider()
             }
         }
 
@@ -151,6 +165,47 @@ fun OnlineSearchScreen(
                     else -> false
                 },
                 isPlaying = isPlaying,
+                trailingContent = {
+                    IconButton(
+                        onClick = {
+                            menuState.show {
+                                when (item) {
+                                    is SongItem ->
+                                        YouTubeSongMenu(
+                                            song = item,
+                                            navController = navController,
+                                            onDismiss = menuState::dismiss,
+                                        )
+
+                                    is AlbumItem ->
+                                        YouTubeAlbumMenu(
+                                            albumItem = item,
+                                            navController = navController,
+                                            onDismiss = menuState::dismiss,
+                                        )
+
+                                    is ArtistItem ->
+                                        YouTubeArtistMenu(
+                                            artist = item,
+                                            onDismiss = menuState::dismiss,
+                                        )
+
+                                    is PlaylistItem ->
+                                        YouTubePlaylistMenu(
+                                            playlist = item,
+                                            coroutineScope = scope,
+                                            onDismiss = menuState::dismiss,
+                                        )
+                                }
+                            }
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.more_vert),
+                            contentDescription = null
+                        )
+                    }
+                },
                 modifier = Modifier
                     .clickable {
                         when (item) {
@@ -158,7 +213,7 @@ fun OnlineSearchScreen(
                                 if (item.id == mediaMetadata?.id) {
                                     playerConnection.player.togglePlayPause()
                                 } else {
-                                    playerConnection.playQueue(YouTubeQueue(WatchEndpoint(videoId = item.id), item.toMediaMetadata()))
+                                    playerConnection.playQueue(YouTubeQueue.radio(item.toMediaMetadata()))
                                     onDismiss()
                                 }
                             }
@@ -179,7 +234,7 @@ fun OnlineSearchScreen(
                             }
                         }
                     }
-                    .animateItemPlacement()
+                    .animateItem()
             )
         }
     }

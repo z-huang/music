@@ -3,6 +3,7 @@ package com.zionhuang.music.ui.player
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -64,11 +65,11 @@ fun MiniPlayer(
             .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal))
     ) {
         LinearProgressIndicator(
-            progress = (position.toFloat() / duration).coerceIn(0f, 1f),
+            progress = { (position.toFloat() / duration).coerceIn(0f, 1f) },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(2.dp)
-                .align(Alignment.BottomCenter)
+                .height(3.dp)
+                .align(Alignment.BottomCenter),
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -104,7 +105,7 @@ fun MiniPlayer(
 
             IconButton(
                 enabled = canSkipNext,
-                onClick = playerConnection.player::seekToNext
+                onClick = playerConnection::seekToNext
             ) {
                 Icon(
                     painter = painterResource(R.drawable.skip_next),
@@ -169,6 +170,7 @@ fun MiniMediaInfo(
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.basicMarquee()
             )
             Text(
                 text = mediaMetadata.artists.joinToString { it.name },
@@ -176,6 +178,7 @@ fun MiniMediaInfo(
                 fontSize = 12.sp,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.basicMarquee()
             )
         }
     }

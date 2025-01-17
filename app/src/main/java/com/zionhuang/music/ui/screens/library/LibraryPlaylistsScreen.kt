@@ -23,6 +23,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,24 +32,31 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.zionhuang.music.LocalDatabase
 import com.zionhuang.music.LocalPlayerAwareWindowInsets
 import com.zionhuang.music.R
 import com.zionhuang.music.constants.CONTENT_TYPE_HEADER
 import com.zionhuang.music.constants.CONTENT_TYPE_PLAYLIST
+import com.zionhuang.music.constants.GridCellSize
+import com.zionhuang.music.constants.GridCellSizeKey
 import com.zionhuang.music.constants.GridThumbnailHeight
 import com.zionhuang.music.constants.LibraryViewType
 import com.zionhuang.music.constants.PlaylistSortDescendingKey
 import com.zionhuang.music.constants.PlaylistSortType
 import com.zionhuang.music.constants.PlaylistSortTypeKey
 import com.zionhuang.music.constants.PlaylistViewTypeKey
+import com.zionhuang.music.constants.SmallGridThumbnailHeight
 import com.zionhuang.music.db.entities.PlaylistEntity
+import com.zionhuang.music.ui.component.EmptyPlaceholder
 import com.zionhuang.music.ui.component.HideOnScrollFAB
 import com.zionhuang.music.ui.component.LocalMenuState
 import com.zionhuang.music.ui.component.PlaylistGridItem
@@ -68,9 +76,11 @@ fun LibraryPlaylistsScreen(
 ) {
     val menuState = LocalMenuState.current
     val database = LocalDatabase.current
+    val haptic = LocalHapticFeedback.current
 
     val coroutineScope = rememberCoroutineScope()
 
+    val gridCellSize by rememberEnumPreference(GridCellSizeKey, GridCellSize.SMALL)
     var viewType by rememberEnumPreference(PlaylistViewTypeKey, LibraryViewType.GRID)
     val (sortType, onSortTypeChange) = rememberEnumPreference(PlaylistSortTypeKey, PlaylistSortType.CREATE_DATE)
     val (sortDescending, onSortDescendingChange) = rememberPreference(PlaylistSortDescendingKey, true)
@@ -79,6 +89,18 @@ fun LibraryPlaylistsScreen(
 
     val lazyListState = rememberLazyListState()
     val lazyGridState = rememberLazyGridState()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val scrollToTop = backStackEntry?.savedStateHandle?.getStateFlow("scrollToTop", false)?.collectAsState()
+
+    LaunchedEffect(scrollToTop?.value) {
+        if (scrollToTop?.value == true) {
+            when (viewType) {
+                LibraryViewType.LIST -> lazyListState.animateScrollToItem(0)
+                LibraryViewType.GRID -> lazyGridState.animateScrollToItem(0)
+            }
+            backStackEntry?.savedStateHandle?.set("scrollToTop", false)
+        }
+    }
 
     var showAddPlaylistDialog by rememberSaveable {
         mutableStateOf(false)
@@ -122,11 +144,13 @@ fun LibraryPlaylistsScreen(
 
             Spacer(Modifier.weight(1f))
 
-            Text(
-                text = pluralStringResource(R.plurals.n_playlist, playlists.size, playlists.size),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.secondary
-            )
+            playlists?.let { playlists ->
+                Text(
+                    text = pluralStringResource(R.plurals.n_playlist, playlists.size, playlists.size),
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
 
             IconButton(
                 onClick = {
@@ -163,38 +187,50 @@ fun LibraryPlaylistsScreen(
                         headerContent()
                     }
 
-                    items(
-                        items = playlists,
-                        key = { it.id },
-                        contentType = { CONTENT_TYPE_PLAYLIST }
-                    ) { playlist ->
-                        PlaylistListItem(
-                            playlist = playlist,
-                            trailingContent = {
-                                IconButton(
-                                    onClick = {
-                                        menuState.show {
-                                            PlaylistMenu(
-                                                playlist = playlist,
-                                                coroutineScope = coroutineScope,
-                                                onDismiss = menuState::dismiss
-                                            )
+                    playlists?.let { playlists ->
+                        if (playlists.isEmpty()) {
+                            item {
+                                EmptyPlaceholder(
+                                    icon = R.drawable.queue_music,
+                                    text = stringResource(R.string.library_playlist_empty),
+                                    modifier = Modifier.animateItem()
+                                )
+                            }
+                        }
+
+                        items(
+                            items = playlists,
+                            key = { it.id },
+                            contentType = { CONTENT_TYPE_PLAYLIST }
+                        ) { playlist ->
+                            PlaylistListItem(
+                                playlist = playlist,
+                                trailingContent = {
+                                    IconButton(
+                                        onClick = {
+                                            menuState.show {
+                                                PlaylistMenu(
+                                                    playlist = playlist,
+                                                    coroutineScope = coroutineScope,
+                                                    onDismiss = menuState::dismiss
+                                                )
+                                            }
                                         }
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(R.drawable.more_vert),
+                                            contentDescription = null
+                                        )
                                     }
-                                ) {
-                                    Icon(
-                                        painter = painterResource(R.drawable.more_vert),
-                                        contentDescription = null
-                                    )
-                                }
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    navController.navigate("local_playlist/${playlist.id}")
-                                }
-                                .animateItemPlacement()
-                        )
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        navController.navigate("local_playlist/${playlist.id}")
+                                    }
+                                    .animateItem()
+                            )
+                        }
                     }
                 }
 
@@ -210,7 +246,12 @@ fun LibraryPlaylistsScreen(
             LibraryViewType.GRID -> {
                 LazyVerticalGrid(
                     state = lazyGridState,
-                    columns = GridCells.Adaptive(minSize = GridThumbnailHeight + 24.dp),
+                    columns = GridCells.Adaptive(
+                        minSize = when (gridCellSize) {
+                            GridCellSize.SMALL -> SmallGridThumbnailHeight
+                            GridCellSize.BIG -> GridThumbnailHeight
+                        } + 24.dp
+                    ),
                     contentPadding = LocalPlayerAwareWindowInsets.current.asPaddingValues()
                 ) {
                     item(
@@ -221,32 +262,45 @@ fun LibraryPlaylistsScreen(
                         headerContent()
                     }
 
-                    items(
-                        items = playlists,
-                        key = { it.id },
-                        contentType = { CONTENT_TYPE_PLAYLIST }
-                    ) { playlist ->
-                        PlaylistGridItem(
-                            playlist = playlist,
-                            fillMaxWidth = true,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .combinedClickable(
-                                    onClick = {
-                                        navController.navigate("local_playlist/${playlist.id}")
-                                    },
-                                    onLongClick = {
-                                        menuState.show {
-                                            PlaylistMenu(
-                                                playlist = playlist,
-                                                coroutineScope = coroutineScope,
-                                                onDismiss = menuState::dismiss
-                                            )
-                                        }
-                                    }
+                    playlists?.let { playlists ->
+                        if (playlists.isEmpty()) {
+                            item(span = { GridItemSpan(maxLineSpan) }) {
+                                EmptyPlaceholder(
+                                    icon = R.drawable.queue_music,
+                                    text = stringResource(R.string.library_playlist_empty),
+                                    modifier = Modifier.animateItem()
                                 )
-                                .animateItemPlacement()
-                        )
+                            }
+                        }
+
+                        items(
+                            items = playlists,
+                            key = { it.id },
+                            contentType = { CONTENT_TYPE_PLAYLIST }
+                        ) { playlist ->
+                            PlaylistGridItem(
+                                playlist = playlist,
+                                fillMaxWidth = true,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .combinedClickable(
+                                        onClick = {
+                                            navController.navigate("local_playlist/${playlist.id}")
+                                        },
+                                        onLongClick = {
+                                            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                            menuState.show {
+                                                PlaylistMenu(
+                                                    playlist = playlist,
+                                                    coroutineScope = coroutineScope,
+                                                    onDismiss = menuState::dismiss
+                                                )
+                                            }
+                                        }
+                                    )
+                                    .animateItem()
+                            )
+                        }
                     }
                 }
 

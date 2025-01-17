@@ -10,6 +10,7 @@ import com.zionhuang.music.R
 import com.zionhuang.music.db.InternalDatabase
 import com.zionhuang.music.db.MusicDatabase
 import com.zionhuang.music.extensions.div
+import com.zionhuang.music.extensions.tryOrNull
 import com.zionhuang.music.extensions.zipInputStream
 import com.zionhuang.music.extensions.zipOutputStream
 import com.zionhuang.music.playback.MusicService
@@ -57,7 +58,7 @@ class BackupRestoreViewModel @Inject constructor(
         runCatching {
             context.applicationContext.contentResolver.openInputStream(uri)?.use {
                 it.zipInputStream().use { inputStream ->
-                    var entry = inputStream.nextEntry
+                    var entry = tryOrNull { inputStream.nextEntry } // prevent ZipException
                     while (entry != null) {
                         when (entry.name) {
                             SETTINGS_FILENAME -> {
@@ -76,7 +77,7 @@ class BackupRestoreViewModel @Inject constructor(
                                 }
                             }
                         }
-                        entry = inputStream.nextEntry
+                        entry = tryOrNull { inputStream.nextEntry } // prevent ZipException
                     }
                 }
             }

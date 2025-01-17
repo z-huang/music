@@ -1,0 +1,4 @@
+<br><b>Reparado</b>
+
+* Se solucionó el problema de que YouTube no reproducía ninguna transmisión #27, TeamNewPipe/NewPipe#8202
+* Se soluciona el problema de la limitación de edad de los videos de YouTube TeamNewPipe/NewPipeExtractor#832

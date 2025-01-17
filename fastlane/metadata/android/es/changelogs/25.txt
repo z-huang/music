@@ -1,0 +1,11 @@
+- Pantalla de inicio renovada
+- Selección múltiple en la cola y las listas de reproducción
+- Menú para añadir elementos a la cola
+- Búsqueda en listas de reproducción
+- Opción de cambiar el tamaño de las celdas de la cuadrícula
+- Opción de detener la música al cerrar la aplicación
+- Opción de salto automático a la canción siguiente en caso de error
+- Vuelve a pulsar en el elemento de navegación inferior para desplazarte a la parte superior
+- Botón para recuperar canciones
+- Corrección de repeticiones en el historial
+- Otras correcciones y mejoras

@@ -1,1 +1,1 @@
-Materyal tasarımlı bir YouTube Müzik istemcisi
+Android için bir Material 3 tasarımlı YouTube Müzik istemcisi

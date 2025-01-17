@@ -54,7 +54,7 @@ data class PlaylistItem(
     override val thumbnail: String,
     val playEndpoint: WatchEndpoint?,
     val shuffleEndpoint: WatchEndpoint,
-    val radioEndpoint: WatchEndpoint,
+    val radioEndpoint: WatchEndpoint?,
 ) : YTItem() {
     override val explicit: Boolean
         get() = false
@@ -74,3 +74,7 @@ data class ArtistItem(
     override val shareLink: String
         get() = "https://music.youtube.com/channel/$id"
 }
+
+fun <T : YTItem> List<T>.filterExplicit(enabled: Boolean = true) =
+    if (enabled) filter { !it.explicit }
+    else this

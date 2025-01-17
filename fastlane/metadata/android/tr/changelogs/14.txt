@@ -1,0 +1,11 @@
+-Altyazılar
+-Android Auto desteği
+-Sessizliği atla özelliği
+-Ses normalleştirme özelliği
+-SAF üzerinden indirilen müzikleri dışa aktarma
+-Oynatıcı görüntüsünde geliştirmeler
+-Oynatıcıya uyanma kilidi ekle
+-Oynatıcı bildirimini gizleme ayarı
+-Yedek geri yüklendiğinde çalma listesindeki kalıcı müziği silme
+-Meraklısı için istatistiklerde itag eklendi
+-Diğer ufak değişikliler ve düzeltmeler

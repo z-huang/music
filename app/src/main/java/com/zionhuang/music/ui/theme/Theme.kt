@@ -15,7 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.palette.graphics.Palette
-import com.google.material.color.scheme.Scheme
+import com.google.material.color.dynamiccolor.DynamicScheme
+import com.google.material.color.hct.Hct
+import com.google.material.color.scheme.SchemeTonalSpot
 import com.google.material.color.score.Score
 
 val DefaultThemeColor = Color(0xFF4285F4)
@@ -33,8 +35,9 @@ fun InnerTuneTheme(
             if (darkTheme) dynamicDarkColorScheme(context).pureBlack(pureBlack)
             else dynamicLightColorScheme(context)
         } else {
-            if (darkTheme) Scheme.dark(themeColor.toArgb()).toColorScheme().pureBlack(pureBlack)
-            else Scheme.light(themeColor.toArgb()).toColorScheme()
+            SchemeTonalSpot(Hct.fromInt(themeColor.toArgb()), darkTheme, 0.0)
+                .toColorScheme()
+                .pureBlack(darkTheme && pureBlack)
         }
     }
 
@@ -55,7 +58,7 @@ fun Bitmap.extractThemeColor(): Color {
     return Color(rankedColors.first())
 }
 
-fun Scheme.toColorScheme() = ColorScheme(
+fun DynamicScheme.toColorScheme() = ColorScheme(
     primary = Color(primary),
     onPrimary = Color(onPrimary),
     primaryContainer = Color(primaryContainer),
@@ -85,6 +88,13 @@ fun Scheme.toColorScheme() = ColorScheme(
     outline = Color(outline),
     outlineVariant = Color(outlineVariant),
     scrim = Color(scrim),
+    surfaceBright = Color(surfaceBright),
+    surfaceDim = Color(surfaceDim),
+    surfaceContainer = Color(surfaceContainer),
+    surfaceContainerHigh = Color(surfaceContainerHigh),
+    surfaceContainerHighest = Color(surfaceContainerHighest),
+    surfaceContainerLow = Color(surfaceContainerLow),
+    surfaceContainerLowest = Color(surfaceContainerLowest)
 )
 
 fun ColorScheme.pureBlack(apply: Boolean) =

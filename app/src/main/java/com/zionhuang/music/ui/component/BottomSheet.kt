@@ -26,7 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -250,7 +250,7 @@ class BottomSheetState(
                     isTopReached = false
                 }
 
-                return if (isTopReached && available.y < 0 && source == NestedScrollSource.Drag) {
+                return if (isTopReached && available.y < 0 && source == NestedScrollSource.UserInput) {
                     dispatchRawDelta(available.y)
                     available
                 } else {
@@ -267,7 +267,7 @@ class BottomSheetState(
                     isTopReached = consumed.y == 0f && available.y > 0
                 }
 
-                return if (isTopReached && source == NestedScrollSource.Drag) {
+                return if (isTopReached && source == NestedScrollSource.UserInput) {
                     dispatchRawDelta(available.y)
                     available
                 } else {
@@ -308,7 +308,7 @@ fun rememberBottomSheetState(
     val coroutineScope = rememberCoroutineScope()
 
     var previousAnchor by rememberSaveable {
-        mutableStateOf(initialAnchor)
+        mutableIntStateOf(initialAnchor)
     }
     val animatable = remember {
         Animatable(0.dp, Dp.VectorConverter)

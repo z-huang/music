@@ -3,7 +3,9 @@ package com.zionhuang.music.extensions
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.Player.REPEAT_MODE_ALL
 import androidx.media3.common.Player.REPEAT_MODE_OFF
+import androidx.media3.common.Player.REPEAT_MODE_ONE
 import androidx.media3.common.Timeline
 import com.zionhuang.music.models.MediaMetadata
 import java.util.ArrayDeque
@@ -13,6 +15,15 @@ fun Player.togglePlayPause() {
         prepare()
     }
     playWhenReady = !playWhenReady
+}
+
+fun Player.toggleRepeatMode() {
+    repeatMode = when (repeatMode) {
+        REPEAT_MODE_OFF -> REPEAT_MODE_ALL
+        REPEAT_MODE_ALL -> REPEAT_MODE_ONE
+        REPEAT_MODE_ONE -> REPEAT_MODE_OFF
+        else -> throw IllegalStateException()
+    }
 }
 
 fun Player.getQueueWindows(): List<Timeline.Window> {

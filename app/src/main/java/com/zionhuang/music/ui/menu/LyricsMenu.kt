@@ -21,7 +21,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +30,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -57,7 +57,6 @@ import com.zionhuang.music.ui.component.TextFieldDialog
 import com.zionhuang.music.viewmodels.LyricsMenuViewModel
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LyricsMenu(
     lyricsProvider: () -> LyricsEntity?,
@@ -184,7 +183,7 @@ fun LyricsMenu(
         val isLoading by viewModel.isLoading.collectAsState()
 
         var expandedItemIndex by rememberSaveable {
-            mutableStateOf(-1)
+            mutableIntStateOf(-1)
         }
 
         ListDialog(

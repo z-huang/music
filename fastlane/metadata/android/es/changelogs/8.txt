@@ -1,0 +1,10 @@
+<br><b>Reparado</b>
+
+* Corregir la animación de cambio de tamaño del contenido principal
+* Se solucionó el problema del tema oscuro n.° 69
+* Se solucionó que cambiar el nombre de un artista pudiera provocar la pérdida de canciones #75
+
+<br><b>Actualizaciones de traducción</b>
+
+* Finlandés (por @teemue) #67
+* Italiano (por @airon90) #71

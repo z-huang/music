@@ -1,0 +1,11 @@
+¡La aplicación Music ahora se llama InnerTune!
+
+- Rediseño del reproductor
+- Rediseño de la cola
+- Almacenar canciones en caché
+- Estadísticas para nerds
+- Cola persistente
+- Añadir listas de reproducción (me gusta, descargadas)
+- Establecer límites de caché
+- Ordenar canciones por tiempo de reproducción
+- Personalizar pestañas de navegación

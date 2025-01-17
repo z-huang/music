@@ -37,4 +37,8 @@ class YouTubeQueue(
         continuation = nextResult.continuation
         return nextResult.items.map { it.toMediaItem() }
     }
+
+    companion object {
+        fun radio(song: MediaMetadata) = YouTubeQueue(WatchEndpoint(song.id), song)
+    }
 }

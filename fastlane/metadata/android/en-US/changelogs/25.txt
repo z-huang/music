@@ -1,0 +1,11 @@
+- Revamped home screen
+- Multi-select in queue and playlists
+- Add queue item menu
+- Search in playlists
+- Option to change grid cell size
+- Option to stop music when the app is killed
+- Option to auto skip to next song on error
+- Click on bottom navigation item again to scroll to top
+- Refetch song button
+- Fix repetitions in history
+- Other fixes and enhancements

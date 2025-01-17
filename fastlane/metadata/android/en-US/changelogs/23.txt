@@ -1,0 +1,6 @@
+- Discord RPC support
+- In-app update checker
+- Player text alignment customization
+- Exclude downloaded files in auto backup
+- Fix random crash
+- Other fixes and enhancements

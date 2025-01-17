@@ -1,0 +1,17 @@
+En Material 3 YouTube Music-klient for Android
+
+<br><b>Funksjoner:</b>
+
+- Spill sanger fra YouTube og YouTube Music uten reklame
+- Avspilling i bakgrunnen
+- Søk etter sanger, videoer, album, og spillelister fra YouTube Music
+- Bibliotekshåndtering
+- Hurtiglagring og lagring av sanger for frakoblet avspilling
+- Synkroniserte sangtekster
+- Hopp over stillhet
+- Audionormalisering
+- Dynamisk tema
+- Lokalisering
+- Støtte for Android Auto
+- Tilpassede hurtigvalg
+- Materiell 3

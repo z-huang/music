@@ -6,7 +6,9 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,16 +27,16 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -43,7 +45,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -60,18 +64,30 @@ import androidx.media3.common.Player.STATE_READY
 import androidx.navigation.NavController
 import com.zionhuang.music.LocalPlayerConnection
 import com.zionhuang.music.R
+import com.zionhuang.music.constants.DarkModeKey
 import com.zionhuang.music.constants.PlayerHorizontalPadding
+import com.zionhuang.music.constants.PlayerTextAlignmentKey
+import com.zionhuang.music.constants.PureBlackKey
 import com.zionhuang.music.constants.QueuePeekHeight
+import com.zionhuang.music.constants.SliderStyle
+import com.zionhuang.music.constants.SliderStyleKey
 import com.zionhuang.music.extensions.togglePlayPause
+import com.zionhuang.music.extensions.toggleRepeatMode
 import com.zionhuang.music.models.MediaMetadata
 import com.zionhuang.music.ui.component.BottomSheet
 import com.zionhuang.music.ui.component.BottomSheetState
 import com.zionhuang.music.ui.component.ResizableIconButton
 import com.zionhuang.music.ui.component.rememberBottomSheetState
+import com.zionhuang.music.ui.screens.settings.DarkMode
+import com.zionhuang.music.ui.screens.settings.PlayerTextAlignment
 import com.zionhuang.music.utils.makeTimeString
+import com.zionhuang.music.utils.rememberEnumPreference
+import com.zionhuang.music.utils.rememberPreference
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
+import me.saket.squiggles.SquigglySlider
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetPlayer(
     state: BottomSheetState,
@@ -79,6 +95,22 @@ fun BottomSheetPlayer(
     modifier: Modifier = Modifier,
 ) {
     val playerConnection = LocalPlayerConnection.current ?: return
+
+    val isSystemInDarkTheme = isSystemInDarkTheme()
+    val darkTheme by rememberEnumPreference(DarkModeKey, defaultValue = DarkMode.AUTO)
+    val pureBlack by rememberPreference(PureBlackKey, defaultValue = false)
+    val useBlackBackground = remember(isSystemInDarkTheme, darkTheme, pureBlack) {
+        val useDarkTheme = if (darkTheme == DarkMode.AUTO) isSystemInDarkTheme else darkTheme == DarkMode.ON
+        useDarkTheme && pureBlack
+    }
+    val backgroundColor = if (useBlackBackground && state.value > state.collapsedBound) {
+        lerp(MaterialTheme.colorScheme.surfaceContainer, Color.Black, state.progress)
+    } else {
+        MaterialTheme.colorScheme.surfaceContainer
+    }
+
+    val playerTextAlignment by rememberEnumPreference(PlayerTextAlignmentKey, PlayerTextAlignment.CENTER)
+    val sliderStyle by rememberEnumPreference(SliderStyleKey, SliderStyle.DEFAULT)
 
     val playbackState by playerConnection.playbackState.collectAsState()
     val isPlaying by playerConnection.isPlaying.collectAsState()
@@ -90,10 +122,10 @@ fun BottomSheetPlayer(
     val canSkipNext by playerConnection.canSkipNext.collectAsState()
 
     var position by rememberSaveable(playbackState) {
-        mutableStateOf(playerConnection.player.currentPosition)
+        mutableLongStateOf(playerConnection.player.currentPosition)
     }
     var duration by rememberSaveable(playbackState) {
-        mutableStateOf(playerConnection.player.duration)
+        mutableLongStateOf(playerConnection.player.duration)
     }
     var sliderPosition by remember {
         mutableStateOf<Long?>(null)
@@ -102,7 +134,7 @@ fun BottomSheetPlayer(
     LaunchedEffect(playbackState) {
         if (playbackState == STATE_READY) {
             while (isActive) {
-                delay(500)
+                delay(100)
                 position = playerConnection.player.currentPosition
                 duration = playerConnection.player.duration
             }
@@ -117,7 +149,7 @@ fun BottomSheetPlayer(
     BottomSheet(
         state = state,
         modifier = modifier,
-        backgroundColor = MaterialTheme.colorScheme.surfaceColorAtElevation(NavigationBarDefaults.Elevation),
+        backgroundColor = backgroundColor,
         onDismiss = {
             playerConnection.player.stop()
             playerConnection.player.clearMediaItems()
@@ -125,7 +157,7 @@ fun BottomSheetPlayer(
         collapsedContent = {
             MiniPlayer(
                 position = position,
-                duration = duration
+                duration = duration,
             )
         }
     ) {
@@ -144,16 +176,26 @@ fun BottomSheetPlayer(
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .padding(horizontal = PlayerHorizontalPadding)
+                    .basicMarquee()
                     .clickable(enabled = mediaMetadata.album != null) {
                         navController.navigate("album/${mediaMetadata.album!!.id}")
                         state.collapseSoft()
                     }
+                    .align(
+                        when (playerTextAlignment) {
+                            PlayerTextAlignment.SIDED -> Alignment.Start
+                            PlayerTextAlignment.CENTER -> Alignment.CenterHorizontally
+                        },
+                    )
             )
 
             Spacer(Modifier.height(6.dp))
 
             Row(
-                horizontalArrangement = Arrangement.Center,
+                horizontalArrangement = when (playerTextAlignment) {
+                    PlayerTextAlignment.SIDED -> Arrangement.Start
+                    PlayerTextAlignment.CENTER -> Arrangement.Center
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = PlayerHorizontalPadding)
@@ -164,10 +206,11 @@ fun BottomSheetPlayer(
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.secondary,
                         maxLines = 1,
-                        modifier = Modifier.clickable(enabled = artist.id != null) {
-                            navController.navigate("artist/${artist.id}")
-                            state.collapseSoft()
-                        }
+                        modifier = Modifier
+                            .clickable(enabled = artist.id != null) {
+                                navController.navigate("artist/${artist.id}")
+                                state.collapseSoft()
+                            }
                     )
 
                     if (index != mediaMetadata.artists.lastIndex) {
@@ -182,21 +225,48 @@ fun BottomSheetPlayer(
 
             Spacer(Modifier.height(12.dp))
 
-            Slider(
-                value = (sliderPosition ?: position).toFloat(),
-                valueRange = 0f..(if (duration == C.TIME_UNSET) 0f else duration.toFloat()),
-                onValueChange = {
-                    sliderPosition = it.toLong()
-                },
-                onValueChangeFinished = {
-                    sliderPosition?.let {
-                        playerConnection.player.seekTo(it)
-                        position = it
-                    }
-                    sliderPosition = null
-                },
-                modifier = Modifier.padding(horizontal = PlayerHorizontalPadding)
-            )
+            when (sliderStyle) {
+                SliderStyle.DEFAULT -> {
+                    Slider(
+                        value = (sliderPosition ?: position).toFloat(),
+                        valueRange = 0f..(if (duration == C.TIME_UNSET) 0f else duration.toFloat()),
+                        onValueChange = {
+                            sliderPosition = it.toLong()
+                        },
+                        onValueChangeFinished = {
+                            sliderPosition?.let {
+                                playerConnection.player.seekTo(it)
+                                position = it
+                            }
+                            sliderPosition = null
+                        },
+                        modifier = Modifier.padding(horizontal = PlayerHorizontalPadding)
+                    )
+                }
+
+                SliderStyle.SQUIGGLY -> {
+                    SquigglySlider(
+                        value = (sliderPosition ?: position).toFloat(),
+                        valueRange = 0f..(if (duration == C.TIME_UNSET) 0f else duration.toFloat()),
+                        onValueChange = {
+                            sliderPosition = it.toLong()
+                        },
+                        onValueChangeFinished = {
+                            sliderPosition?.let {
+                                playerConnection.player.seekTo(it)
+                                position = it
+                            }
+                            sliderPosition = null
+                        },
+                        squigglesSpec = SquigglySlider.SquigglesSpec(
+                            amplitude = if (isPlaying) 2.dp else 0.dp,
+                            strokeWidth = 4.dp,
+                        ),
+                        modifier = Modifier.padding(horizontal = PlayerHorizontalPadding),
+                    )
+                }
+            }
+            Spacer(Modifier.height(4.dp))
 
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -247,7 +317,7 @@ fun BottomSheetPlayer(
                         modifier = Modifier
                             .size(32.dp)
                             .align(Alignment.Center),
-                        onClick = playerConnection.player::seekToPrevious
+                        onClick = playerConnection::seekToPrevious
                     )
                 }
 
@@ -286,7 +356,7 @@ fun BottomSheetPlayer(
                         modifier = Modifier
                             .size(32.dp)
                             .align(Alignment.Center),
-                        onClick = playerConnection.player::seekToNext
+                        onClick = playerConnection::seekToNext
                     )
                 }
 
@@ -302,7 +372,7 @@ fun BottomSheetPlayer(
                             .padding(4.dp)
                             .align(Alignment.Center)
                             .alpha(if (repeatMode == REPEAT_MODE_OFF) 0.5f else 1f),
-                        onClick = playerConnection::toggleRepeatMode
+                        onClick = playerConnection.player::toggleRepeatMode
                     )
                 }
             }
@@ -371,6 +441,7 @@ fun BottomSheetPlayer(
         Queue(
             state = queueSheetState,
             playerBottomSheetState = state,
+            backgroundColor = backgroundColor,
             navController = navController
         )
     }

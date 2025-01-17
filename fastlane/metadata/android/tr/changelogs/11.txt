@@ -1,0 +1,9 @@
+Bu sürümde daha güçlü özelliklere sahip yeni bir kütüphane kullanıyoruz!
+*Her şeyi Youtube Music kullanıyor gibi kullanın.
+*Yeni çıkan müzikleri ve önerilenleri keşfetmek için yeni ana menü
+*Arama sonucu özet sekmesi
+*Yayın yükleme hızı arttırıldı
+
+*Kredi: vfsfitvnm/ViMusic, tombulled/innertube, zerodytrash/YouTube-Internal-Clients
+
+Not: 0.3.3 sürümünden güncelleyen kullanıcılar, thumbnail görüntülemek için lütfen kitaplığınızdaki tüm şarkıları seçin ve “Yeniden Getir” tuşuna basın.

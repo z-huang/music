@@ -1,6 +1,8 @@
 package com.zionhuang.music.ui.menu
 
 import android.content.Intent
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,7 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -23,13 +25,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +51,7 @@ import androidx.media3.exoplayer.offline.DownloadRequest
 import androidx.media3.exoplayer.offline.DownloadService
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.zionhuang.innertube.YouTube
 import com.zionhuang.music.LocalDatabase
 import com.zionhuang.music.LocalDownloadUtil
 import com.zionhuang.music.LocalPlayerConnection
@@ -52,7 +59,6 @@ import com.zionhuang.music.R
 import com.zionhuang.music.constants.ListItemHeight
 import com.zionhuang.music.constants.ListThumbnailSize
 import com.zionhuang.music.db.entities.Album
-import com.zionhuang.music.db.entities.PlaylistSongMap
 import com.zionhuang.music.db.entities.Song
 import com.zionhuang.music.extensions.toMediaItem
 import com.zionhuang.music.playback.ExoDownloadService
@@ -61,6 +67,9 @@ import com.zionhuang.music.ui.component.DownloadGridMenu
 import com.zionhuang.music.ui.component.GridMenu
 import com.zionhuang.music.ui.component.GridMenuItem
 import com.zionhuang.music.ui.component.ListDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 @Composable
 fun AlbumMenu(
@@ -72,10 +81,14 @@ fun AlbumMenu(
     val database = LocalDatabase.current
     val downloadUtil = LocalDownloadUtil.current
     val playerConnection = LocalPlayerConnection.current ?: return
+    val scope = rememberCoroutineScope()
     val libraryAlbum by database.album(originalAlbum.id).collectAsState(initial = originalAlbum)
     val album = libraryAlbum ?: originalAlbum
     var songs by remember {
         mutableStateOf(emptyList<Song>())
+    }
+    val allInLibrary = remember(songs) {
+        songs.all { it.song.inLibrary != null }
     }
 
     LaunchedEffect(Unit) {
@@ -85,7 +98,7 @@ fun AlbumMenu(
     }
 
     var downloadState by remember {
-        mutableStateOf(STATE_STOPPED)
+        mutableIntStateOf(STATE_STOPPED)
     }
 
     LaunchedEffect(songs) {
@@ -105,6 +118,14 @@ fun AlbumMenu(
         }
     }
 
+    var refetchIconDegree by remember { mutableFloatStateOf(0f) }
+
+    val rotationAnimation by animateFloatAsState(
+        targetValue = refetchIconDegree,
+        animationSpec = tween(durationMillis = 800),
+        label = ""
+    )
+
     var showChoosePlaylistDialog by rememberSaveable {
         mutableStateOf(false)
     }
@@ -115,20 +136,7 @@ fun AlbumMenu(
 
     AddToPlaylistDialog(
         isVisible = showChoosePlaylistDialog,
-        onAdd = { playlist ->
-            database.transaction {
-                songs.map { it.id }
-                    .forEach {
-                        insert(
-                            PlaylistSongMap(
-                                songId = it,
-                                playlistId = playlist.id,
-                                position = playlist.songCount
-                            )
-                        )
-                    }
-            }
-        },
+        onGetSong = { songs.map { it.id } },
         onDismiss = {
             showChoosePlaylistDialog = false
         }
@@ -201,7 +209,7 @@ fun AlbumMenu(
         }
     )
 
-    Divider()
+    HorizontalDivider()
 
     GridMenu(
         contentPadding = PaddingValues(
@@ -218,6 +226,7 @@ fun AlbumMenu(
             onDismiss()
             playerConnection.playNext(songs.map { it.toMediaItem() })
         }
+
         GridMenuItem(
             icon = R.drawable.queue_music,
             title = R.string.add_to_queue
@@ -225,12 +234,38 @@ fun AlbumMenu(
             onDismiss()
             playerConnection.addToQueue(songs.map { it.toMediaItem() })
         }
+
         GridMenuItem(
             icon = R.drawable.playlist_add,
             title = R.string.add_to_playlist
         ) {
             showChoosePlaylistDialog = true
         }
+
+        if (allInLibrary) {
+            GridMenuItem(
+                icon = R.drawable.library_add_check,
+                title = R.string.remove_all_from_library
+            ) {
+                database.transaction {
+                    songs.forEach {
+                        inLibrary(it.id, null)
+                    }
+                }
+            }
+        } else {
+            GridMenuItem(
+                icon = R.drawable.library_add,
+                title = R.string.add_all_to_library
+            ) {
+                database.transaction {
+                    songs.forEach {
+                        inLibrary(it.id, LocalDateTime.now())
+                    }
+                }
+            }
+        }
+
         DownloadGridMenu(
             state = downloadState,
             onDownload = {
@@ -258,6 +293,7 @@ fun AlbumMenu(
                 }
             }
         )
+
         GridMenuItem(
             icon = R.drawable.artist,
             title = R.string.view_artist
@@ -269,6 +305,27 @@ fun AlbumMenu(
                 showSelectArtistDialog = true
             }
         }
+
+        GridMenuItem(
+            icon = {
+                Icon(
+                    painter = painterResource(R.drawable.sync),
+                    contentDescription = null,
+                    modifier = Modifier.graphicsLayer(rotationZ = rotationAnimation)
+                )
+            },
+            title = R.string.refetch
+        ) {
+            refetchIconDegree -= 360
+            scope.launch(Dispatchers.IO) {
+                YouTube.album(album.id).onSuccess {
+                    database.transaction {
+                        update(album.album, it)
+                    }
+                }
+            }
+        }
+
         GridMenuItem(
             icon = R.drawable.share,
             title = R.string.share

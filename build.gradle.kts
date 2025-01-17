@@ -1,6 +1,7 @@
 plugins {
-    id("com.google.dagger.hilt.android").version("2.44").apply(false)
-    id("com.google.devtools.ksp").version("1.8.0-1.0.9").apply(false)
+    alias(libs.plugins.hilt) apply (false)
+    alias(libs.plugins.kotlin.ksp) apply (false)
+    alias(libs.plugins.compose.compiler) apply false
 }
 
 buildscript {
@@ -25,7 +26,7 @@ buildscript {
 }
 
 tasks.register<Delete>("Clean") {
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
 }
 
 subprojects {

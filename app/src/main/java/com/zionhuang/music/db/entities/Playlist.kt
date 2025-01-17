@@ -25,4 +25,8 @@ data class Playlist(
 ) : LocalItem() {
     override val id: String
         get() = playlist.id
+    override val title: String
+        get() = playlist.name
+    override val thumbnailUrl: String?
+        get() = null
 }

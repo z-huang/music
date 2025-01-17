@@ -1,0 +1,6 @@
+* Iniciar la radio desde las canciones de la biblioteca
+* Configuración de pestaña abierta por defecto
+* Configuración de la calidad del audio
+* Pausa o borrar el historial de búsqueda
+* Copia de seguridad y restauración
+* Admite proxy SOCKS

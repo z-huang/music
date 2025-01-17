@@ -8,7 +8,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.exoplayer.offline.Download
 import com.zionhuang.innertube.YouTube
-import com.zionhuang.music.constants.*
+import com.zionhuang.music.constants.AlbumFilter
+import com.zionhuang.music.constants.AlbumFilterKey
+import com.zionhuang.music.constants.AlbumSortDescendingKey
+import com.zionhuang.music.constants.AlbumSortType
+import com.zionhuang.music.constants.AlbumSortTypeKey
+import com.zionhuang.music.constants.ArtistFilter
+import com.zionhuang.music.constants.ArtistFilterKey
+import com.zionhuang.music.constants.ArtistSongSortDescendingKey
+import com.zionhuang.music.constants.ArtistSongSortType
+import com.zionhuang.music.constants.ArtistSongSortTypeKey
+import com.zionhuang.music.constants.ArtistSortDescendingKey
+import com.zionhuang.music.constants.ArtistSortType
+import com.zionhuang.music.constants.ArtistSortTypeKey
+import com.zionhuang.music.constants.PlaylistSortDescendingKey
+import com.zionhuang.music.constants.PlaylistSortType
+import com.zionhuang.music.constants.PlaylistSortTypeKey
+import com.zionhuang.music.constants.SongFilter
+import com.zionhuang.music.constants.SongFilterKey
+import com.zionhuang.music.constants.SongSortDescendingKey
+import com.zionhuang.music.constants.SongSortType
+import com.zionhuang.music.constants.SongSortTypeKey
 import com.zionhuang.music.db.MusicDatabase
 import com.zionhuang.music.extensions.reversed
 import com.zionhuang.music.extensions.toEnum
@@ -19,7 +39,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.Duration
 import java.time.LocalDateTime
@@ -65,7 +90,7 @@ class LibrarySongsViewModel @Inject constructor(
                         }
                 }
             }
-        }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+        }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 }
 
 @HiltViewModel
@@ -88,17 +113,17 @@ class LibraryArtistsViewModel @Inject constructor(
                 ArtistFilter.LIKED -> database.artistsBookmarked(sortType, descending)
             }
         }
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             allArtists.collect { artists ->
                 artists
-                    .map { it.artist }
-                    .filter {
+                    ?.map { it.artist }
+                    ?.filter {
                         it.thumbnailUrl == null || Duration.between(it.lastUpdateTime, LocalDateTime.now()) > Duration.ofDays(10)
                     }
-                    .forEach { artist ->
+                    ?.forEach { artist ->
                         YouTube.artist(artist.id).onSuccess { artistPage ->
                             database.query {
                                 update(artist, artistPage)
@@ -130,27 +155,29 @@ class LibraryAlbumsViewModel @Inject constructor(
                 AlbumFilter.LIKED -> database.albumsLiked(sortType, descending)
             }
         }
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             allAlbums.collect { albums ->
-                albums.filter {
-                    it.album.songCount == 0
-                }.forEach { album ->
-                    YouTube.album(album.id).onSuccess { albumPage ->
-                        database.query {
-                            update(album.album, albumPage)
-                        }
-                    }.onFailure {
-                        reportException(it)
-                        if (it.message?.contains("NOT_FOUND") == true) {
+                albums
+                    ?.filter {
+                        it.album.songCount == 0
+                    }
+                    ?.forEach { album ->
+                        YouTube.album(album.id).onSuccess { albumPage ->
                             database.query {
-                                delete(album.album)
+                                update(album.album, albumPage)
+                            }
+                        }.onFailure {
+                            reportException(it)
+                            if (it.message?.contains("NOT_FOUND") == true) {
+                                database.query {
+                                    delete(album.album)
+                                }
                             }
                         }
                     }
-                }
             }
         }
     }
@@ -169,7 +196,7 @@ class LibraryPlaylistsViewModel @Inject constructor(
         .flatMapLatest { (sortType, descending) ->
             database.playlists(sortType, descending)
         }
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+        .stateIn(viewModelScope, SharingStarted.Lazily, null)
 }
 
 @HiltViewModel

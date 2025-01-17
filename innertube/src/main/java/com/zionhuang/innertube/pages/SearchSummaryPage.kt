@@ -9,6 +9,8 @@ import com.zionhuang.innertube.models.MusicResponsiveListItemRenderer
 import com.zionhuang.innertube.models.PlaylistItem
 import com.zionhuang.innertube.models.SongItem
 import com.zionhuang.innertube.models.YTItem
+import com.zionhuang.innertube.models.clean
+import com.zionhuang.innertube.models.filterExplicit
 import com.zionhuang.innertube.models.oddElements
 import com.zionhuang.innertube.models.splitBySeparator
 import com.zionhuang.innertube.utils.parseTime
@@ -21,6 +23,21 @@ data class SearchSummary(
 data class SearchSummaryPage(
     val summaries: List<SearchSummary>,
 ) {
+    fun filterExplicit(enabled: Boolean) =
+        if (enabled) {
+            SearchSummaryPage(
+                summaries.mapNotNull { s ->
+                    SearchSummary(
+                        title = s.title,
+                        items = s.items.filterExplicit().ifEmpty {
+                            return@mapNotNull null
+                        }
+                    )
+                }
+            )
+        } else this
+
+
     companion object {
         fun fromMusicCardShelfRenderer(renderer: MusicCardShelfRenderer): YTItem? {
             val subtitle = renderer.subtitle.runs?.splitBySeparator()
@@ -44,7 +61,7 @@ data class SearchSummaryPage(
                         duration = subtitle.lastOrNull()?.firstOrNull()?.text?.parseTime(),
                         thumbnail = renderer.thumbnail.musicThumbnailRenderer?.getThumbnailUrl() ?: return null,
                         explicit = renderer.subtitleBadges?.find {
-                            it.musicInlineBadgeRenderer.icon.iconType == "MUSIC_EXPLICIT_BADGE"
+                            it.musicInlineBadgeRenderer?.icon?.iconType == "MUSIC_EXPLICIT_BADGE"
                         } != null
                     )
                 }
@@ -66,7 +83,7 @@ data class SearchSummaryPage(
                 renderer.onTap.browseEndpoint?.isAlbumEndpoint == true -> {
                     AlbumItem(
                         browseId = renderer.onTap.browseEndpoint.browseId,
-                        playlistId = renderer.buttons.firstOrNull()?.buttonRenderer?.command?.watchPlaylistEndpoint?.playlistId ?: return null,
+                        playlistId = renderer.buttons.firstOrNull()?.buttonRenderer?.command?.anyWatchEndpoint?.playlistId ?: return null,
                         title = renderer.title.runs?.firstOrNull()?.text ?: return null,
                         artists = subtitle?.getOrNull(1)?.oddElements()?.map {
                             Artist(
@@ -77,8 +94,29 @@ data class SearchSummaryPage(
                         year = null,
                         thumbnail = renderer.thumbnail.musicThumbnailRenderer?.getThumbnailUrl() ?: return null,
                         explicit = renderer.subtitleBadges?.find {
-                            it.musicInlineBadgeRenderer.icon.iconType == "MUSIC_EXPLICIT_BADGE"
+                            it.musicInlineBadgeRenderer?.icon?.iconType == "MUSIC_EXPLICIT_BADGE"
                         } != null
+                    )
+                }
+
+                renderer.onTap.browseEndpoint?.isPlaylistEndpoint == true -> {
+                    PlaylistItem(
+                        id = renderer.onTap.browseEndpoint.browseId.removePrefix("VL"),
+                        title = renderer.header.musicCardShelfHeaderBasicRenderer.title.runs?.joinToString(separator = "") { it.text }
+                            ?: return null,
+                        author = Artist(
+                            id = null,
+                            name = renderer.subtitle.runs?.joinToString { it.text } ?: return null
+                        ),
+                        songCountText = null,
+                        thumbnail = renderer.thumbnail.musicThumbnailRenderer?.getThumbnailUrl() ?: return null,
+                        playEndpoint = renderer.buttons.find { it.buttonRenderer.icon?.iconType == "PLAY_ARROW" }
+                            ?.buttonRenderer?.command?.watchPlaylistEndpoint
+                            ?: return null,
+                        shuffleEndpoint = renderer.buttons.find { it.buttonRenderer.icon?.iconType == "MUSIC_SHUFFLE" }
+                            ?.buttonRenderer?.command?.watchPlaylistEndpoint
+                            ?: return null,
+                        radioEndpoint = null
                     )
                 }
 
@@ -90,6 +128,10 @@ data class SearchSummaryPage(
             val secondaryLine = renderer.flexColumns.getOrNull(1)
                 ?.musicResponsiveListItemFlexColumnRenderer?.text?.runs?.splitBySeparator()
                 ?: return null
+            val thirdLine = renderer.flexColumns.getOrNull(2)
+                ?.musicResponsiveListItemFlexColumnRenderer?.text?.runs?.splitBySeparator()
+                ?: emptyList()
+            val listRun = (secondaryLine + thirdLine).clean()
             return when {
                 renderer.isSong -> {
                     SongItem(
@@ -97,13 +139,13 @@ data class SearchSummaryPage(
                         title = renderer.flexColumns.firstOrNull()
                             ?.musicResponsiveListItemFlexColumnRenderer?.text?.runs
                             ?.firstOrNull()?.text ?: return null,
-                        artists = secondaryLine.getOrNull(1)?.oddElements()?.map {
+                        artists = listRun.getOrNull(0)?.oddElements()?.map {
                             Artist(
                                 name = it.text,
                                 id = it.navigationEndpoint?.browseEndpoint?.browseId
                             )
                         } ?: return null,
-                        album = secondaryLine.getOrNull(2)?.firstOrNull()?.takeIf { it.navigationEndpoint?.browseEndpoint != null }?.let {
+                        album = listRun.getOrNull(1)?.firstOrNull()?.takeIf { it.navigationEndpoint?.browseEndpoint != null }?.let {
                             Album(
                                 name = it.text,
                                 id = it.navigationEndpoint?.browseEndpoint?.browseId!!
@@ -112,7 +154,7 @@ data class SearchSummaryPage(
                         duration = secondaryLine.lastOrNull()?.firstOrNull()?.text?.parseTime(),
                         thumbnail = renderer.thumbnail?.musicThumbnailRenderer?.getThumbnailUrl() ?: return null,
                         explicit = renderer.badges?.find {
-                            it.musicInlineBadgeRenderer.icon.iconType == "MUSIC_EXPLICIT_BADGE"
+                            it.musicInlineBadgeRenderer?.icon?.iconType == "MUSIC_EXPLICIT_BADGE"
                         } != null
                     )
                 }
@@ -147,7 +189,7 @@ data class SearchSummaryPage(
                         year = secondaryLine.getOrNull(2)?.firstOrNull()?.text?.toIntOrNull(),
                         thumbnail = renderer.thumbnail?.musicThumbnailRenderer?.getThumbnailUrl() ?: return null,
                         explicit = renderer.badges?.find {
-                            it.musicInlineBadgeRenderer.icon.iconType == "MUSIC_EXPLICIT_BADGE"
+                            it.musicInlineBadgeRenderer?.icon?.iconType == "MUSIC_EXPLICIT_BADGE"
                         } != null
                     )
                 }

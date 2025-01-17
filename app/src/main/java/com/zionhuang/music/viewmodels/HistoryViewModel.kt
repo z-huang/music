@@ -40,16 +40,18 @@ class HistoryViewModel @Inject constructor(
                     DateAgo.LastWeek -> 3L
                     is DateAgo.Other -> ChronoUnit.DAYS.between(dateAgo.date, today)
                 }
-            })
+            }).mapValues { entry ->
+                entry.value.distinctBy { it.song.id }
+            }
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, emptyMap())
 }
 
 sealed class DateAgo {
-    object Today : DateAgo()
-    object Yesterday : DateAgo()
-    object ThisWeek : DateAgo()
-    object LastWeek : DateAgo()
+    data object Today : DateAgo()
+    data object Yesterday : DateAgo()
+    data object ThisWeek : DateAgo()
+    data object LastWeek : DateAgo()
     class Other(val date: LocalDate) : DateAgo() {
         override fun equals(other: Any?): Boolean {
             if (other is Other) return date == other.date

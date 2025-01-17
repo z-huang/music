@@ -8,11 +8,26 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 val DynamicThemeKey = booleanPreferencesKey("dynamicTheme")
 val DarkModeKey = stringPreferencesKey("darkMode")
 val PureBlackKey = booleanPreferencesKey("pureBlack")
+val PlayerTextAlignmentKey = stringPreferencesKey("playerTextAlignment")
+val SliderStyleKey = stringPreferencesKey("sliderStyle")
+
+enum class SliderStyle {
+    DEFAULT, SQUIGGLY
+}
+
 val DefaultOpenTabKey = stringPreferencesKey("defaultOpenTab")
+val GridCellSizeKey = stringPreferencesKey("gridCellSize")
+
+enum class GridCellSize {
+    SMALL, BIG
+}
 
 const val SYSTEM_DEFAULT = "SYSTEM_DEFAULT"
 val ContentLanguageKey = stringPreferencesKey("contentLanguage")
 val ContentCountryKey = stringPreferencesKey("contentCountry")
+val EnableKugouKey = booleanPreferencesKey("enableKugou")
+val EnableLrcLibKey = booleanPreferencesKey("enableLrcLib")
+val HideExplicitKey = booleanPreferencesKey("hideExplicit")
 val ProxyEnabledKey = booleanPreferencesKey("proxyEnabled")
 val ProxyUrlKey = stringPreferencesKey("proxyUrl")
 val ProxyTypeKey = stringPreferencesKey("proxyType")
@@ -26,13 +41,23 @@ enum class AudioQuality {
 val PersistentQueueKey = booleanPreferencesKey("persistentQueue")
 val SkipSilenceKey = booleanPreferencesKey("skipSilence")
 val AudioNormalizationKey = booleanPreferencesKey("audioNormalization")
+val AutoLoadMoreKey = booleanPreferencesKey("autoLoadMore")
+val AutoSkipNextOnErrorKey = booleanPreferencesKey("autoSkipNextOnError")
+val StopMusicOnTaskClearKey = booleanPreferencesKey("stopMusicOnTaskClear")
 
 val MaxImageCacheSizeKey = intPreferencesKey("maxImageCacheSize")
 val MaxSongCacheSizeKey = intPreferencesKey("maxSongCacheSize")
 
 val PauseListenHistoryKey = booleanPreferencesKey("pauseListenHistory")
 val PauseSearchHistoryKey = booleanPreferencesKey("pauseSearchHistory")
-val EnableKugouKey = booleanPreferencesKey("enableKugou")
+val UseLoginForBrowse = booleanPreferencesKey("useLoginForBrowse")
+val DisableScreenshotKey = booleanPreferencesKey("disableScreenshot")
+
+val DiscordTokenKey = stringPreferencesKey("discordToken")
+val DiscordInfoDismissedKey = booleanPreferencesKey("discordInfoDismissed_v2")
+val DiscordUsernameKey = stringPreferencesKey("discordUsername")
+val DiscordNameKey = stringPreferencesKey("discordName")
+val EnableDiscordRPCKey = booleanPreferencesKey("discordRPCEnable")
 
 val SongSortTypeKey = stringPreferencesKey("songSortType")
 val SongSortDescendingKey = booleanPreferencesKey("songSortDescending")
@@ -102,8 +127,8 @@ enum class AlbumFilter {
 }
 
 val ShowLyricsKey = booleanPreferencesKey("showLyrics")
-val LyricsTextPositionKey = stringPreferencesKey("lyricsTextPosition")
 val TranslateLyricsKey = booleanPreferencesKey("translateLyrics")
+val LockQueueKey = booleanPreferencesKey("lockQueue")
 
 val PlayerVolumeKey = floatPreferencesKey("playerVolume")
 val RepeatModeKey = intPreferencesKey("repeatMode")
@@ -111,7 +136,12 @@ val RepeatModeKey = intPreferencesKey("repeatMode")
 val SearchSourceKey = stringPreferencesKey("searchSource")
 
 enum class SearchSource {
-    LOCAL, ONLINE
+    LOCAL, ONLINE;
+
+    fun toggle() = when (this) {
+        LOCAL -> ONLINE
+        ONLINE -> LOCAL
+    }
 }
 
 val VisitorDataKey = stringPreferencesKey("visitorData")

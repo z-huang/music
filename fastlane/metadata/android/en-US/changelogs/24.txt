@@ -1,0 +1,6 @@
+- Smoother navigation animation
+- Option to hide explicit content
+- Add squiggly slider
+- Fix album artist error and add refetch album button
+- Fix color mismatch
+- Other fixes and enhancements

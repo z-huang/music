@@ -1,0 +1,8 @@
+* Actualizador de aplicaciones (Previsualizar)
+* Compartir la función del botón en el fragmento de control inferior
+* Abrir URL de YouTube por esta aplicación #11
+* Ahora puedes buscar álbumes de YouTube Music
+* Eliminar la descarga de una canción
+* Mostrar el nombre del canal o lista de reproducción en el título del fragmento de búsqueda
+* Búsqueda desplazable filtro chip grupo
+* Correcciones menores

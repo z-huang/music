@@ -18,6 +18,10 @@
     <string name="account">Account</string>
     <string name="quick_picks">Quick picks</string>
     <string name="quick_picks_empty">Listen to songs to generate your quick picks</string>
+    <string name="forgotten_favorites">Forgotten favorites</string>
+    <string name="keep_listening">Keep listening</string>
+    <string name="your_youtube_playlists">Your YouTube playlists</string>
+    <string name="similar_to">Similar to</string>
     <string name="new_release_albums">New release albums</string>
 
     <!-- History -->
@@ -49,13 +53,24 @@
     <string name="filter_bookmarked">Bookmarked</string>
     <string name="no_results_found">No results found</string>
 
+    <!-- Library -->
+    <string name="library_song_empty">Library songs will show up here</string>
+    <string name="library_artist_empty">Library artists will show up here</string>
+    <string name="library_album_empty">Library albums will show up here</string>
+    <string name="library_playlist_empty">Your playlists will show up here</string>
+
     <!-- Artist screen -->
     <string name="from_your_library">From your library</string>
+
+    <!-- Album screen -->
+    <string name="other_versions">Other versions</string>
 
     <!-- Playlist -->
     <string name="liked_songs">Liked songs</string>
     <string name="downloaded_songs">Downloaded songs</string>
     <string name="playlist_is_empty">The playlist is empty</string>
+    <string name="remove_download_playlist_confirm">Do you really want to remove all \"%s\" playlist songs from the Downloaded Songs storage?</string>
+    <string name="delete_playlist_confirm">Do you really want to delete the playlist \"%s\"?</string>
 
     <!-- Button -->
     <string name="retry">Retry</string>
@@ -71,7 +86,9 @@
     <string name="play_next">Play next</string>
     <string name="add_to_queue">Add to queue</string>
     <string name="add_to_library">Add to library</string>
+    <string name="add_all_to_library">Add all to library</string>
     <string name="remove_from_library">Remove from library</string>
+    <string name="remove_all_from_library">Remove all from library</string>
     <string name="download">Download</string>
     <string name="downloading">Downloading</string>
     <string name="remove_download">Remove download</string>
@@ -83,9 +100,12 @@
     <string name="share">Share</string>
     <string name="delete">Delete</string>
     <string name="remove_from_history">Remove from history</string>
+    <string name="remove_from_playlist">Remove from playlist</string>
+    <string name="remove_from_queue">Remove from queue</string>
     <string name="search_online">Search online</string>
     <string name="sync">Sync</string>
     <string name="advanced">Advanced</string>
+    <string name="tempo_and_pitch">Tempo and Pitch</string>
 
     <!-- Sort menu -->
     <string name="sort_by_create_date">Date added</string>
@@ -128,6 +148,12 @@
     <string name="edit_artist">Edit artist</string>
     <string name="artist_name">Artist name</string>
     <string name="error_artist_name_empty">Artist name cannot be empty.</string>
+
+    <string name="duplicates">Duplicates</string>
+    <string name="skip_duplicates">Skip duplicates</string>
+    <string name="add_anyway">Add anyway</string>
+    <string name="duplicates_description_single">The song is already in your playlist</string>
+    <string name="duplicates_description_multiple">%d songs are already in your playlist</string>
 
     <!-- Noun -->
     <plurals name="n_song">
@@ -180,7 +206,14 @@
 
     <!-- Player action -->
     <string name="action_like">Like</string>
+    <string name="action_like_all">Like all</string>
     <string name="action_remove_like">Remove like</string>
+    <string name="action_remove_like_all">Remove all likes</string>
+    <string name="action_shuffle_on">Shuffle on</string>
+    <string name="action_shuffle_off">Shuffle off</string>
+    <string name="repeat_mode_off">Repeat mode off</string>
+    <string name="repeat_mode_one">Repeat current song</string>
+    <string name="repeat_mode_all">Repeat queue</string>
 
     <!-- Queue Title -->
     <string name="queue_all_songs">All songs</string>
@@ -192,21 +225,33 @@
     <!-- Settings -->
     <string name="settings">Settings</string>
     <string name="appearance">Appearance</string>
+    <string name="theme">Theme</string>
     <string name="enable_dynamic_theme">Enable dynamic theme</string>
     <string name="dark_theme">Dark theme</string>
     <string name="dark_theme_on">On</string>
     <string name="dark_theme_off">Off</string>
     <string name="dark_theme_follow_system">Follow system</string>
     <string name="pure_black">Pure black</string>
-    <string name="default_open_tab">Default open tab</string>
     <string name="customize_navigation_tabs">Customize navigation tabs</string>
+    <string name="player">Player</string>
+    <string name="player_text_alignment">Player text alignment</string>
     <string name="lyrics_text_position">Lyrics text position</string>
+    <string name="sided">Sided</string>
     <string name="left">Left</string>
     <string name="center">Center</string>
     <string name="right">Right</string>
+    <string name="player_slider_style">Player slider style</string>
+    <string name="default_">Default</string>
+    <string name="squiggly">Squiggly</string>
+    <string name="misc">Misc</string>
+    <string name="default_open_tab">Default open tab</string>
+    <string name="grid_cell_size">Grid cell size</string>
+    <string name="small">Small</string>
+    <string name="big">Big</string>
 
     <string name="content">Content</string>
     <string name="login">Login</string>
+    <string name="not_logged_in">Not logged in</string>
     <string name="content_language">Default content language</string>
     <string name="content_country">Default content country</string>
     <string name="system_default">System default</string>
@@ -220,9 +265,16 @@
     <string name="audio_quality_auto">Auto</string>
     <string name="audio_quality_high">High</string>
     <string name="audio_quality_low">Low</string>
+    <string name="queue">Queue</string>
     <string name="persistent_queue">Persistent queue</string>
+    <string name="persistent_queue_desc">Restore your last queue when the app starts</string>
+    <string name="auto_load_more">Auto load more songs</string>
+    <string name="auto_load_more_desc">Automatically add more songs when the end of the queue is reached, if possible</string>
     <string name="skip_silence">Skip silence</string>
     <string name="audio_normalization">Audio normalization</string>
+    <string name="auto_skip_next_on_error">Auto skip to next song when error occurs</string>
+    <string name="auto_skip_next_on_error_desc">Ensure your continuous playback experience</string>
+    <string name="stop_music_on_task_clear">Stop music on task clear</string>
     <string name="equalizer">Equalizer</string>
 
     <string name="storage">Storage</string>
@@ -239,13 +291,21 @@
     <string name="size_used">%s used</string>
 
     <string name="privacy">Privacy</string>
+    <string name="listen_history">Listen history</string>
     <string name="pause_listen_history">Pause listen history</string>
     <string name="clear_listen_history">Clear listen history</string>
-    <string name="clear_listen_history_confirm">Are you sure to clear all listen history?</string>
+    <string name="clear_listen_history_confirm">Are you sure you want to clear all listen history?</string>
+    <string name="search_history">Search history</string>
     <string name="pause_search_history">Pause search history</string>
     <string name="clear_search_history">Clear search history</string>
-    <string name="clear_search_history_confirm">Are you sure to clear all search history?</string>
+    <string name="clear_search_history_confirm">Are you sure you want to clear all search history?</string>
+    <string name="use_login_for_browse">Use login for browsing content</string>
+    <string name="use_login_for_browse_desc">This can influence what content you see and for example shows premium-only albums if you are logged in with a Premium account</string>
+    <string name="disable_screenshot">Disable screenshot</string>
+    <string name="disable_screenshot_desc">When this option is on, screenshots and the app\'s view in Recents are disabled.</string>
+    <string name="enable_lrclib">Enable LrcLib lyrics provider</string>
     <string name="enable_kugou">Enable KuGou lyrics provider</string>
+    <string name="hide_explicit">Hide explicit content</string>
 
     <string name="backup_restore">Backup and restore</string>
     <string name="backup">Backup</string>
@@ -254,6 +314,15 @@
     <string name="backup_create_success">Backup created successfully</string>
     <string name="backup_create_failed">Couldn\'t create backup</string>
     <string name="restore_failed">Failed to restore backup</string>
+
+    <string name="discord_integration">Discord Integration</string>
+    <string name="discord_information">InnerTune uses the KizzyRPC library to set your Discord account\'s status. This involves using the Discord Gateway connection, which may be considered a violation of Discord\'s TOS. However, there are no known cases of user accounts being suspended for this reason. Use at your own risk.\n\nInnerTune will only extract your token, and everything else is stored locally.</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="options">Options</string>
+    <string name="preview">Preview</string>
+    <string name="login_failed">Login failed</string>
+    <string name="logout">Logout</string>
+    <string name="enable_discord_rpc">Enable Rich Presence</string>
 
     <string name="about">About</string>
     <string name="app_version">App version</string>

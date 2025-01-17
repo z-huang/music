@@ -1,0 +1,5 @@
+- Fix YouTube API changes
+- Show library artist albums first in new releases
+- More actions in Android Auto
+- Long click on back arrow to go to home
+- More improvements and fixes

@@ -1,20 +1,30 @@
 package com.zionhuang.music.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zionhuang.innertube.YouTube
 import com.zionhuang.innertube.models.YTItem
+import com.zionhuang.innertube.models.filterExplicit
+import com.zionhuang.music.constants.HideExplicitKey
 import com.zionhuang.music.db.MusicDatabase
 import com.zionhuang.music.db.entities.SearchHistory
+import com.zionhuang.music.utils.dataStore
+import com.zionhuang.music.utils.get
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class OnlineSearchSuggestionViewModel @Inject constructor(
+    @ApplicationContext context: Context,
     database: MusicDatabase,
 ) : ViewModel() {
     val query = MutableStateFlow("")
@@ -40,7 +50,9 @@ class OnlineSearchSuggestionViewModel @Inject constructor(
                                 suggestions = result?.queries?.filter { query ->
                                     history.none { it.query == query }
                                 }.orEmpty(),
-                                items = result?.recommendedItems.orEmpty()
+                                items = result?.recommendedItems
+                                    ?.filterExplicit(context.dataStore.get(HideExplicitKey, false))
+                                    .orEmpty()
                             )
                         }
                 }

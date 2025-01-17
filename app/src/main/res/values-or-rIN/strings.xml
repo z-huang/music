@@ -182,6 +182,11 @@
     <!-- Player action -->
     <string name="action_like">ପସନ୍ଦ କରନ୍ତୁ</string>
     <string name="action_remove_like">ପଶନ୍ଦ ଅପସାରଣ କରନ୍ତୁ</string>
+    <string name="action_shuffle_on">Shuffle on</string>
+    <string name="action_shuffle_off">Shuffle off</string>
+    <string name="repeat_mode_off">Repeat mode off</string>
+    <string name="repeat_mode_one">Repeat current song</string>
+    <string name="repeat_mode_all">Repeat queue</string>
 
     <!-- Queue Title -->
     <string name="queue_all_songs">ସମସ୍ତ ଗୀତ</string>

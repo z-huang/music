@@ -1,0 +1,17 @@
+适用于 Android 的 YouTube Music 客户端，采用 Material 3 设计
+
+<br><b>特点：</b>
+
+- 无广告播放 YouTube/YouTube Music 中的歌曲
+- 后台播放
+- 从 YouTube Music 搜索歌曲、视频、专辑和播放列表
+- 媒体库管理
+- 缓存和下载歌曲以供离线播放
+- 同步歌词
+- 跳过无声片段
+- 标准化音量
+- 动态主题
+- 良好的本地化
+- 支持 Android Auto
+- 个性化歌曲快选
+- Material 3 设计

@@ -1,0 +1,17 @@
+Aplikacja YouTube Music wykorzystująca Material 3
+
+<br><b>Funkcje:</b>
+
+- Odtwarzanie piosenek z YouTube/YouTube Music bez reklam
+- Odtwarzanie w tle
+- Wyszukiwanie piosenek, filmów, albumów i playlist w YouTube Music
+- Zarządzanie biblioteką
+- Pobieranie i przechowywanie piosenek w pamięci podręcznej umożliwiające odtwarzanie offline
+- Zsynchronizowane wyświetlanie tekstów
+- Pomijanie ciszy
+- Normalizacja głośności
+- Dynamiczny wygląd
+- Obsługa wielu języków
+- Wsparcie dla Android Auto
+- Dopasowane rekomendacje
+- Material 3

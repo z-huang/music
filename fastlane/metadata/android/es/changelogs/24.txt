@@ -1,0 +1,6 @@
+- Animación de navegación más fluida
+- Opción para ocultar contenido explícito
+- Añadir control deslizante
+- Arreglar el error del artista del álbum y añadir un botón para recuperar el álbum
+- Corrección del desajuste de colores
+- Otras correcciones y mejoras

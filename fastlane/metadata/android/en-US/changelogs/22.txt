@@ -1,0 +1,4 @@
+- Fix frequent random crash
+- Fix crash when searching lyrics
+- Upgrade Material 3
+- Automatically scroll to the currently playing song in the queue

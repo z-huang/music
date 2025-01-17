@@ -41,6 +41,7 @@ class StatsViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     init {
+        // fetch missing artist metadata
         viewModelScope.launch {
             mostPlayedArtists.collect { artists ->
                 artists
@@ -57,6 +58,7 @@ class StatsViewModel @Inject constructor(
                     }
             }
         }
+        // fetch missing album metadata
         viewModelScope.launch {
             mostPlayedAlbums.collect { albums ->
                 albums.filter {

@@ -1,0 +1,16 @@
+Mejora
+
+- Añadir botón de reproducción aleatoria en Android Auto
+
+Corregido
+
+- Solucionado el apóstrofe que muestra como entidad HTML en letras #401
+- Actualización de la clave de filtro de búsqueda de YouTube #436
+- Corregido #432
+
+Traducción
+
+- Actualización de la traducción al Húngaro #407 #425
+- Añadir traducción Indonesia #415
+- Actualización de la traducción de Chino simplificado #416
+- Actualización de la traducción del Japonés #419

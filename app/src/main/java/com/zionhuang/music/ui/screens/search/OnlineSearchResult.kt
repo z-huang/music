@@ -1,6 +1,5 @@
 package com.zionhuang.music.ui.screens.search
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -39,7 +38,6 @@ import com.zionhuang.innertube.models.AlbumItem
 import com.zionhuang.innertube.models.ArtistItem
 import com.zionhuang.innertube.models.PlaylistItem
 import com.zionhuang.innertube.models.SongItem
-import com.zionhuang.innertube.models.WatchEndpoint
 import com.zionhuang.innertube.models.YTItem
 import com.zionhuang.music.LocalPlayerAwareWindowInsets
 import com.zionhuang.music.LocalPlayerConnection
@@ -63,7 +61,6 @@ import com.zionhuang.music.ui.menu.YouTubeSongMenu
 import com.zionhuang.music.viewmodels.OnlineSearchViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnlineSearchResult(
     navController: NavController,
@@ -149,7 +146,7 @@ fun OnlineSearchResult(
                             if (item.id == mediaMetadata?.id) {
                                 playerConnection.player.togglePlayPause()
                             } else {
-                                playerConnection.playQueue(YouTubeQueue(WatchEndpoint(videoId = item.id), item.toMediaMetadata()))
+                                playerConnection.playQueue(YouTubeQueue.radio(item.toMediaMetadata()))
                             }
                         }
 
@@ -158,7 +155,7 @@ fun OnlineSearchResult(
                         is PlaylistItem -> navController.navigate("online_playlist/${item.id}")
                     }
                 }
-                .animateItemPlacement()
+                .animateItem()
         )
     }
 
@@ -185,7 +182,8 @@ fun OnlineSearchResult(
                 item {
                     EmptyPlaceholder(
                         icon = R.drawable.search,
-                        text = stringResource(R.string.no_results_found)
+                        text = stringResource(R.string.no_results_found),
+                        modifier = Modifier.animateItem()
                     )
                 }
             }
@@ -210,7 +208,8 @@ fun OnlineSearchResult(
                 item {
                     EmptyPlaceholder(
                         icon = R.drawable.search,
-                        text = stringResource(R.string.no_results_found)
+                        text = stringResource(R.string.no_results_found),
+                        modifier = Modifier.animateItem()
                     )
                 }
             }

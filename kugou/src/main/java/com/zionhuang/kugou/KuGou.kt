@@ -4,16 +4,16 @@ import com.github.houbb.opencc4j.util.ZhConverterUtil
 import com.zionhuang.kugou.models.DownloadLyricsResponse
 import com.zionhuang.kugou.models.SearchLyricsResponse
 import com.zionhuang.kugou.models.SearchSongResponse
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.okhttp.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.compression.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.util.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.plugins.compression.ContentEncoding
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
+import io.ktor.http.ContentType
+import io.ktor.http.encodeURLParameter
+import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.decodeBase64String
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import java.lang.Character.UnicodeScript
@@ -55,7 +55,7 @@ object KuGou {
         } ?: throw IllegalStateException("No lyrics candidate")
     }
 
-    suspend fun getAllLyrics(title: String, artist: String, duration: Int, callback: (String) -> Unit) {
+    suspend fun getAllLyrics(title: String, artist: String, duration: Int, callback: (String) -> Unit) = runCatching {
         val keyword = generateKeyword(title, artist)
         searchSongs(keyword).data.info.forEach {
             if (duration == -1 || abs(it.duration - duration) <= DURATION_TOLERANCE) {

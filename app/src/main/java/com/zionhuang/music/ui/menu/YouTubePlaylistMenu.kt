@@ -19,7 +19,6 @@ import com.zionhuang.innertube.utils.completed
 import com.zionhuang.music.LocalDatabase
 import com.zionhuang.music.LocalPlayerConnection
 import com.zionhuang.music.R
-import com.zionhuang.music.db.entities.PlaylistSongMap
 import com.zionhuang.music.extensions.toMediaItem
 import com.zionhuang.music.models.toMediaMetadata
 import com.zionhuang.music.playback.queues.YouTubeQueue
@@ -47,30 +46,17 @@ fun YouTubePlaylistMenu(
 
     AddToPlaylistDialog(
         isVisible = showChoosePlaylistDialog,
-        onAdd = { targetPlaylist ->
-            coroutineScope.launch(Dispatchers.IO) {
-                var position = targetPlaylist.songCount
-                songs.ifEmpty {
-                    withContext(Dispatchers.IO) {
-                        YouTube.playlist(playlist.id).completed().getOrNull()?.songs.orEmpty()
-                    }
-                }.let { songs ->
-                    database.transaction {
-                        songs
-                            .map { it.toMediaMetadata() }
-                            .onEach(::insert)
-                            .forEach { song ->
-                                insert(
-                                    PlaylistSongMap(
-                                        songId = song.id,
-                                        playlistId = targetPlaylist.id,
-                                        position = position++
-                                    )
-                                )
-                            }
-                    }
+        onGetSong = {
+            val allSongs = songs
+                .ifEmpty {
+                    YouTube.playlist(playlist.id).completed().getOrNull()?.songs.orEmpty()
+                }.map {
+                    it.toMediaMetadata()
                 }
+            database.transaction {
+                allSongs.forEach(::insert)
             }
+            allSongs.map { it.id }
         },
         onDismiss = { showChoosePlaylistDialog = false }
     )
@@ -99,12 +85,14 @@ fun YouTubePlaylistMenu(
             playerConnection.playQueue(YouTubeQueue(playlist.shuffleEndpoint))
             onDismiss()
         }
-        GridMenuItem(
-            icon = R.drawable.radio,
-            title = R.string.start_radio
-        ) {
-            playerConnection.playQueue(YouTubeQueue(playlist.radioEndpoint))
-            onDismiss()
+        playlist.radioEndpoint?.let { radioEndpoint ->
+            GridMenuItem(
+                icon = R.drawable.radio,
+                title = R.string.start_radio
+            ) {
+                playerConnection.playQueue(YouTubeQueue(radioEndpoint))
+                onDismiss()
+            }
         }
         GridMenuItem(
             icon = R.drawable.playlist_play,

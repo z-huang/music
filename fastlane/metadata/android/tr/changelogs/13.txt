@@ -1,0 +1,10 @@
+Müziğin ismi artık InnerTune oldu!
+
+-Oynatma arayüzü değiştirildi
+-Çalma sırası değiştirildi
+-Meraklısı için istatistikler
+-Kalıcı çalma sırası
+-Dahili oynatma listesi (beğenilenler, indirilenler)
+-Önbellek sınırı ayarlama
+-En son çalmaya göre sıralama
+-Navigasyon sekmelerini kişiselleştirme

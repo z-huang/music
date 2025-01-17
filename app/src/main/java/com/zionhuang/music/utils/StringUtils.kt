@@ -1,6 +1,7 @@
 package com.zionhuang.music.utils
 
 import java.math.BigInteger
+import java.net.URLEncoder
 import java.security.MessageDigest
 
 fun makeTimeString(duration: Long?): String {
@@ -28,3 +29,5 @@ fun joinByBullet(vararg str: String?) =
     str.filterNot {
         it.isNullOrEmpty()
     }.joinToString(separator = " • ")
+
+fun String.urlEncode(): String = URLEncoder.encode(this, "UTF-8")

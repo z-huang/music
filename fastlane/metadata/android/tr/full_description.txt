@@ -14,4 +14,4 @@ Android için bir Materyal 3 YouTube Müzik istemcisi
 - Yerelleştirme
 - Android Auto desteği
 - Kişiselleştirilmiş hızlı seçimler
-- Materyal 3
+- Material 3 Tasarım

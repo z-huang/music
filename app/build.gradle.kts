@@ -6,8 +6,9 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.compose.compiler)
 }
 
 if (isFullBuild && System.getenv("PULL_REQUEST") == null) {
@@ -18,20 +19,21 @@ if (isFullBuild && System.getenv("PULL_REQUEST") == null) {
 
 android {
     namespace = "com.zionhuang.music"
-    compileSdk = 33
-    buildToolsVersion = "30.0.3"
+    compileSdk = 35
+    buildToolsVersion = "35.0.0"
     defaultConfig {
         applicationId = "com.zionhuang.music"
         minSdk = 24
-        targetSdk = 33
-        versionCode = 19
-        versionName = "0.5.3"
+        targetSdk = 35
+        versionCode = 26
+        versionName = "0.5.10"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            isCrunchPngs = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         debug {
@@ -47,6 +49,16 @@ android {
             dimension = "version"
         }
     }
+
+//    splits {
+//        abi {
+//            isEnable = true
+//            reset()
+//            include("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+//            isUniversalApk = false
+//        }
+//    }
+    
     signingConfigs {
         getByName("debug") {
             if (System.getenv("MUSIC_DEBUG_SIGNING_STORE_PASSWORD") != null) {
@@ -58,22 +70,20 @@ android {
         }
     }
     buildFeatures {
+        buildConfig = true
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlin {
-        jvmToolchain(11)
+        jvmToolchain(17)
     }
     kotlinOptions {
         freeCompilerArgs = freeCompilerArgs + "-Xcontext-receivers"
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     testOptions {
         unitTests.isIncludeAndroidResources = true
@@ -81,6 +91,15 @@ android {
     }
     lint {
         disable += "MissingTranslation"
+        disable += "MissingQuantity"
+        disable += "ImpliedQuantity"
+    }
+    // avoid DEPENDENCY_INFO_BLOCK for IzzyOnDroid
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
     }
 }
 
@@ -113,8 +132,7 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.palette)
     implementation(projects.materialColorUtilities)
-
-    implementation(libs.accompanist.swiperefresh)
+    implementation(libs.squigglyslider)
 
     implementation(libs.coil)
 
@@ -125,7 +143,6 @@ dependencies {
     implementation(libs.media3.okhttp)
 
     implementation(libs.room.runtime)
-    annotationProcessor(libs.room.compiler)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
 
@@ -136,6 +153,10 @@ dependencies {
 
     implementation(projects.innertube)
     implementation(projects.kugou)
+    implementation(projects.lrclib)
+    implementation(projects.kizzy)
+
+    implementation(libs.ktor.client.core)
 
     coreLibraryDesugaring(libs.desugaring)
 

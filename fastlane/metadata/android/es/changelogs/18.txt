@@ -1,0 +1,3 @@
+- Mejorar el diseño de la biblioteca
+- Traductor de letras (en versión completa)
+- Mejoras menores y corrección de errores

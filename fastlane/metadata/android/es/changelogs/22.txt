@@ -1,0 +1,4 @@
+- Corrección de fallos aleatorios frecuentes
+- Arreglar fallo al buscar letras
+- Actualización Material 3
+- Desplazamiento automático a la canción que se está reproduciendo en la cola

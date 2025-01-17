@@ -1,0 +1,8 @@
+- Nuevo icono de la aplicación
+- Reescritura de la interfaz de usuario con Jetpack Compose
+- Mejor UI/UX
+- Tema dinámico
+- Pantalla de inicio rediseñada
+- Experiencia de descarga mejorada
+- Nueva fuente de letras: Subtítulos de YouTube
+- Mostrar el botón de repetición al finalizar la reproducción

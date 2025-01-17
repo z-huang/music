@@ -1,0 +1,11 @@
+<br><b>Reparado</b>
+
+* Se solucionó el problema de que la transmisión no se puede reproducir (#148)
+* Se solucionó que el elemento de navegación inferior no se marcara al hacer clic (#12)
+
+<br><b>Actualizaciones de traducción</b>
+
+* Coreano (por @dongsu8142) #107
+* Español(por @DD21S) #120
+* Japonés (por @HiSubway) #138
+* Sueco (por @Itroublve) #143

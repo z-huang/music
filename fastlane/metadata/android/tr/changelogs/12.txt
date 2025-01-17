@@ -1,0 +1,6 @@
+*Kütüphaneden, radyo özelliğini başlatma
+*Varsayılan başlangıç sekmesi
+*Ses kalitesi ayarı
+*Arama geçmişi durdurma ve temizleme
+*Yedekle ve geri yükle
+*SOCKS proxy desteği

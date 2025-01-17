@@ -1,0 +1,6 @@
+- Fix radio not working
+- Playlist duplicate warning
+- Add LrcLib lyrics provider
+- Add marquee
+- Add haptic feedback
+- Black player in pure black mode

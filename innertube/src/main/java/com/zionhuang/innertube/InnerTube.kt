@@ -47,6 +47,8 @@ class InnerTube {
             httpClient = createClient()
         }
 
+    var useLoginForBrowse: Boolean = false
+
     @OptIn(ExperimentalSerializationApi::class)
     private fun createClient() = HttpClient(OkHttp) {
         expectSuccess = true
@@ -72,7 +74,7 @@ class InnerTube {
         }
 
         defaultRequest {
-            url("https://music.youtube.com/youtubei/v1/")
+            url(YouTubeClient.API_URL_YOUTUBE_MUSIC)
         }
     }
 
@@ -80,24 +82,21 @@ class InnerTube {
         contentType(ContentType.Application.Json)
         headers {
             append("X-Goog-Api-Format-Version", "1")
-            append("X-YouTube-Client-Name", client.clientName)
+            append("X-YouTube-Client-Name", client.clientId)
             append("X-YouTube-Client-Version", client.clientVersion)
-            append("x-origin", "https://music.youtube.com")
-            if (client.referer != null) {
-                append("Referer", client.referer)
-            }
-            if (setLogin) {
+            append("X-Origin", YouTubeClient.ORIGIN_YOUTUBE_MUSIC)
+            append("Referer", YouTubeClient.REFERER_YOUTUBE_MUSIC)
+            if (setLogin && client.loginSupported) {
                 cookie?.let { cookie ->
                     append("cookie", cookie)
                     if ("SAPISID" !in cookieMap) return@let
                     val currentTime = System.currentTimeMillis() / 1000
-                    val sapisidHash = sha1("$currentTime ${cookieMap["SAPISID"]} https://music.youtube.com")
+                    val sapisidHash = sha1("$currentTime ${cookieMap["SAPISID"]} ${YouTubeClient.ORIGIN_YOUTUBE_MUSIC}")
                     append("Authorization", "SAPISIDHASH ${currentTime}_${sapisidHash}")
                 }
             }
         }
         userAgent(client.userAgent)
-        parameter("key", client.api_key)
         parameter("prettyPrint", false)
     }
 
@@ -107,7 +106,7 @@ class InnerTube {
         params: String? = null,
         continuation: String? = null,
     ) = httpClient.post("search") {
-        ytClient(client)
+        ytClient(client, setLogin = useLoginForBrowse)
         setBody(
             SearchBody(
                 context = client.toContext(locale, visitorData),
@@ -123,12 +122,13 @@ class InnerTube {
         client: YouTubeClient,
         videoId: String,
         playlistId: String?,
+        signatureTimestamp: Int?,
     ) = httpClient.post("player") {
         ytClient(client, setLogin = true)
         setBody(
             PlayerBody(
                 context = client.toContext(locale, visitorData).let {
-                    if (client == YouTubeClient.TVHTML5) {
+                    if (client == YouTubeClient.TVHTML5_SIMPLY_EMBEDDED_PLAYER) {
                         it.copy(
                             thirdParty = Context.ThirdParty(
                                 embedUrl = "https://www.youtube.com/watch?v=${videoId}"
@@ -137,15 +137,16 @@ class InnerTube {
                     } else it
                 },
                 videoId = videoId,
-                playlistId = playlistId
+                playlistId = playlistId,
+                playbackContext =
+                    if (client.useSignatureTimestamp && signatureTimestamp != null) {
+                        PlayerBody.PlaybackContext(PlayerBody.PlaybackContext.ContentPlaybackContext(
+                            signatureTimestamp
+                        ))
+                    } else null
             )
         )
     }
-
-    suspend fun pipedStreams(videoId: String) =
-        httpClient.get("https://pipedapi.kavin.rocks/streams/${videoId}") {
-            contentType(ContentType.Application.Json)
-        }
 
     suspend fun browse(
         client: YouTubeClient,
@@ -154,7 +155,7 @@ class InnerTube {
         continuation: String? = null,
         setLogin: Boolean = false,
     ) = httpClient.post("browse") {
-        ytClient(client, setLogin)
+        ytClient(client, setLogin = setLogin || useLoginForBrowse)
         setBody(
             BrowseBody(
                 context = client.toContext(locale, visitorData),
@@ -224,7 +225,6 @@ class InnerTube {
         client: YouTubeClient,
         videoId: String,
     ) = httpClient.post("https://music.youtube.com/youtubei/v1/get_transcript") {
-        parameter("key", "AIzaSyC9XL3ZjWddXya6X74dJoCTL-WEYFDNX3")
         headers {
             append("Content-Type", "application/json")
         }

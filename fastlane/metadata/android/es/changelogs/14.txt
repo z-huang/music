@@ -1,0 +1,11 @@
+- Letras
+- Compatibilidad con Android Auto
+- Saltar silencio
+- Normalización de audio
+- Exportar canciones descargadas mediante SAF
+- Mejora del diseño de la vista del reproductor
+- Añadir bloqueo de despertador para el reproductor
+- Opción de ocultar botones en la notificación del reproductor
+- Eliminar la cola persistente al restaurar la base de datos
+- Mostrar itag en estadísticas para nerds
+- Cambios y correcciones menores

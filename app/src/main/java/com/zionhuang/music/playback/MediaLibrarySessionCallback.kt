@@ -14,6 +14,7 @@ import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaLibraryService.MediaLibrarySession
 import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionCommand
+import androidx.media3.session.SessionError
 import androidx.media3.session.SessionResult
 import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.Futures
@@ -25,6 +26,7 @@ import com.zionhuang.music.db.MusicDatabase
 import com.zionhuang.music.db.entities.PlaylistEntity
 import com.zionhuang.music.db.entities.Song
 import com.zionhuang.music.extensions.toMediaItem
+import com.zionhuang.music.extensions.toggleRepeatMode
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +52,10 @@ class MediaLibrarySessionCallback @Inject constructor(
         return MediaSession.ConnectionResult.accept(
             connectionResult.availableSessionCommands.buildUpon()
                 .add(MediaSessionConstants.CommandToggleLibrary)
-                .add(MediaSessionConstants.CommandToggleLike).build(),
+                .add(MediaSessionConstants.CommandToggleLike)
+                .add(MediaSessionConstants.CommandToggleShuffle)
+                .add(MediaSessionConstants.CommandToggleRepeatMode)
+                .build(),
             connectionResult.availablePlayerCommands
         )
     }
@@ -64,6 +69,8 @@ class MediaLibrarySessionCallback @Inject constructor(
         when (customCommand.customAction) {
             MediaSessionConstants.ACTION_TOGGLE_LIKE -> toggleLike()
             MediaSessionConstants.ACTION_TOGGLE_LIBRARY -> toggleLibrary()
+            MediaSessionConstants.ACTION_TOGGLE_SHUFFLE -> session.player.shuffleModeEnabled = !session.player.shuffleModeEnabled
+            MediaSessionConstants.ACTION_TOGGLE_REPEAT_MODE -> session.player.toggleRepeatMode()
         }
         return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
     }
@@ -111,7 +118,7 @@ class MediaLibrarySessionCallback @Inject constructor(
                 }
 
                 MusicService.ALBUM -> database.albumsByCreateDateAsc().first().map { album ->
-                    browsableMediaItem("${MusicService.ALBUM}/${album.id}", album.album.title, album.artists.joinToString(), album.album.thumbnailUrl?.toUri(), MediaMetadata.MEDIA_TYPE_ALBUM)
+                    browsableMediaItem("${MusicService.ALBUM}/${album.id}", album.album.title, album.artists.joinToString { it.name }, album.album.thumbnailUrl?.toUri(), MediaMetadata.MEDIA_TYPE_ALBUM)
                 }
 
                 MusicService.PLAYLIST -> {
@@ -176,7 +183,7 @@ class MediaLibrarySessionCallback @Inject constructor(
     ): ListenableFuture<LibraryResult<MediaItem>> = scope.future(Dispatchers.IO) {
         database.song(mediaId).first()?.toMediaItem()?.let {
             LibraryResult.ofItem(it, null)
-        } ?: LibraryResult.ofError(LibraryResult.RESULT_ERROR_UNKNOWN)
+        } ?: LibraryResult.ofError(SessionError.ERROR_UNKNOWN)
     }
 
     override fun onSetMediaItems(

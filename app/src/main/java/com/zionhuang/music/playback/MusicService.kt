@@ -16,12 +16,11 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
-import androidx.media3.common.Player.EVENT_IS_PLAYING_CHANGED
-import androidx.media3.common.Player.EVENT_PLAYBACK_STATE_CHANGED
-import androidx.media3.common.Player.EVENT_PLAY_WHEN_READY_CHANGED
 import androidx.media3.common.Player.EVENT_POSITION_DISCONTINUITY
 import androidx.media3.common.Player.EVENT_TIMELINE_CHANGED
-import androidx.media3.common.Player.STATE_ENDED
+import androidx.media3.common.Player.REPEAT_MODE_ALL
+import androidx.media3.common.Player.REPEAT_MODE_OFF
+import androidx.media3.common.Player.REPEAT_MODE_ONE
 import androidx.media3.common.Player.STATE_IDLE
 import androidx.media3.common.Timeline
 import androidx.media3.common.audio.SonicAudioProcessor
@@ -60,8 +59,15 @@ import com.zionhuang.music.R
 import com.zionhuang.music.constants.AudioNormalizationKey
 import com.zionhuang.music.constants.AudioQuality
 import com.zionhuang.music.constants.AudioQualityKey
+import com.zionhuang.music.constants.AutoLoadMoreKey
+import com.zionhuang.music.constants.AutoSkipNextOnErrorKey
+import com.zionhuang.music.constants.DiscordTokenKey
+import com.zionhuang.music.constants.EnableDiscordRPCKey
+import com.zionhuang.music.constants.HideExplicitKey
 import com.zionhuang.music.constants.MediaSessionConstants.CommandToggleLibrary
 import com.zionhuang.music.constants.MediaSessionConstants.CommandToggleLike
+import com.zionhuang.music.constants.MediaSessionConstants.CommandToggleRepeatMode
+import com.zionhuang.music.constants.MediaSessionConstants.CommandToggleShuffle
 import com.zionhuang.music.constants.PauseListenHistoryKey
 import com.zionhuang.music.constants.PersistentQueueKey
 import com.zionhuang.music.constants.PlayerVolumeKey
@@ -90,10 +96,14 @@ import com.zionhuang.music.playback.queues.EmptyQueue
 import com.zionhuang.music.playback.queues.ListQueue
 import com.zionhuang.music.playback.queues.Queue
 import com.zionhuang.music.playback.queues.YouTubeQueue
+import com.zionhuang.music.playback.queues.filterExplicit
 import com.zionhuang.music.utils.CoilBitmapLoader
+import com.zionhuang.music.utils.DiscordRPC
+import com.zionhuang.music.utils.YTPlayerUtils
 import com.zionhuang.music.utils.dataStore
 import com.zionhuang.music.utils.enumPreference
 import com.zionhuang.music.utils.get
+import com.zionhuang.music.utils.isInternetAvailable
 import com.zionhuang.music.utils.reportException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -144,7 +154,7 @@ class MusicService : MediaLibraryService(),
     @Inject
     lateinit var mediaLibrarySessionCallback: MediaLibrarySessionCallback
 
-    private val scope = CoroutineScope(Dispatchers.Main) + Job()
+    private var scope = CoroutineScope(Dispatchers.Main) + Job()
     private val binder = MusicBinder()
 
     private lateinit var connectivityManager: ConnectivityManager
@@ -178,6 +188,10 @@ class MusicService : MediaLibraryService(),
     lateinit var player: ExoPlayer
     private lateinit var mediaSession: MediaLibrarySession
 
+    private var isAudioEffectSessionOpened = false
+
+    private var discordRpc: DiscordRPC? = null
+
     override fun onCreate() {
         super.onCreate()
         setMediaNotificationProvider(
@@ -205,7 +219,6 @@ class MusicService : MediaLibraryService(),
                 sleepTimer = SleepTimer(scope, this)
                 addListener(sleepTimer)
                 addAnalyticsListener(PlaybackStatsListener(false, this@MusicService))
-                repeatMode = dataStore.get(RepeatModeKey, Player.REPEAT_MODE_OFF)
             }
         mediaLibrarySessionCallback.apply {
             toggleLike = ::toggleLike
@@ -222,6 +235,8 @@ class MusicService : MediaLibraryService(),
             )
             .setBitmapLoader(CoilBitmapLoader(this, scope))
             .build()
+        player.repeatMode = dataStore.get(RepeatModeKey, REPEAT_MODE_OFF)
+
         // Keep a connected controller so that notification works
         val sessionToken = SessionToken(this, ComponentName(this, MusicService::class.java))
         val controllerFuture = MediaController.Builder(this, sessionToken).buildAsync()
@@ -241,23 +256,13 @@ class MusicService : MediaLibraryService(),
             }
         }
 
-        currentSong.collect(scope) { song ->
-            mediaSession.setCustomLayout(
-                listOf(
-                    CommandButton.Builder()
-                        .setDisplayName(getString(if (song?.song?.inLibrary != null) R.string.remove_from_library else R.string.add_to_library))
-                        .setIconResId(if (song?.song?.inLibrary != null) R.drawable.library_add_check else R.drawable.library_add)
-                        .setSessionCommand(CommandToggleLibrary)
-                        .setEnabled(song != null)
-                        .build(),
-                    CommandButton.Builder()
-                        .setDisplayName(getString(if (song?.song?.liked == true) R.string.action_remove_like else R.string.action_like))
-                        .setIconResId(if (song?.song?.liked == true) R.drawable.favorite else R.drawable.favorite_border)
-                        .setSessionCommand(CommandToggleLike)
-                        .setEnabled(song != null)
-                        .build()
-                )
-            )
+        currentSong.debounce(1000).collect(scope) { song ->
+            updateNotification()
+            if (song != null) {
+                discordRpc?.updateSong(song)
+            } else {
+                discordRpc?.closeRPC()
+            }
         }
 
         combine(
@@ -301,6 +306,23 @@ class MusicService : MediaLibraryService(),
             }
         }
 
+        dataStore.data
+            .map { it[DiscordTokenKey] to (it[EnableDiscordRPCKey] ?: true) }
+            .debounce(300)
+            .distinctUntilChanged()
+            .collect(scope) { (key, enabled) ->
+                if (discordRpc?.isRpcRunning() == true) {
+                    discordRpc?.closeRPC()
+                }
+                discordRpc = null
+                if (key != null && enabled) {
+                    discordRpc = DiscordRPC(this, key)
+                    currentSong.value?.let {
+                        discordRpc?.updateSong(it)
+                    }
+                }
+            }
+
         if (dataStore.get(PersistentQueueKey, true)) {
             runCatching {
                 filesDir.resolve(PERSISTENT_QUEUE_FILE).inputStream().use { fis ->
@@ -332,14 +354,59 @@ class MusicService : MediaLibraryService(),
         }
     }
 
-    private suspend fun recoverSong(mediaId: String, playerResponse: PlayerResponse? = null) {
+    private fun updateNotification() {
+        mediaSession.setCustomLayout(
+            listOf(
+                CommandButton.Builder()
+                    .setDisplayName(getString(if (currentSong.value?.song?.inLibrary != null) R.string.remove_from_library else R.string.add_to_library))
+                    .setIconResId(if (currentSong.value?.song?.inLibrary != null) R.drawable.library_add_check else R.drawable.library_add)
+                    .setSessionCommand(CommandToggleLibrary)
+                    .setEnabled(currentSong.value != null)
+                    .build(),
+                CommandButton.Builder()
+                    .setDisplayName(getString(if (currentSong.value?.song?.liked == true) R.string.action_remove_like else R.string.action_like))
+                    .setIconResId(if (currentSong.value?.song?.liked == true) R.drawable.favorite else R.drawable.favorite_border)
+                    .setSessionCommand(CommandToggleLike)
+                    .setEnabled(currentSong.value != null)
+                    .build(),
+                CommandButton.Builder()
+                    .setDisplayName(getString(if (player.shuffleModeEnabled) R.string.action_shuffle_off else R.string.action_shuffle_on))
+                    .setIconResId(if (player.shuffleModeEnabled) R.drawable.shuffle_on else R.drawable.shuffle)
+                    .setSessionCommand(CommandToggleShuffle)
+                    .build(),
+                CommandButton.Builder()
+                    .setDisplayName(
+                        getString(
+                            when (player.repeatMode) {
+                                REPEAT_MODE_OFF -> R.string.repeat_mode_off
+                                REPEAT_MODE_ONE -> R.string.repeat_mode_one
+                                REPEAT_MODE_ALL -> R.string.repeat_mode_all
+                                else -> throw IllegalStateException()
+                            }
+                        )
+                    )
+                    .setIconResId(
+                        when (player.repeatMode) {
+                            REPEAT_MODE_OFF -> R.drawable.repeat
+                            REPEAT_MODE_ONE -> R.drawable.repeat_one_on
+                            REPEAT_MODE_ALL -> R.drawable.repeat_on
+                            else -> throw IllegalStateException()
+                        }
+                    )
+                    .setSessionCommand(CommandToggleRepeatMode)
+                    .build()
+            )
+        )
+    }
+
+    private suspend fun recoverSong(mediaId: String, playbackData: YTPlayerUtils.PlaybackData? = null) {
         val song = database.song(mediaId).first()
         val mediaMetadata = withContext(Dispatchers.Main) {
             player.findNextMediaItemById(mediaId)?.metadata
         } ?: return
         val duration = song?.song?.duration?.takeIf { it != -1 }
             ?: mediaMetadata.duration.takeIf { it != -1 }
-            ?: (playerResponse ?: YouTube.player(mediaId).getOrNull())?.videoDetails?.lengthSeconds?.toInt()
+            ?: (playbackData?.videoDetails ?: YTPlayerUtils.playerResponseForMetadata(mediaId).getOrNull()?.videoDetails)?.lengthSeconds?.toInt()
             ?: -1
         database.query {
             if (song == null) insert(mediaMetadata.copy(duration = duration))
@@ -364,6 +431,9 @@ class MusicService : MediaLibraryService(),
     }
 
     fun playQueue(queue: Queue, playWhenReady: Boolean = true) {
+        if (!scope.isActive) {
+            scope = CoroutineScope(Dispatchers.Main) + Job()
+        }
         currentQueue = queue
         queueTitle = null
         player.shuffleModeEnabled = false
@@ -374,13 +444,16 @@ class MusicService : MediaLibraryService(),
         }
 
         scope.launch(SilentHandler) {
-            val initialStatus = withContext(Dispatchers.IO) { queue.getInitialStatus() }
+            val initialStatus = withContext(Dispatchers.IO) {
+                queue.getInitialStatus().filterExplicit(dataStore.get(HideExplicitKey, false))
+            }
             if (queue.preloadItem != null && player.playbackState == STATE_IDLE) return@launch
             if (initialStatus.title != null) {
                 queueTitle = initialStatus.title
             }
             if (initialStatus.items.isEmpty()) return@launch
             if (queue.preloadItem != null) {
+                // add missing songs back, without affecting current playing song
                 player.addMediaItems(0, initialStatus.items.subList(0, initialStatus.mediaItemIndex))
                 player.addMediaItems(initialStatus.items.subList(initialStatus.mediaItemIndex + 1, initialStatus.items.size))
             } else {
@@ -433,6 +506,8 @@ class MusicService : MediaLibraryService(),
     }
 
     private fun openAudioEffectSession() {
+        if (isAudioEffectSessionOpened) return
+        isAudioEffectSessionOpened = true
         sendBroadcast(
             Intent(AudioEffect.ACTION_OPEN_AUDIO_EFFECT_CONTROL_SESSION).apply {
                 putExtra(AudioEffect.EXTRA_AUDIO_SESSION, player.audioSessionId)
@@ -443,22 +518,25 @@ class MusicService : MediaLibraryService(),
     }
 
     private fun closeAudioEffectSession() {
+        if (!isAudioEffectSessionOpened) return
+        isAudioEffectSessionOpened = false
         sendBroadcast(
             Intent(AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION).apply {
                 putExtra(AudioEffect.EXTRA_AUDIO_SESSION, player.audioSessionId)
+                putExtra(AudioEffect.EXTRA_PACKAGE_NAME, packageName)
             }
         )
     }
 
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
         // Auto load more songs
-        if (reason != Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT &&
-            player.playbackState != STATE_IDLE &&
+        if (dataStore.get(AutoLoadMoreKey, true) &&
+            reason != Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT &&
             player.mediaItemCount - player.currentMediaItemIndex <= 5 &&
             currentQueue.hasNextPage()
         ) {
             scope.launch(SilentHandler) {
-                val mediaItems = currentQueue.nextPage()
+                val mediaItems = currentQueue.nextPage().filterExplicit(dataStore.get(HideExplicitKey, false))
                 if (player.playbackState != STATE_IDLE) {
                     player.addMediaItems(mediaItems)
                 }
@@ -475,8 +553,9 @@ class MusicService : MediaLibraryService(),
     }
 
     override fun onEvents(player: Player, events: Player.Events) {
-        if (events.containsAny(EVENT_PLAYBACK_STATE_CHANGED, EVENT_PLAY_WHEN_READY_CHANGED, EVENT_IS_PLAYING_CHANGED, EVENT_POSITION_DISCONTINUITY)) {
-            if (player.playbackState != STATE_ENDED && player.playWhenReady) {
+        if (events.containsAny(Player.EVENT_PLAYBACK_STATE_CHANGED, Player.EVENT_PLAY_WHEN_READY_CHANGED)) {
+            val isBufferingOrReady = player.playbackState == Player.STATE_BUFFERING || player.playbackState == Player.STATE_READY
+            if (isBufferingOrReady && player.playWhenReady) {
                 openAudioEffectSession()
             } else {
                 closeAudioEffectSession()
@@ -489,6 +568,7 @@ class MusicService : MediaLibraryService(),
 
 
     override fun onShuffleModeEnabledChanged(shuffleModeEnabled: Boolean) {
+        updateNotification()
         if (shuffleModeEnabled) {
             // Always put current playing item at first
             val shuffledIndices = IntArray(player.mediaItemCount) { it }
@@ -500,10 +580,22 @@ class MusicService : MediaLibraryService(),
     }
 
     override fun onRepeatModeChanged(repeatMode: Int) {
+        updateNotification()
         scope.launch {
             dataStore.edit { settings ->
                 settings[RepeatModeKey] = repeatMode
             }
+        }
+    }
+
+    override fun onPlayerError(error: PlaybackException) {
+        if (dataStore.get(AutoSkipNextOnErrorKey, false) &&
+            isInternetAvailable(this) &&
+            player.hasNextMediaItem()
+        ) {
+            player.seekToNext()
+            player.prepare()
+            player.playWhenReady = true
         }
     }
 
@@ -539,7 +631,7 @@ class MusicService : MediaLibraryService(),
                 return@Factory dataSpec
             }
 
-            songUrlCache[mediaId]?.takeIf { it.second < System.currentTimeMillis() }?.let {
+            songUrlCache[mediaId]?.takeIf { it.second > System.currentTimeMillis() }?.let {
                 scope.launch(Dispatchers.IO) { recoverSong(mediaId) }
                 return@Factory dataSpec.withUri(it.first.toUri())
             }
@@ -547,10 +639,17 @@ class MusicService : MediaLibraryService(),
             // Check whether format exists so that users from older version can view format details
             // There may be inconsistent between the downloaded file and the displayed info if user change audio quality frequently
             val playedFormat = runBlocking(Dispatchers.IO) { database.format(mediaId).first() }
-            val playerResponse = runBlocking(Dispatchers.IO) {
-                YouTube.player(mediaId)
+            val playbackData = runBlocking(Dispatchers.IO) {
+                YTPlayerUtils.playerResponseForPlayback(
+                    mediaId,
+                    playedFormat = playedFormat,
+                    audioQuality = audioQuality,
+                    connectivityManager = connectivityManager,
+                )
             }.getOrElse { throwable ->
                 when (throwable) {
+                    is PlaybackException -> throw throwable
+
                     is ConnectException, is UnknownHostException -> {
                         throw PlaybackException(getString(R.string.error_no_internet), throwable, PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED)
                     }
@@ -562,27 +661,7 @@ class MusicService : MediaLibraryService(),
                     else -> throw PlaybackException(getString(R.string.error_unknown), throwable, PlaybackException.ERROR_CODE_REMOTE_ERROR)
                 }
             }
-            if (playerResponse.playabilityStatus.status != "OK") {
-                throw PlaybackException(playerResponse.playabilityStatus.reason, null, PlaybackException.ERROR_CODE_REMOTE_ERROR)
-            }
-
-            val format =
-                if (playedFormat != null) {
-                    playerResponse.streamingData?.adaptiveFormats?.find {
-                        // Use itag to identify previously played format
-                        it.itag == playedFormat.itag
-                    }
-                } else {
-                    playerResponse.streamingData?.adaptiveFormats
-                        ?.filter { it.isAudio }
-                        ?.maxByOrNull {
-                            it.bitrate * when (audioQuality) {
-                                AudioQuality.AUTO -> if (connectivityManager.isActiveNetworkMetered) -1 else 1
-                                AudioQuality.HIGH -> 1
-                                AudioQuality.LOW -> -1
-                            } + (if (it.mimeType.startsWith("audio/webm")) 10240 else 0) // prefer opus stream
-                        }
-                } ?: throw PlaybackException(getString(R.string.error_no_stream), null, ERROR_CODE_NO_STREAM)
+            val format = playbackData.format
 
             database.query {
                 upsert(
@@ -594,14 +673,16 @@ class MusicService : MediaLibraryService(),
                         bitrate = format.bitrate,
                         sampleRate = format.audioSampleRate,
                         contentLength = format.contentLength!!,
-                        loudnessDb = playerResponse.playerConfig?.audioConfig?.loudnessDb
+                        loudnessDb = playbackData.audioConfig?.loudnessDb
                     )
                 )
             }
-            scope.launch(Dispatchers.IO) { recoverSong(mediaId, playerResponse) }
+            scope.launch(Dispatchers.IO) { recoverSong(mediaId, playbackData) }
 
-            songUrlCache[mediaId] = format.url!! to playerResponse.streamingData!!.expiresInSeconds * 1000L
-            dataSpec.withUri(format.url!!.toUri()).subrange(dataSpec.uriPositionOffset, CHUNK_LENGTH)
+            val streamUrl = playbackData.streamUrl
+
+            songUrlCache[mediaId] = streamUrl to System.currentTimeMillis() + (playbackData.streamExpiresInSeconds * 1000L)
+            dataSpec.withUri(streamUrl.toUri()).subrange(dataSpec.uriPositionOffset, CHUNK_LENGTH)
         }
     }
 
@@ -615,19 +696,21 @@ class MusicService : MediaLibraryService(),
 
     private fun createRenderersFactory() =
         object : DefaultRenderersFactory(this) {
-            override fun buildAudioSink(context: Context, enableFloatOutput: Boolean, enableAudioTrackPlaybackParams: Boolean, enableOffload: Boolean) =
-                DefaultAudioSink.Builder(this@MusicService)
-                    .setEnableFloatOutput(enableFloatOutput)
-                    .setEnableAudioTrackPlaybackParams(enableAudioTrackPlaybackParams)
-                    .setOffloadMode(if (enableOffload) DefaultAudioSink.OFFLOAD_MODE_ENABLED_GAPLESS_REQUIRED else DefaultAudioSink.OFFLOAD_MODE_DISABLED)
-                    .setAudioProcessorChain(
-                        DefaultAudioSink.DefaultAudioProcessorChain(
-                            emptyArray(),
-                            SilenceSkippingAudioProcessor(2_000_000, 20_000, 256),
-                            SonicAudioProcessor()
-                        )
+            override fun buildAudioSink(
+                context: Context,
+                enableFloatOutput: Boolean,
+                enableAudioTrackPlaybackParams: Boolean,
+            ) = DefaultAudioSink.Builder(this@MusicService)
+                .setEnableFloatOutput(enableFloatOutput)
+                .setEnableAudioTrackPlaybackParams(enableAudioTrackPlaybackParams)
+                .setAudioProcessorChain(
+                    DefaultAudioSink.DefaultAudioProcessorChain(
+                        emptyArray(),
+                        SilenceSkippingAudioProcessor(2_000_000, 0.01f, 2_000_000, 0, 256),
+                        SonicAudioProcessor()
                     )
-                    .build()
+                )
+                .build()
         }
 
     override fun onPlaybackStatsReady(eventTime: AnalyticsListener.EventTime, playbackStats: PlaybackStats) {
@@ -675,6 +758,10 @@ class MusicService : MediaLibraryService(),
         if (dataStore.get(PersistentQueueKey, true)) {
             saveQueueToDisk()
         }
+        if (discordRpc?.isRpcRunning() == true) {
+            discordRpc?.closeRPC()
+        }
+        discordRpc = null
         mediaSession.release()
         player.removeListener(this)
         player.removeListener(sleepTimer)

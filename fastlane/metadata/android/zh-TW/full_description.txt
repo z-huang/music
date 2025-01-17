@@ -1,0 +1,15 @@
+一個 YouTube Music 用戶端，使用 Material 3 風格
+
+<br><b>功能：</b>
+
+- 無廣告播放 Youtube/Youtube Music 中的歌曲
+- 背景播放
+- 搜尋歌曲、影片、專輯和播放清單
+- 可下載並離線播放
+- 同步歌詞
+- 跳過無聲片段
+- 標準化音量
+- 動態主題
+- 支援 Android Auto
+- 個人化推薦曲目
+- Material 3 風格

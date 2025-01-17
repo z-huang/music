@@ -6,10 +6,11 @@ body:
     id: checklist
     attributes:
       label: Checklist
+      description: You should ensure the completion of the task before proceeding to check it off the checklist. Neglecting to do so may impede the efficiency of the issue resolution process. The developer has the right to delete the issue directly if you check the list blindly.
       options:
-        - label: I am able to reproduce the bug with the [latest DEBUG version](https://github.com/z-huang/InnerTune/actions).
+        - label: I am able to reproduce the bug with the [latest debug version](https://github.com/z-huang/InnerTune/actions/workflows/build.yml).
           required: true
-        - label: I've checked that there is no issue about this bug.
+        - label: I've checked that there is no open or closed issue about this bug.
           required: true
         - label: This issue contains only one bug.
           required: true
@@ -64,7 +65,9 @@ body:
     attributes:
       label: Logs
       description: |
-        If your bug includes a crash, please use `adb logcat` or other ways to provide logs.
+        Please use `adb logcat` or other ways to provide logs. This field is strongly recommended to be filled. Without this information, it's likely that the developer is unable to take any meaningful action or provide further assistance. Check https://developer.android.com/tools/logcat on how to get logs.
+    validations:
+      required: true
 
   - type: input
     id: app-version
@@ -73,7 +76,7 @@ body:
       description: |
         You can find your InnerTune version in **Settings**.
       placeholder: |
-        Example: "0.2.1-beta"
+        Example: "0.5.6"
     validations:
       required: true
 
@@ -84,7 +87,7 @@ body:
       description: |
         You can find this somewhere in your Android settings.
       placeholder: |
-        Example: "Android 12"
+        Example: "Android 13"
     validations:
       required: true
 

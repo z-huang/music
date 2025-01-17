@@ -2,6 +2,7 @@ package com.zionhuang.innertube.models.response
 
 import com.zionhuang.innertube.models.Button
 import com.zionhuang.innertube.models.Continuation
+import com.zionhuang.innertube.models.GridRenderer
 import com.zionhuang.innertube.models.Menu
 import com.zionhuang.innertube.models.MusicShelfRenderer
 import com.zionhuang.innertube.models.ResponseContext
@@ -9,6 +10,7 @@ import com.zionhuang.innertube.models.Runs
 import com.zionhuang.innertube.models.SectionListRenderer
 import com.zionhuang.innertube.models.Tabs
 import com.zionhuang.innertube.models.ThumbnailRenderer
+import com.zionhuang.innertube.models.Thumbnails
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -18,17 +20,37 @@ data class BrowseResponse(
     val header: Header?,
     val microformat: Microformat?,
     val responseContext: ResponseContext,
+    val background: MusicThumbnailRenderer?,
 ) {
     @Serializable
     data class Contents(
         val singleColumnBrowseResultsRenderer: Tabs?,
+        val twoColumnBrowseResultsRenderer: TwoColumnBrowseResultsRenderer?,
         val sectionListRenderer: SectionListRenderer?,
+    )
+
+    @Serializable
+    data class TwoColumnBrowseResultsRenderer(
+        val tabs: List<Tabs.Tab?>?,
+        val secondaryContents: SecondaryContents?,
+    )
+
+    @Serializable
+    data class SecondaryContents(
+        val sectionListRenderer: SectionListRenderer?,
+    )
+
+    @Serializable
+    data class MusicThumbnailRenderer(
+        val thumbnail: Thumbnails?,
+        val thumbnailCrop: String?,
     )
 
     @Serializable
     data class ContinuationContents(
         val sectionListContinuation: SectionListContinuation?,
         val musicPlaylistShelfContinuation: MusicPlaylistShelfContinuation?,
+        val gridContinuation: GridContinuation?,
     ) {
         @Serializable
         data class SectionListContinuation(
@@ -39,6 +61,12 @@ data class BrowseResponse(
         @Serializable
         data class MusicPlaylistShelfContinuation(
             val contents: List<MusicShelfRenderer.Content>,
+            val continuations: List<Continuation>?,
+        )
+
+        @Serializable
+        data class GridContinuation(
+            val items: List<GridRenderer.Item>,
             val continuations: List<Continuation>?,
         )
     }
@@ -77,7 +105,8 @@ data class BrowseResponse(
         ) {
             @Serializable
             data class Header(
-                val musicDetailHeaderRenderer: MusicDetailHeaderRenderer,
+                val musicDetailHeaderRenderer: MusicDetailHeaderRenderer?,
+                val musicResponsiveHeaderRenderer: MusicHeaderRenderer?,
             )
         }
 
@@ -89,8 +118,30 @@ data class BrowseResponse(
         )
 
         @Serializable
+        data class Buttons(
+            val menuRenderer: Menu.MenuRenderer?,
+        )
+
+        @Serializable
         data class MusicHeaderRenderer(
-            val title: Runs,
+            val buttons: List<Buttons>?,
+            val title: Runs?,
+            val thumbnail: MusicThumbnailRenderer?,
+            val subtitle: Runs?,
+            val secondSubtitle: Runs?,
+            val straplineTextOne: Runs?,
+            val straplineThumbnail: MusicThumbnailRenderer?,
+        )
+
+        @Serializable
+        data class MusicThumbnail(
+            val url: String?,
+        )
+
+        @Serializable
+        data class MusicThumbnailRenderer(
+            val musicThumbnailRenderer: BrowseResponse.MusicThumbnailRenderer,
+            val thumbnails: List<MusicThumbnail>?,
         )
     }
 

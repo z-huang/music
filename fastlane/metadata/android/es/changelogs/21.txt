@@ -1,0 +1,6 @@
+- Arreglar la radio no funciona
+- Aviso de lista de reproducción duplicada
+- Añadir proveedor de letras LrcLib
+- Añadir marquesina
+- Añadir retroalimentación háptica
+- Reproductor negro en modo negro puro
